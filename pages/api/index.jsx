@@ -1,5 +1,5 @@
 // import clientPromise from "../../lib/mongodb";
-import connectToDatabase from "../../lib/ConnectToDB";
+import connectToDatabase from "../../lib/ConnectToDB.js";
 
 const getServerSideProps = async () => {
   try {
