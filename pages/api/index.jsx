@@ -1,8 +1,9 @@
-import clientPromise from "../../lib/mongodb.ts";
+// import clientPromise from "../../lib/mongodb";
+import connectToDatabase from "../../lib/connectToDB.js";
 
 const getServerSideProps = async () => {
   try {
-    await clientPromise;
+    await connectToDatabase;
     // `await clientPromise` will use the default database passed in the MONGODB_URI
     // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
     //
@@ -11,12 +12,15 @@ const getServerSideProps = async () => {
     //
     // Then you can execute queries against your database like so:
     // db.find({}) or any of the MongoDB Node Driver commands
-
-    return { isConnected: true };
+    // return { isConnected: true };
   } catch (e) {
     console.error(e);
-    return { isConnected: false };
+    // return { isConnected: false };
   }
 };
 
-export default getServerSideProps;
+const dbMethods = {
+  something: "something",
+};
+
+export default { getServerSideProps, dbMethods };
