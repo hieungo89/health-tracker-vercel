@@ -1,3 +1,29 @@
+import clientPromise from "../../lib/mongodb";
+
+export async function getServerSideProps(context) {
+  try {
+    const client = await clientPromise;
+    // const db = client.db("test");
+    // const collection = db.collection("users");
+    // const user = await collection.find({}).toArray();
+    // console.log(user);
+
+    return {
+      props: {
+        isConnected: true,
+        // user: JSON.parse(JSON.stringify(user)),
+      },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: {
+        isConnected: false,
+      },
+    };
+  }
+}
+
 // // import clientPromise from "../../lib/mongodb";
 // import connectToDatabase from "../../lib/ConnectToDB.js";
 

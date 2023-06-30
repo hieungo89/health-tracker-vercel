@@ -1,9 +1,23 @@
-import Head from "next/head";
-// import getServerSideProps from "./api/index";
 import clientPromise from "../lib/mongodb";
+import Head from "next/head";
 import Layout from "../components/Layout";
+import { useEffect } from "react";
+// import getServerSideProps from "./api/index";
 
 export default function Home({ isConnected }) {
+  // let data = (async () => {
+  //   const result = await getServerSideProps();
+  //   return result;
+  // })();
+  // let result = getServerSideProps;
+  // result = result.then((data) => {
+  //   return data;
+  // });
+
+  // useEffect(() => {
+  //   console.log(data.isConnected);
+  // }, []);
+
   return (
     <div className="container">
       <Head>
@@ -30,14 +44,25 @@ export default function Home({ isConnected }) {
 }
 
 export async function getServerSideProps(context) {
-  const client = await clientPromise;
+  try {
+    const client = await clientPromise;
+    // const db = client.db("test");
+    // const collection = db.collection("users");
+    // const user = await collection.find({}).toArray();
+    // console.log(user);
 
-  console.log("client ~ ", client);
-  const isConnected = await client.isConnected();
-
-  return {
-    props: {
-      isConnected,
-    },
-  };
+    return {
+      props: {
+        isConnected: true,
+        // user: JSON.parse(JSON.stringify(user)),
+      },
+    };
+  } catch (e) {
+    console.error("error: ", e);
+    return {
+      props: {
+        isConnected: false,
+      },
+    };
+  }
 }
