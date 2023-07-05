@@ -1,4 +1,4 @@
-import clientPromise from "@lib/mongodb";
+import clientPromise from "/src/lib/mongodb";
 import Head from "next/head";
 import Layout from "@components/Layout";
 import axios from "axios";
@@ -12,6 +12,7 @@ export default function Home({ isConnected }) {
 
     const username = e.target.username.value;
     await axios.post("/api/user", { username });
+    await setUser(username);
   };
 
   return (
@@ -37,10 +38,9 @@ export default function Home({ isConnected }) {
 
         <div className="pt-20">
           <h2>Welcome to DASHING Health Tracker!</h2>
+          <h3>Current user: {user}</h3>
           <form onSubmit={(e) => handleUsernameEntry(e)}>
-            <label className="form-label">
-              Please Enter your Username:&nbsp;
-            </label>
+            <label className="">Please Enter your Username:&nbsp;</label>
             <input
               type="text"
               name="username"
@@ -59,9 +59,9 @@ export default function Home({ isConnected }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   try {
-    const client = await clientPromise;
+    await clientPromise;
 
     return {
       props: {

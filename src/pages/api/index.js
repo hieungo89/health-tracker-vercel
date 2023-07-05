@@ -1,20 +1,20 @@
-import { getUsers } from "@lib/dbQuery";
+// import { getUsers } from "@lib/dbQuery";
 
-const handler = async (req, res) => {
-  if (req.method === "GET") {
-    try {
-      const { user, error } = await getUsers();
-      return res.status(200).json({ user });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
+// const handler = async (req, res) => {
+//   if (req.method === "GET") {
+//     try {
+//       const { user, error } = await getUsers();
+//       return res.status(200).json({ user });
+//     } catch (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
+//   }
 
-  res.setHeader("Allow", ["GET"]);
-  res.status(405).end(`Method ${req.method} is not allowed`);
-};
+//   res.setHeader("Allow", ["GET"]);
+//   res.status(405).end(`Method ${req.method} is not allowed`);
+// };
 
-export default handler;
+// export default handler;
 
 // const handler = async (req, res) => {
 //   console.log("client", client, req);
