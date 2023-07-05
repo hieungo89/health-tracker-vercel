@@ -1,6 +1,6 @@
-import clientPromise from "/src/lib/mongodb";
+import clientPromise from "../lib/mongodb";
 import Head from "next/head";
-import Layout from "@components/Layout";
+import Layout from "../components/Layout";
 import axios from "axios";
 import { useState } from "react";
 
@@ -40,7 +40,9 @@ export default function Home({ isConnected }) {
           <h2>Welcome to DASHING Health Tracker!</h2>
           <h3>Current user: {user}</h3>
           <form onSubmit={(e) => handleUsernameEntry(e)}>
-            <label className="">Please Enter your Username:&nbsp;</label>
+            <label for="username" className="">
+              Please Enter your Username:&nbsp;
+            </label>
             <input
               type="text"
               name="username"
