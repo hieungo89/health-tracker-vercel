@@ -40,7 +40,7 @@ export default function Home({ isConnected }) {
           <h2>Welcome to DASHING Health Tracker!</h2>
           <h3>Current user: {user}</h3>
           <form onSubmit={(e) => handleUsernameEntry(e)}>
-            <label for="username" className="">
+            <label htmlFor="username" className="">
               Please Enter your Username:&nbsp;
             </label>
             <input
