@@ -1,31 +1,27 @@
-import clientPromise from "../lib/mongodb";
+import clientPromise from "@lib/mongodb";
 import Head from "next/head";
-import Layout from "../components/Layout";
-import { useEffect } from "react";
-// import getServerSideProps from "./api/index";
+import Layout from "@components/Layout";
+import axios from "axios";
+import { useState } from "react";
 
 export default function Home({ isConnected }) {
-  // let data = (async () => {
-  //   const result = await getServerSideProps();
-  //   return result;
-  // })();
-  // let result = getServerSideProps;
-  // result = result.then((data) => {
-  //   return data;
-  // });
+  const [user, setUser] = useState("");
 
-  // useEffect(() => {
-  //   console.log(data.isConnected);
-  // }, []);
+  const handleUsernameEntry = async (e) => {
+    e.preventDefault();
+
+    const username = e.target.username.value;
+    await axios.post("/api/user", { username });
+  };
 
   return (
-    <div className="container">
+    <div className="">
       <Head>
         <title>Health Tracker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className="p-2">
         <Layout>
           <h1 className="title">Health Tracker App</h1>
         </Layout>
@@ -34,10 +30,30 @@ export default function Home({ isConnected }) {
           <h2 className="subtitle">You are connected to MongoDB</h2>
         ) : (
           <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
+            You are NOT connected to MongoDB. Check the <code>README.md</code>
             for instructions.
           </h2>
         )}
+
+        <div className="pt-20">
+          <h2>Welcome to DASHING Health Tracker!</h2>
+          <form onSubmit={(e) => handleUsernameEntry(e)}>
+            <label className="form-label">
+              Please Enter your Username:&nbsp;
+            </label>
+            <input
+              type="text"
+              name="username"
+              size="25"
+              maxLength="25"
+              placeholder="username"
+              required
+            />
+            <button type="submit" className="">
+              GO!
+            </button>
+          </form>
+        </div>
       </main>
     </div>
   );
@@ -46,15 +62,10 @@ export default function Home({ isConnected }) {
 export async function getServerSideProps(context) {
   try {
     const client = await clientPromise;
-    // const db = client.db("test");
-    // const collection = db.collection("users");
-    // const user = await collection.find({}).toArray();
-    // console.log(user);
 
     return {
       props: {
         isConnected: true,
-        // user: JSON.parse(JSON.stringify(user)),
       },
     };
   } catch (e) {

@@ -1,52 +1,34 @@
-import clientPromise from "../../lib/mongodb";
+import { getUsers } from "@lib/dbQuery";
 
-export async function getServerSideProps(context) {
-  try {
-    const client = await clientPromise;
-    // const db = client.db("test");
-    // const collection = db.collection("users");
-    // const user = await collection.find({}).toArray();
-    // console.log(user);
-
-    return {
-      props: {
-        isConnected: true,
-        // user: JSON.parse(JSON.stringify(user)),
-      },
-    };
-  } catch (e) {
-    console.error(e);
-    return {
-      props: {
-        isConnected: false,
-      },
-    };
+const handler = async (req, res) => {
+  if (req.method === "GET") {
+    try {
+      const { user, error } = await getUsers();
+      return res.status(200).json({ user });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
   }
-}
 
-// // import clientPromise from "../../lib/mongodb";
-// import connectToDatabase from "../../lib/ConnectToDB.js";
+  res.setHeader("Allow", ["GET"]);
+  res.status(405).end(`Method ${req.method} is not allowed`);
+};
 
-// const getServerSideProps = async () => {
-//   try {
-//     await connectToDatabase;
-//     // `await clientPromise` will use the default database passed in the MONGODB_URI
-//     // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
-//     //
-//     // `const client = await clientPromise`
-//     // `const db = client.db("myDatabase")`
-//     //
-//     // Then you can execute queries against your database like so:
-//     // db.find({}) or any of the MongoDB Node Driver commands
-//     const client = await connectToDatabase;
-//     const db = client.db("healthTracker");
-//     console.log(db.);
+export default handler;
 
-//     return { isConnected: true };
-//   } catch (e) {
-//     console.error(e);
-//     return { isConnected: false };
-//   }
+// const handler = async (req, res) => {
+//   console.log("client", client, req);
+//   const db = client.db("healthTracker");
+//   const collection = db.collection("user");
+//   const user = await collection.find({}).toArray();
+//   console.log("handler ~ ", user);
+
+//   return {
+//     props: {
+//       isConnected: true,
+//       // user: JSON.parse(JSON.stringify(user)),
+//     },
+//   };
 // };
 
-// export default { getServerSideProps };
+// export default handler;
