@@ -25,7 +25,7 @@ const AccountCreation = () => {
 
     axios
       .post("./api/user", data)
-      .then((response) => router.push("/"))
+      .then(() => router.push("/"))
       .catch((error) => console.log(error));
   };
 
@@ -46,7 +46,7 @@ const AccountCreation = () => {
           <form className="" onSubmit={(e) => handleSubmit(e)}>
             {/* Name */}
             <div className="grid grid-cols-3 justify-around py-4">
-              <label className="col-span-1">
+              <label className="col-span-1" htmlFor="username">
                 *username:&nbsp;
                 <input
                   className="px-2 bg-blue-100"
@@ -56,7 +56,7 @@ const AccountCreation = () => {
                   required
                 />
               </label>
-              <label className="col-span-1">
+              <label className="col-span-1" htmlFor="firstName">
                 *First Name:&nbsp;
                 <input
                   className="px-2 bg-blue-100"
@@ -66,7 +66,7 @@ const AccountCreation = () => {
                   required
                 />
               </label>
-              <label className="col-span-1">
+              <label className="col-span-1" htmlFor="lastName">
                 *Last Name:&nbsp;
                 <input
                   className="px-2 bg-blue-100"
@@ -79,7 +79,7 @@ const AccountCreation = () => {
             </div>
             <div className="grid grid-cols-3 pb-4">
               {/* Age */}
-              <label className="col-span-1">
+              <label className="col-span-1" htmlFor="age">
                 *Age:&nbsp;
                 <input
                   className="px-2 text-end bg-blue-100"
@@ -93,7 +93,7 @@ const AccountCreation = () => {
                 years old
               </label>
               {/* Birthday */}
-              <label className="col-span-1">
+              <label className="col-span-1" htmlFor="birthday">
                 *Birthday:&nbsp;
                 <input
                   className="px-2 text-end bg-blue-100"
@@ -114,7 +114,7 @@ const AccountCreation = () => {
                   placeholder="1"
                   required
                 />
-                <label className="">ft. </label>
+                <label htmlFor="height_ft">ft. </label>
                 <input
                   className="text-end bg-blue-100"
                   type="number"
@@ -124,12 +124,12 @@ const AccountCreation = () => {
                   placeholder="0"
                   required
                 />
-                <label className="">in.</label>
+                <label htmlFor="height_in">in.</label>
               </div>
             </div>
             <div className="flex flex-col">
               {/* Dietary Goals */}
-              <label>*Dietary Goals:</label>
+              <label htmlFor="dietary_goals">*Dietary Goals:</label>
               <textarea
                 className="p-2 bg-blue-100"
                 type="text"
@@ -139,7 +139,7 @@ const AccountCreation = () => {
                 required
               />
               {/* Dietary Restrictions */}
-              <label>
+              <label htmlFor="dietary_restrictions">
                 Dietary Restrictions (<em>optional</em>):
               </label>
               <textarea
@@ -150,7 +150,7 @@ const AccountCreation = () => {
                 name="dietary_restrictions"
               />
               {/* Health Complications */}
-              <label>
+              <label htmlFor="health_complications">
                 Health Complications (<em>optional</em>):
               </label>
               <textarea

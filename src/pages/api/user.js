@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     } = req.body;
 
     try {
-      const result = await User.create({
+      await User.create({
         username,
         firstName,
         lastName,
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
   if (method === "GET") {
     const username = req.query?.username;
     try {
-      const result = await User.find({ username }).then((data) => {
+      await User.find({ username }).then((data) => {
         return res.json(data);
       });
     } catch (err) {
