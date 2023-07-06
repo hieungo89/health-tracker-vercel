@@ -2,7 +2,6 @@ import clientPromise from "../lib/mongodb";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import axios from "axios";
-import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
