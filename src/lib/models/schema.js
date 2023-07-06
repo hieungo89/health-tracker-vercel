@@ -5,11 +5,12 @@ const userSchema = new Schema({
   firstName: String,
   lastName: String,
   age: Number,
+  birthday: Date,
   height: {
     foot: Number,
     inch: Number,
   },
-  dietaryGoals: { type: String },
+  dietaryGoals: { type: String, required: true },
   dietaryRestrictions: { type: String, default: null },
   healthComplications: { type: String, default: "None" },
 });

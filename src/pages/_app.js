@@ -9,7 +9,7 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" href="../../public/favicon.ico" />
       </Head>
       <main>
-        <Component {...pageProps} />;
+        <Component {...pageProps} />
       </main>
     </>
   );

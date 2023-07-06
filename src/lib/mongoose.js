@@ -10,4 +10,7 @@ export function mongooseConnect() {
 }
 
 // ! DELETE A schema in the database - Use as needed
-// delete mongoose.connection.models["UserMealData"];
+// delete mongoose.connection.models["User"];
+// delete mongoose.connection.models["UserData"];
+// delete mongoose.connection.models["MealData"];
+// delete mongoose.connection.models["NutritionData"];
