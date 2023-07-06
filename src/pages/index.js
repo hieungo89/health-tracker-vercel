@@ -3,21 +3,22 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 import axios from "axios";
 import { useState } from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 export default function Home({ isConnected }) {
-  const [user, setUser] = useState("");
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleUsernameEntry = async (e) => {
     e.preventDefault();
-
     const username = e.target.username.value;
 
     axios.get(`/api/user?username=${username}`).then((response) => {
-      if (response.data.length > 0) {
-        setUser(response.data[0].username);
+      if (response.data) {
+        router.push({
+          pathname: `/profile/`,
+          query: { username },
+        });
       } else {
         alert(
           `
@@ -54,8 +55,6 @@ export default function Home({ isConnected }) {
             Welcome to DASHING Health Tracker!
           </h2>
 
-          <h3 className="py-4">Current user: {user ? user : "none"}</h3>
-
           <form
             onSubmit={(e) => handleUsernameEntry(e)}
             className="flex flex-col justify-center items-center"
@@ -84,16 +83,18 @@ export default function Home({ isConnected }) {
           </form>
         </div>
 
-        {/* <button className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded hover:bg-green-400 hover:font-bold">
-          <Link href="/">Sign In</Link>
-        </button> */}
+        <div className="">
+          <button className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded hover:bg-green-400 hover:font-bold">
+            <Link href="/profile">Go To Profile</Link>
+          </button>
 
-        <button
-          className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded
-        hover:bg-green-400 hover:font-bold"
-        >
-          <Link href="/AccountCreation">Create Account</Link>
-        </button>
+          <button
+            className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded
+          hover:bg-green-400 hover:font-bold"
+          >
+            <Link href="/AccountCreation">Create Account</Link>
+          </button>
+        </div>
       </Layout>
     </div>
   );

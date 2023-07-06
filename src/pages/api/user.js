@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     const username = req.query?.username;
     try {
       await User.find({ username }).then((data) => {
-        return res.json(data);
+        return res.json(data[0]);
       });
     } catch (err) {
       console.log("error ~ ", err.message);
