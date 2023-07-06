@@ -1,5 +1,6 @@
 import "../styles/global.css";
 import Head from "next/head";
+import NavBar from "../components/NavBar";
 
 const App = ({ Component, pageProps }) => {
   return (
@@ -9,6 +10,7 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" href="../../public/favicon.ico" />
       </Head>
       <main>
+        <NavBar />
         <Component {...pageProps} />
       </main>
     </>
