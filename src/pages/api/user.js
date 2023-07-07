@@ -1,13 +1,18 @@
 import { User } from "../../lib/models/schema";
 import { mongooseConnect } from "../../lib/mongoose";
+import { getServerAuthSession } from "./auth/[...nextauth]";
 // import { models } from "mongoose";
 
 export default async function handler(req, res) {
   // console.log("Mongoose Models ~ ", models);
-  const { method } = req;
+  const session = await getServerAuthSession(req, res);
+  if (!session) {
+    res.status(404);
+  }
+
   await mongooseConnect();
 
-  if (method === "POST") {
+  if (req.method === "POST") {
     const {
       username,
       firstName,
@@ -43,7 +48,7 @@ export default async function handler(req, res) {
     }
   }
 
-  if (method === "GET") {
+  if (req.method === "GET") {
     const username = req.query?.username;
     try {
       await User.find({ username }).then((data) => {

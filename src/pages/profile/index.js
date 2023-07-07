@@ -3,8 +3,9 @@ import axios from "axios";
 import Head from "next/head";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
+import { getServerAuthSession } from "../api/auth/[...nextauth]";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [userProfile, setUserProfile] = useState({});
   const router = useRouter();
   const { username } = router.query;
@@ -32,6 +33,7 @@ const Profile = () => {
         <Layout>
           <div>
             {userProfile.firstName} {userProfile.lastName}
+            {JSON.stringify(user, null, 2)}
           </div>
         </Layout>
       </main>
@@ -40,3 +42,24 @@ const Profile = () => {
 };
 
 export default Profile;
+
+export async function getServerSideProps(ctx) {
+  const session = await getServerAuthSession(ctx.req, ctx.res);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user: session.user,
+    },
+  };
+}
+
+Profile.auth = true;

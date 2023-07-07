@@ -1,10 +1,15 @@
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const NavBar = () => {
+  const { data: session } = useSession();
   return (
-    <aside className="py-4 bg-blue-200">
-      <div>
-        <Link href="/" className="flex space-x-2">
+    <aside className="py-4 bg-blue-300">
+      <div className="flex justify-end">
+        <Link
+          href="/"
+          className="flex space-x-2 px-2 hover:underline hover:underline-offset-2"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -21,6 +26,30 @@ const NavBar = () => {
           </svg>
           <span>Home</span>
         </Link>
+        {session ? (
+          <>
+            <button
+              onClick={() => signOut("google")}
+              className="flex space-x-2 pr-2 hover:underline hover:underline-offset-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                />
+              </svg>
+              Sign out
+            </button>
+          </>
+        ) : null}
       </div>
     </aside>
   );

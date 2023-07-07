@@ -1,8 +1,15 @@
 import "../styles/global.css";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
+import { SessionProvider } from "next-auth/react";
+// import { SessionProvider, useSession } from "next-auth/react";
+// import { useRouter } from "next/router";
+// import { useEffect } from "react";
 
-const App = ({ Component, pageProps }) => {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
     <>
       <Head>
@@ -10,11 +17,37 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" href="../../public/favicon.ico" />
       </Head>
       <main>
-        <NavBar />
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          {/* <Auth> */}
+          <NavBar />
+          <Component {...pageProps} />
+          {/* </Auth> */}
+        </SessionProvider>
       </main>
     </>
   );
-};
+}
 
-export default App;
+// function Auth({ children }) {
+//   const router = useRouter();
+//   const { data: session, status } = useSession();
+//   const isUser = !!session?.user;
+//   const loading = status === "loading";
+
+//   useEffect(() => {
+//     if (!loading) {
+//       if (!isUser) {
+//         router.push("/");
+//       }
+//     }
+//   }, [isUser, loading]);
+
+//   if (loading) {
+//     return <h3>Loading...</h3>;
+//   }
+
+//   if (!loading && isUser) {
+//     return <>{children}</>;
+//   }
+//   return null;
+// }
