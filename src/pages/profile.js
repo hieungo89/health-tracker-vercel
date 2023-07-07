@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 // import { getServerAuthSession } from "../api/auth/[...nextauth]";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
+import Link from "next/link";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -37,7 +38,7 @@ const Profile = () => {
   }, [userProfile]);
 
   if (status === "loading") {
-    return <div className="bg-blue-300 w-screen min-h-screen">...Loading</div>;
+    return <Layout>...Loading</Layout>;
   }
 
   if (status === "unauthenticated") router.push("/");
@@ -45,72 +46,70 @@ const Profile = () => {
   return (
     <>
       <Head>
-        <title>Health Tracker</title>
+        <title>Health Tracker - Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-screen h-screen">
-        <Layout>
-          <div>
-            <div className="flex justify-center items start">
-              <div className="rounded border w-32 h-32 mr-6">
-                <img
-                  src={userProfile.image}
-                  alt="profile"
-                  className="w-full h-full"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <div>
-                  Name: {userProfile.firstName} {userProfile.lastName}
-                </div>
-                <div className="py-4">Email: {userProfile.email}</div>
-                <div>Age: {age}</div>
-              </div>
+      <Layout>
+        <div>
+          <div className="flex justify-center items start">
+            <div className="rounded border w-32 h-32 mr-6">
+              <img
+                src={userProfile.image}
+                alt="profile"
+                className="w-full h-full"
+              />
             </div>
 
-            <div className="grid grid-cols-4 my-12">
-              <div className="col-span-4">
-                <span className="text-2xl">Your Dietary Goals:&nbsp;</span>
-                {userProfile.dietaryGoals}
+            <div className="flex flex-col">
+              <div>
+                Name: {userProfile.firstName} {userProfile.lastName}
               </div>
-              <div className="col-span-2">
-                <span className="text-2xl">
-                  Current Dietary Restrictions:&nbsp;
-                </span>
-                {userProfile.dietaryRestrictions
-                  ? userProfile.dietaryRestrictions
-                  : "none"}
-              </div>
-              <div className="col-span-2">
-                <span className="text-2xl">Health Complications:&nbsp;</span>
-                {userProfile.healthComplications}
-              </div>
+              <div className="py-4">Email: {userProfile.email}</div>
+              <div>Age: {age}</div>
             </div>
           </div>
 
-          <div>
-            Input data
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              Input Wellness Data
-            </button>
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              Input Meals
-            </button>
+          <div className="grid grid-cols-4 my-12">
+            <div className="col-span-4">
+              <span className="text-2xl">Your Dietary Goals:&nbsp;</span>
+              {userProfile.dietaryGoals}
+            </div>
+            <div className="col-span-2">
+              <span className="text-2xl">
+                Current Dietary Restrictions:&nbsp;
+              </span>
+              {userProfile.dietaryRestrictions
+                ? userProfile.dietaryRestrictions
+                : "none"}
+            </div>
+            <div className="col-span-2">
+              <span className="text-2xl">Health Complications:&nbsp;</span>
+              {userProfile.healthComplications}
+            </div>
           </div>
+        </div>
 
-          <div>
-            View my Progress
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              Exercise/Sleep/Weight
-            </button>
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              Meals
-            </button>
-          </div>
-        </Layout>
-      </main>
+        <div>
+          Input data
+          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+            <Link href="/data/addHealthData">Input Wellness Data</Link>
+          </button>
+          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+            Input Meals
+          </button>
+        </div>
+
+        <div>
+          View my Progress
+          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+            Exercise/Sleep/Weight
+          </button>
+          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+            Meals
+          </button>
+        </div>
+      </Layout>
     </>
   );
 };
