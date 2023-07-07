@@ -34,7 +34,7 @@ const AccountCreation = () => {
   };
 
   if (status === "loading") {
-    return <div className="bg-blue-300">Loading...</div>;
+    return <div className="bg-blue-300 w-screen min-h-screen">...Loading</div>;
   }
 
   if (status === "unauthenticated") router.push("/");
