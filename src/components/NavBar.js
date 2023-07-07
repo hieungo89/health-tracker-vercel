@@ -29,7 +29,7 @@ const NavBar = () => {
         {session ? (
           <>
             <button
-              onClick={() => signOut("google")}
+              onClick={() => signOut()}
               className="flex space-x-2 pr-2 hover:underline hover:underline-offset-2"
             >
               <svg
@@ -52,7 +52,7 @@ const NavBar = () => {
         ) : (
           <>
             <button
-              onClick={() => signIn("google")}
+              onClick={() => signIn()}
               className="flex space-x-2 pr-4 hover:underline hover:underline-offset-2"
             >
               <svg
