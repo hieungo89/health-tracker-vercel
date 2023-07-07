@@ -3,23 +3,38 @@ import axios from "axios";
 import Head from "next/head";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
-import { getServerAuthSession } from "../api/auth/[...nextauth]";
+// import { getServerAuthSession } from "../api/auth/[...nextauth]";
 import { useSession } from "next-auth/react";
+import { useFormatter } from "next-intl";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
+  const [age, setAge] = useState("");
   const router = useRouter();
   const { data: session, status } = useSession();
+  const format = useFormatter();
 
   const getData = async () => {
     const { data } = await axios.get(`/api/user?email=${session?.user.email}`);
     setUserProfile(data);
   };
 
+  const date = () => {
+    const dateTime = userProfile.birthday;
+    const now = new Date().toISOString();
+    const formatted = format.relativeTime(dateTime, now).replace("ago", "old");
+    setAge(formatted);
+  };
+
   useEffect(() => {
     if (!session) return;
     getData();
   }, [session]);
+
+  useEffect(() => {
+    if (!userProfile) return;
+    date();
+  }, [userProfile]);
 
   if (status === "loading") {
     return <div className="bg-blue-300">...Loading</div>;
@@ -41,7 +56,7 @@ const Profile = () => {
               <div className="rounded border w-32 h-32 mr-6">
                 <img
                   src={userProfile.image}
-                  alt="photo image"
+                  alt="profile"
                   className="w-full h-full"
                 />
               </div>
@@ -51,7 +66,7 @@ const Profile = () => {
                   Name: {userProfile.firstName} {userProfile.lastName}
                 </div>
                 <div className="py-4">Email: {userProfile.email}</div>
-                <div>Age: {userProfile.age} years old</div>
+                <div>Age: {age}</div>
               </div>
             </div>
 

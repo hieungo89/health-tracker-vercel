@@ -2,6 +2,7 @@ import "../styles/global.css";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
 import { SessionProvider } from "next-auth/react";
+import { NextIntlClientProvider } from "next-intl";
 // import { SessionProvider, useSession } from "next-auth/react";
 // import { useRouter } from "next/router";
 // import { useEffect } from "react";
@@ -18,10 +19,12 @@ export default function App({
       </Head>
       <main>
         <SessionProvider session={session}>
-          {/* <Auth> */}
-          <NavBar />
-          <Component {...pageProps} />
-          {/* </Auth> */}
+          <NextIntlClientProvider message={pageProps.messages}>
+            {/* <Auth> */}
+            <NavBar />
+            <Component {...pageProps} />
+            {/* </Auth> */}
+          </NextIntlClientProvider>
         </SessionProvider>
       </main>
     </>
