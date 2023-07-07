@@ -55,7 +55,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout className="p-2 w-screen min-h-screen flex flex-col items-center">
+      <Layout className="p-2 flex flex-col items-center">
         <div className="flex flex-col pt-20">
           <h1 className="text-6xl pb-12">Health Tracker!</h1>
         </div>

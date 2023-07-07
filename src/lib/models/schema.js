@@ -18,9 +18,7 @@ const userSchema = new Schema({
 export const User = models.User || model("User", userSchema);
 
 const userDataSchema = new Schema({
-  username: String,
-  firstName: String,
-  lastName: String,
+  email: String,
   date: String,
   weight: {
     weightData: Number,
@@ -38,7 +36,7 @@ const userDataSchema = new Schema({
 export const UserData = models.UserData || model("UserData", userDataSchema);
 
 const mealDataSchema = new Schema({
-  username: String,
+  email: String,
   date: String,
   mealType: String,
   mealId: Number,
