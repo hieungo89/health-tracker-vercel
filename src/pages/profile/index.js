@@ -61,5 +61,3 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-
-Profile.auth = true;
