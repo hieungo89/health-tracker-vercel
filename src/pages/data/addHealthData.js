@@ -51,7 +51,7 @@ const AddHealthData = () => {
         <div className="my-4 p-4">
           <h4>Please fill out ALL fields in order to record your data.</h4>
           <li>
-            Put 0's for any data you <b>don't</b> want to record
+            Put 0&apos;s for any data you <b>don&apos;t</b> want to record
           </li>
           <br />
           <em>
@@ -65,11 +65,11 @@ const AddHealthData = () => {
           className="flex flex-col border rounded px-16 p-4"
         >
           <div className="grid grid-cols-2 py-4">
-            <label>Select Date: </label>
+            <label htmlFor="date">Select Date: </label>
             <input type="date" name="date" required className="text-center" />
           </div>
           <div className="grid grid-cols-2 py-4">
-            <label>Exercise:</label>
+            <label htmlFor="exercise">Exercise:</label>
             <div>
               <input
                 type="number"
@@ -92,7 +92,7 @@ const AddHealthData = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 py-4">
-            <label>Sleep:</label>
+            <label htmlFor="sleep">Sleep:</label>
             <div>
               <input
                 type="number"
@@ -115,7 +115,7 @@ const AddHealthData = () => {
             </div>
           </div>
           <div className="flex justify-between py-4">
-            <label>Weight:</label>
+            <label htmlFor="weight">Weight:</label>
             <div>
               <input
                 type="number"
