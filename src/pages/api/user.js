@@ -14,7 +14,9 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     const {
-      username,
+      googleName,
+      email,
+      image,
       firstName,
       lastName,
       age,
@@ -28,7 +30,9 @@ export default async function handler(req, res) {
 
     try {
       await User.create({
-        username,
+        googleName,
+        email,
+        image,
         firstName,
         lastName,
         age,
@@ -49,9 +53,9 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const username = req.query?.username;
+    const email = req.query?.email;
     try {
-      await User.find({ username }).then((data) => {
+      await User.find({ email }).then((data) => {
         return res.json(data[0]);
       });
     } catch (err) {
