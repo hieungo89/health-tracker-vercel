@@ -18,7 +18,6 @@ const AccountCreation = () => {
       image: session.user.image,
       firstName: e.target.firstName.value,
       lastName: e.target.lastName.value,
-      age: e.target.age.value,
       birthday: e.target.birthday.value,
       height_ft: e.target.height_ft.value,
       height_in: e.target.height_in.value,
@@ -47,148 +46,126 @@ const AccountCreation = () => {
           {/* <link rel="icon" href="/favicon.ico" /> */}
         </Head>
 
-        <Layout className="flex flex-col">
-          <h1 className="self-center text-5xl pb-20">
-            New User Profile Creation
-          </h1>
+        <Layout className="flex flex-col items-center">
+          <div className="w-fit">
+            <h1 className=" text-5xl pb-20 text-center">
+              New User Profile Creation
+            </h1>
 
-          <h5>Please fill these fields to get started.</h5>
-          <p>Fields with * are required</p>
+            <h5>Please fill these fields to get started.</h5>
+            <p>Fields with * are required</p>
 
-          <form className="" onSubmit={(e) => handleSubmit(e)}>
-            {/* Name */}
-            <div className="grid grid-cols-3 justify-around py-4">
-              {/* <label className="col-span-1" htmlFor="username">
-                  *username:&nbsp;
+            <form className="" onSubmit={(e) => handleSubmit(e)}>
+              {/* Name */}
+              <div className="grid grid-cols-3 justify-around py-4">
+                <label className="col-span-1" htmlFor="firstName">
+                  *First Name:&nbsp;
                   <input
                     className="px-2 bg-blue-100"
                     type="text"
-                    name="username"
-                    placeholder="username"
+                    name="firstName"
+                    placeholder="first name"
                     required
                   />
-                </label> */}
-              <label className="col-span-1" htmlFor="firstName">
-                *First Name:&nbsp;
-                <input
-                  className="px-2 bg-blue-100"
-                  type="text"
-                  name="firstName"
-                  placeholder="first name"
-                  required
-                />
-              </label>
-              <label className="col-span-1" htmlFor="lastName">
-                *Last Name:&nbsp;
-                <input
-                  className="px-2 bg-blue-100"
-                  type="text"
-                  name="lastName"
-                  placeholder="last name"
-                  required
-                />
-              </label>
-            </div>
-            <div className="grid grid-cols-3 pb-4">
-              {/* Age */}
-              <label className="col-span-1" htmlFor="age">
-                *Age:&nbsp;
-                <input
-                  className="px-2 text-end bg-blue-100"
-                  type="number"
-                  name="age"
-                  min="1"
-                  max="100"
-                  placeholder="1"
-                  required
-                />
-                years old
-              </label>
-              {/* Birthday */}
-              <label className="col-span-1" htmlFor="birthday">
-                *Birthday:&nbsp;
-                <input
-                  className="px-2 text-end bg-blue-100"
-                  type="date"
-                  name="birthday"
-                  required
-                />
-              </label>
-              {/* Height */}
-              <div className="col-span-1">
-                <span>*Height:&nbsp;</span>
-                <input
-                  className="text-end bg-blue-100"
-                  type="number"
-                  min="1"
-                  max="10"
-                  name="height_ft"
-                  placeholder="5"
-                  required
-                />
-                <label htmlFor="height_ft">ft. </label>
-                <input
-                  className="text-end bg-blue-100"
-                  type="number"
-                  min="0"
-                  max="11"
-                  name="height_in"
-                  placeholder="0"
-                  required
-                />
-                <label htmlFor="height_in">in.</label>
+                </label>
+                <label className="col-span-1" htmlFor="lastName">
+                  *Last Name:&nbsp;
+                  <input
+                    className="px-2 bg-blue-100"
+                    type="text"
+                    name="lastName"
+                    placeholder="last name"
+                    required
+                  />
+                </label>
               </div>
-            </div>
-            <div className="flex flex-col">
-              {/* Dietary Goals */}
-              <label htmlFor="dietary_goals">*Dietary Goals:</label>
-              <textarea
-                className="p-2 bg-blue-100"
-                type="text"
-                rows="4"
-                cols="40"
-                name="dietary_goals"
-                required
-              />
-              {/* Dietary Restrictions */}
-              <label htmlFor="dietary_restrictions">
-                Dietary Restrictions (<em>optional</em>):
-              </label>
-              <textarea
-                className="p-2 bg-blue-100"
-                type="textbox"
-                rows="4"
-                cols="40"
-                name="dietary_restrictions"
-              />
-              {/* Health Complications */}
-              <label htmlFor="health_complications">
-                Health Complications (<em>optional</em>):
-              </label>
-              <textarea
-                className="p-2 bg-blue-100"
-                type="textbox"
-                rows="4"
-                cols="40"
-                name="health_complications"
-              />
-            </div>
-            <div className="flex">
-              <input
-                className="bg-blue-200 border border-solid border-white p-2 my-4 rounded
+              <div className="grid grid-cols-3 pb-4">
+                {/* Birthday */}
+                <label className="col-span-1" htmlFor="birthday">
+                  *Birthday:&nbsp;
+                  <input
+                    className="px-2 text-center bg-blue-100"
+                    type="date"
+                    name="birthday"
+                    required
+                  />
+                </label>
+                {/* Height */}
+                <div className="col-span-1">
+                  <span>*Height:&nbsp;</span>
+                  <input
+                    className="text-end bg-blue-100"
+                    type="number"
+                    min="1"
+                    max="10"
+                    name="height_ft"
+                    placeholder="5"
+                    required
+                  />
+                  <label htmlFor="height_ft">ft. </label>
+                  <input
+                    className="text-end bg-blue-100"
+                    type="number"
+                    min="0"
+                    max="11"
+                    name="height_in"
+                    placeholder="0"
+                    required
+                  />
+                  <label htmlFor="height_in">in.</label>
+                </div>
+              </div>
+              <div className="flex flex-col">
+                {/* Dietary Goals */}
+                <label htmlFor="dietary_goals">*Dietary Goals:</label>
+                <textarea
+                  className="p-2 bg-blue-100"
+                  type="text"
+                  rows="4"
+                  cols="40"
+                  name="dietary_goals"
+                  required
+                />
+                {/* Dietary Restrictions */}
+                <label htmlFor="dietary_restrictions">
+                  Dietary Restrictions (<em>optional</em>):
+                </label>
+                <textarea
+                  className="p-2 bg-blue-100"
+                  type="textbox"
+                  rows="4"
+                  cols="40"
+                  name="dietary_restrictions"
+                />
+                {/* Health Complications */}
+                <label htmlFor="health_complications">
+                  Health Complications (<em>optional</em>):
+                </label>
+                <textarea
+                  className="p-2 bg-blue-100"
+                  type="textbox"
+                  rows="4"
+                  cols="40"
+                  name="health_complications"
+                />
+              </div>
+              <div className="flex">
+                <input
+                  className="bg-blue-200 border border-solid border-white p-2 my-4 rounded
                 hover:bg-green-500 hover:border-black"
-                type="submit"
-                value="Submit Profile"
-              />
-              <Link
-                href="/"
-                className="bg-blue-200 ml-4 border border-solid border-white p-2 my-4 rounded
+                  type="submit"
+                  value="Submit Profile"
+                />
+                <Link
+                  href="/"
+                  className="bg-blue-200 ml-4 border border-solid border-white p-2 my-4 rounded
                 hover:bg-red-500 hover:border-black"
-              >
-                Go Back
-              </Link>
-            </div>
-          </form>
+                >
+                  Go Back
+                </Link>
+              </div>
+            </form>
+          </div>
         </Layout>
       </>
     );
