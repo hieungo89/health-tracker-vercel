@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Head from "next/head";
-import Layout from "../../components/Layout";
+import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 // import { getServerAuthSession } from "../api/auth/[...nextauth]";
 import { useSession } from "next-auth/react";
@@ -37,7 +37,7 @@ const Profile = () => {
   }, [userProfile]);
 
   if (status === "loading") {
-    return <div className="bg-blue-300">...Loading</div>;
+    return <div className="bg-blue-300 w-screen min-h-screen">...Loading</div>;
   }
 
   if (status === "unauthenticated") router.push("/");
