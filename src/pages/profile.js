@@ -3,13 +3,14 @@ import axios from "axios";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
-// import { getServerAuthSession } from "../api/auth/[...nextauth]";
+// import { getServerAuthSession } from "./api/auth/[...nextauth]";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
+  const [sewData, setSewData] = useState(false);
   const [age, setAge] = useState("");
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -18,6 +19,7 @@ const Profile = () => {
   const getData = async () => {
     const { data } = await axios.get(`/api/user?email=${session?.user.email}`);
     setUserProfile(data);
+    setAge(data.birthday);
   };
 
   const date = () => {
@@ -33,9 +35,9 @@ const Profile = () => {
   }, [session]);
 
   useEffect(() => {
-    if (!userProfile) return;
+    if (!age) return;
     date();
-  }, [userProfile]);
+  }, [age]);
 
   if (status === "loading") {
     return <Layout>...Loading</Layout>;
@@ -102,7 +104,10 @@ const Profile = () => {
 
         <div>
           View my Progress
-          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+          <button
+            className="p-2 border rounded m-4 hover:border-black hover:bg-green-400"
+            onClick={() => setSewData(!sewData)}
+          >
             Exercise/Sleep/Weight
           </button>
           <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
@@ -118,6 +123,8 @@ export default Profile;
 
 // export async function getServerSideProps(ctx) {
 //   const session = await getServerAuthSession(ctx.req, ctx.res);
+
+//   const data = await axios.get(`/api/user?email=${session?.user.email}`);
 
 //   if (!session) {
 //     return {
