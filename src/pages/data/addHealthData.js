@@ -11,6 +11,25 @@ const AddHealthData = () => {
 
   const handleDataInput = async (e) => {
     e.preventDefault();
+
+    const time24hr = e.target.weight_time.value;
+    let time12hr;
+    // convert to Standard Time
+    if (Number(time24hr.slice(0, 2)) === 0) {
+      time12hr = "12" + time24hr.slice(2) + " AM";
+    } else if (Number(time24hr.slice(0, 2)) === 12) {
+      time12hr = time24hr + " PM";
+    } else if (Number(time24hr.slice(0, 2)) > 12) {
+      const convertedHour = Number(time24hr.slice(0, 2)) - 12;
+      const minutes = time24hr.slice(2) + " PM";
+      time12hr =
+        convertedHour < 10
+          ? "0" + convertedHour + minutes
+          : convertedHour + minutes;
+    } else {
+      time12hr = time24hr + " AM";
+    }
+
     const data = {
       email: session.user.email,
       date: e.target.date.value,
@@ -24,7 +43,7 @@ const AddHealthData = () => {
       },
       weight: {
         weightData: e.target.weight.value,
-        weightTime: e.target.weight_time.value,
+        weightTime: time12hr,
       },
     };
 
@@ -66,7 +85,13 @@ const AddHealthData = () => {
         >
           <div className="grid grid-cols-2 py-4">
             <label htmlFor="date">Select Date: </label>
-            <input type="date" name="date" required className="text-center" />
+            <input
+              type="date"
+              name="date"
+              max={new Date().toISOString().slice(0, 10)}
+              required
+              className="text-center"
+            />
           </div>
           <div className="grid grid-cols-2 py-4">
             <label htmlFor="exercise">Exercise:</label>
@@ -134,17 +159,19 @@ const AddHealthData = () => {
               />
             </div>
           </div>
-          <div className="flex justify-between">
-            <button className="p-2 border rounded hover:border-black hover:bg-green-400">
-              <Link href="/profile">RETURN</Link>
-            </button>
-            <input
-              className="p-2 border rounded hover:border-black hover:bg-green-400"
-              type="submit"
-              value="ADD DATA"
-            />
-          </div>
+          {/* <div className="flex justify-between"> */}
+          <input
+            className="text-2xl p-2 border-2 rounded hover:border-black hover:bg-green-400"
+            type="submit"
+            value="Record Data"
+          />
+          {/* </div> */}
         </form>
+        <button className="text-lg text-gray-900 m-4 p-2 border rounded font hover:border-black hover:bg-green-400">
+          <Link href="/profile" className="text-black">
+            Return to Profile
+          </Link>
+        </button>
       </Layout>
     </>
   );

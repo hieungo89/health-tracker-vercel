@@ -16,19 +16,20 @@ export default async function handler(req, res) {
       await UserData.findOneAndUpdate(filter, data, { upsert: true });
       res.status(200).json();
     } catch (err) {
-      console.log("error ~ ", err.message);
-      res.status(400);
+      res.status(400).json("error ~ ", err.message);
     }
   }
 
   if (req.method === "GET") {
     const email = req.query?.email;
     try {
-      await UserData.find({ email }).then((data) => {
-        res.status(200).json(data[0]);
-      });
+      await UserData.find({ email })
+        .sort({ date: 1 })
+        .then((data) => {
+          res.status(200).json(data);
+        });
     } catch (err) {
-      console.log("error ~ ", err.message);
+      res.status(400).json("error ~ ", err.message);
     }
   }
 }

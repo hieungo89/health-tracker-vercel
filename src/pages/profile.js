@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
+import SEW from "./sew";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -92,28 +93,36 @@ const Profile = () => {
           </div>
         </div>
 
-        <div>
-          Input data
-          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-            <Link href="/data/addHealthData">Input Wellness Data</Link>
-          </button>
-          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-            Input Meals
-          </button>
+        <div className="flex border rounded px-4 justify-around">
+          {/* Input Data */}
+          <div className="flex flex-col items-center p-4">
+            Input data
+            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400 text-black">
+              <Link href="/data/addHealthData" className="text-black">
+                Input Wellness Data
+              </Link>
+            </button>
+            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+              Input Meals
+            </button>
+          </div>
+
+          {/* Show Data */}
+          <div className="flex flex-col items-center p-4">
+            View my Progress
+            <button
+              className="p-2 border rounded m-4 hover:border-black hover:bg-green-400"
+              onClick={() => setSewData(!sewData)}
+            >
+              Sleep/Exercise/Weight
+            </button>
+            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+              Meals
+            </button>
+          </div>
         </div>
 
-        <div>
-          View my Progress
-          <button
-            className="p-2 border rounded m-4 hover:border-black hover:bg-green-400"
-            onClick={() => setSewData(!sewData)}
-          >
-            Exercise/Sleep/Weight
-          </button>
-          <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-            Meals
-          </button>
-        </div>
+        {sewData ? <SEW /> : null}
       </Layout>
     </>
   );
