@@ -10,6 +10,7 @@
     "lint": "eslint \"src/pages/**/*.{js,jsx}\" --quiet"
   },
   "dependencies": {
+    "@nextui-org/react": "^1.0.0-beta.13",
     "axios": "^1.4.0",
     "mongodb": "^4.8.1",
     "mongoose": "^7.3.1",
