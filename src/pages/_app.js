@@ -3,6 +3,7 @@ import Head from "next/head";
 import NavBar from "../components/NavBar";
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
+import { NextUIProvider } from "@nextui-org/react";
 // import { SessionProvider, useSession } from "next-auth/react";
 // import { useRouter } from "next/router";
 // import { useEffect } from "react";
@@ -21,8 +22,10 @@ export default function App({
         <SessionProvider session={session}>
           <NextIntlClientProvider message={pageProps.messages}>
             {/* <Auth> */}
-            <NavBar />
-            <Component {...pageProps} />
+            <NextUIProvider>
+              <NavBar />
+              <Component {...pageProps} />
+            </NextUIProvider>
             {/* </Auth> */}
           </NextIntlClientProvider>
         </SessionProvider>
