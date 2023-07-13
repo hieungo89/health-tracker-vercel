@@ -51,11 +51,11 @@ const SEW = () => {
         className="min-w-fit h-auto"
       >
         <Table.Header>
-          <Table.Column>Date</Table.Column>
-          <Table.Column>Exercise</Table.Column>
-          <Table.Column>Sleep</Table.Column>
-          <Table.Column>Weight</Table.Column>
-          <Table.Column>Weight Time</Table.Column>
+          <Table.Column allowsSorting>Date</Table.Column>
+          <Table.Column allowsSorting>Exercise</Table.Column>
+          <Table.Column allowsSorting>Sleep</Table.Column>
+          <Table.Column allowsSorting>Weight</Table.Column>
+          <Table.Column allowsSorting>Weight Time</Table.Column>
         </Table.Header>
         <Table.Body>
           {wellnessData.map((data) => {
