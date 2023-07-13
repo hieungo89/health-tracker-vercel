@@ -58,8 +58,7 @@ const SEW = () => {
           <Table.Column allowsSorting>Weight Time</Table.Column>
         </Table.Header>
         <Table.Body>
-          {wellnessData.map((data) => {
-            return (
+          {wellnessData.map((data) =>  (
               <Table.Row key={data._id}>
                 <Table.Cell>{data.date}</Table.Cell>
                 <Table.Cell>
@@ -72,7 +71,7 @@ const SEW = () => {
                 <Table.Cell>{data.weight.weightTime}</Table.Cell>
               </Table.Row>
             );
-          })}
+          )}
         </Table.Body>
       </Table>
     </div>

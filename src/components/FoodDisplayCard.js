@@ -13,7 +13,12 @@ const FoodDisplayCard = ({ item, clicked }) => {
 
   return (
     <div onClick={clicked}>
-      <Card isPressable isHoverable css={{ width: "400px", height: "auto" }}>
+      <Card
+        isPressable
+        isHoverable
+        css={{ width: "400px", height: "auto" }}
+        name={label}
+      >
         <Card.Header>
           <Text css={{ fontWeight: "bold" }}>{label}</Text>
         </Card.Header>
@@ -39,9 +44,7 @@ const FoodDisplayCard = ({ item, clicked }) => {
           <Text css={{ display: "flex", justifyContent: "space-between" }}>
             <span>
               <b>Calories: </b>
-              {nutrients.ENERC_KCAL > 0
-                ? nutrients.ENERC_KCAL.toFixed(0)
-                : 0}{" "}
+              {nutrients.ENERC_KCAL > 0 ? nutrients.ENERC_KCAL.toFixed(0) : 0}
               kcal
             </span>
             <span>
