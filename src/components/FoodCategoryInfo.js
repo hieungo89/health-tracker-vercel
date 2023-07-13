@@ -1,6 +1,6 @@
 import { Table } from "@nextui-org/react";
 
-const FoodCategory = () => (
+const FoodCategoryInfo = () => (
   <div>
     <Table aria-label="Category Description" sticked lined>
       <Table.Header>
@@ -43,4 +43,4 @@ const FoodCategory = () => (
   </div>
 );
 
-export default FoodCategory;
+export default FoodCategoryInfo;

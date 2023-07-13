@@ -5,49 +5,90 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { QuestionMark } from "../../components/Icons";
-import { Popover, Button, Text } from "@nextui-org/react";
-import FoodCategory from "../../components/FoodCategory";
+import { Grid, Popover, Button, Text } from "@nextui-org/react";
+import FoodCategoryInfo from "../../components/FoodCategoryInfo";
+import { useState, useEffect } from "react";
+import FoodDisplayCard from "../../components/FoodDisplayCard";
 
 const AddMealData = () => {
+  const [foodItems, setFoodItems] = useState([]);
+  const [chosenItems, setChosenItems] = useState([]);
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const handleDataInput = async (e) => {
-    e.preventDefault();
+  // const handleDataInput = async (e) => {
+  //   e.preventDefault();
 
-    const data = {
-      email: session.user.email,
-      date: e.target.date.value,
-      exercise: {
-        exercise_hr: e.target.exercise_hr.value,
-        exercise_min: e.target.exercise_min.value,
-      },
-      sleep: {
-        sleep_hr: e.target.sleep_hr.value,
-        sleep_min: e.target.sleep_min.value,
-      },
-      weight: {
-        weightData: e.target.weight.value,
-        weightTime: time12hr,
-      },
-    };
+  //   const data = {
+  //     email: session.user.email,
+  //     date: e.target.date.value,
+  //     exercise: {
+  //       exercise_hr: e.target.exercise_hr.value,
+  //       exercise_min: e.target.exercise_min.value,
+  //     },
+  //     sleep: {
+  //       sleep_hr: e.target.sleep_hr.value,
+  //       sleep_min: e.target.sleep_min.value,
+  //     },
+  //     weight: {
+  //       weightData: e.target.weight.value,
+  //       weightTime: time12hr,
+  //     },
+  //   };
 
-    // await axios.post("/api/wellnessData", data);
-    // router.push("/profile");
-  };
+  //   await axios.post("/api/wellnessData", data);
+  //   router.push("/profile");
+  // };
 
   const handleSearchIngredients = async (e) => {
     e.preventDefault();
-    const ingredients = e.target.foodName.value;
 
-    console.log("ingredients ~~ ", ingredients);
+    const categoryLabel = [];
+    const catData = e.target.category.selectedOptions;
+    for (let i = 0; i < catData.length; i++) {
+      categoryLabel.push(catData[i].value);
+    }
+    const healthLabel = [];
+    const healthData = e.target.healthLabel.selectedOptions;
+    for (let i = 0; i < healthData.length; i++) {
+      healthLabel.push(healthData[i].value);
+    }
 
-    // await axios
-    //   .get(
-    //     `https://api.edamam.com/api/food-database/v2/parser?app_id=c68c9a1d&app_key=4ce474a24202f7f68e0308435ed057c4&ingr=${ingredients}`
-    //   )
-    //   .then((result) => console.log("data ~ ", result));
+    const data = {
+      amount: e.target.amount.value,
+      measurement: e.target.measurement.value,
+      ingredients: e.target.ingredients.value,
+      healthLabel: healthLabel,
+      category: categoryLabel,
+      brand: e.target.brand.value,
+    };
+
+    await axios
+      .get(
+        `https://api.edamam.com/api/food-database/v2/parser?app_id=c68c9a1d&app_key=4ce474a24202f7f68e0308435ed057c4
+        &ingr=${data.ingredients}
+        ${data.brand ? "&brand=" + data.brand : ""}
+        ${data.category.length ? "&category=" + data.category : ""}`
+        // ${data.healthLabel.length ? "&health=" + data.healthLabel : ""}
+      )
+      .then((result) => setFoodItems(result.data.hints));
   };
+
+  const removeItem = (item) => {
+    const pickedFoodItems = chosenItems.filter(
+      (singleItem) => singleItem.food.foodId !== item.food.foodId
+    );
+    setChosenItems(pickedFoodItems);
+  };
+
+  // useEffect(() => {
+  //   if (!Object.keys(foodItems).length) return;
+  //   console.log("food Items ~~ ", foodItems);
+  // }, [foodItems]);
+
+  // useEffect(() => {
+  //   console.log("chosen Items ~~ ", chosenItems);
+  // }, [chosenItems]);
 
   if (status === "loading") {
     return <Layout>...Loading</Layout>;
@@ -95,7 +136,7 @@ const AddMealData = () => {
             {/* Meal Type */}
             <div className="py-8">
               <label>Meal Type:</label>
-              <select name="meal-type" required>
+              <select name="mealType" required>
                 <option disabled hidden></option>
                 <option value="Breakfast">Breakfast</option>
                 <option value="Brunch">Brunch</option>
@@ -112,18 +153,24 @@ const AddMealData = () => {
                 </em>
               </label>
             </div>
+            {/* Chosen food items */}
+            {chosenItems.length ? (
+              <Grid.Container
+                gap={2}
+                justify="flex-start"
+                name="chosenFoodItems"
+              >
+                {chosenItems.map((item) => (
+                  <Grid key={item.foodId}>
+                    <FoodDisplayCard
+                      item={item}
+                      clicked={() => removeItem(item)}
+                    />
+                  </Grid>
+                ))}
+              </Grid.Container>
+            ) : null}
           </form>
-          {/* Food Added: {!foodData.length && 0} */}
-          <br />
-          {/* {foodData.map((food) => {
-            return (
-              <Food
-                food={food}
-                key={food._id}
-                handleRemove={handleRemoveIngredient}
-              />
-            );
-          })} */}
           {/* Search Food */}
           <form onSubmit={(e) => handleSearchIngredients(e)}>
             <div className="flex flex-col py-8">
@@ -133,7 +180,7 @@ const AddMealData = () => {
                   className="text-end ml-2"
                   type="number"
                   name="amount"
-                  placeholder="1"
+                  placeholder="0"
                   min="0"
                   max="100"
                   required
@@ -143,7 +190,7 @@ const AddMealData = () => {
               <div>
                 <label>Measurement:</label>
                 <select name="measurement" className="mx-2 text-center">
-                  <option value="" disabled hidden></option>
+                  <option value=""></option>
                   <option value="Ounce">Ounce</option>
                   <option value="Gram">Gram</option>
                   <option value="Pound">Pound</option>
@@ -167,16 +214,20 @@ const AddMealData = () => {
                 <input
                   className="text-center mx-2"
                   type="text"
-                  name="foodName"
+                  name="ingredients"
                   placeholder="spaghetti"
                   required
                 />
               </div>
 
+              {/* currently not working */}
               <div>
                 <label>Health Labels:</label>
-                <select name="health-label" className="mx-2 text-center">
-                  <option value="" disabled hidden></option>
+                <select
+                  name="healthLabel"
+                  className="mx-2 text-center"
+                  multiple
+                >
                   <option value="alcohol-free">alcohol-free</option>
                   <option value="celery-free">celery-free</option>
                   <option value="crustacean-free">crustacean-free</option>
@@ -219,13 +270,13 @@ const AddMealData = () => {
                       </Text>
                     </Popover.Trigger>
                     <Popover.Content>
-                      <FoodCategory />
+                      <FoodCategoryInfo />
                     </Popover.Content>
                   </Popover>
                   :
                 </label>
-                <select name="category" className="mx-2 text-center">
-                  <option value="" disabled hidden></option>
+                <select name="category" className="mx-2 text-center" multiple>
+                  <option value="" hidden></option>
                   <option value="generic-foods">generic-foods</option>
                   <option value="generic-meals">generic-meals</option>
                   <option value="packaged-foods">packaged-foods</option>
@@ -259,63 +310,19 @@ const AddMealData = () => {
               </div>
             </div>
           </form>
-          {/* {ingredientData && (
-            <div>
-              <br />
-              Based on your search of {ingredientData.searchString}:
-              <ul>
-                {ingredientData.calories && (
-                  <li>
-                    Calories: {ingredientData.calories.quantity}
-                    {ingredientData.calories.unit}
-                  </li>
-                )}
-                {ingredientData.fat && (
-                  <li>
-                    Fat: {ingredientData.fat.quantity}
-                    {ingredientData.fat.unit}
-                  </li>
-                )}
-                {ingredientData.carbohydrate && (
-                  <li>
-                    Carbohydrate: {ingredientData.carbohydrate.quantity}
-                    {ingredientData.carbohydrate.unit}
-                  </li>
-                )}
-                {ingredientData.protein && (
-                  <li>
-                    Protein: {ingredientData.protein.quantity}
-                    {ingredientData.protein.unit}
-                  </li>
-                )}
-                {ingredientData.cholesterol && (
-                  <li>
-                    Cholesterol: {ingredientData.cholesterol.quantity}
-                    {ingredientData.cholesterol.unit}
-                  </li>
-                )}
-                {ingredientData.fiber && (
-                  <li>
-                    Fiber: {ingredientData.fiber.quantity}
-                    {ingredientData.fiber.unit}
-                  </li>
-                )}
-                {ingredientData.sodium && (
-                  <li>
-                    Sodium: {ingredientData.sodium.quantity}
-                    {ingredientData.sodium.unit}
-                  </li>
-                )}
-                {ingredientData.sugar && (
-                  <li>
-                    Sugar: {ingredientData.sugar.quantity}
-                    {ingredientData.sugar.unit}
-                  </li>
-                )}
-              </ul>
-              <button className="">ADD</button>
-            </div>
-          )} */}
+          {/* Display card for each food item */}
+          {foodItems.length ? (
+            <Grid.Container gap={2} justify="flex-start">
+              {foodItems.map((foodItem) => (
+                <Grid key={foodItem.foodId}>
+                  <FoodDisplayCard
+                    item={foodItem}
+                    clicked={() => setChosenItems([...chosenItems, foodItem])}
+                  />
+                </Grid>
+              ))}
+            </Grid.Container>
+          ) : null}
         </div>
       </Layout>
     </>
