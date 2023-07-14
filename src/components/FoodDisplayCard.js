@@ -12,12 +12,13 @@ const FoodDisplayCard = ({ item, clicked }) => {
   } = item.food;
 
   return (
-    <div onClick={clicked}>
+    <div>
       <Card
         isPressable
         isHoverable
         css={{ width: "400px", height: "auto" }}
         name={label}
+        onClick={clicked}
       >
         <Card.Header>
           <Text css={{ fontWeight: "bold" }}>{label}</Text>
@@ -76,7 +77,7 @@ const FoodDisplayCard = ({ item, clicked }) => {
           ) : (
             <Text>
               <b className="text-lg">Ingredients: </b>
-              "N/A"
+              &quot;N/A&quot;
             </Text>
           )}
         </Card.Footer>
