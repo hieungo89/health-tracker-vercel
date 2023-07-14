@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
-import SEW from "./sew";
+import SEW from "./data/sew";
+import { Button } from "@nextui-org/react";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -97,30 +98,30 @@ const Profile = () => {
           {/* Input Data */}
           <div className="flex flex-col items-center p-4">
             Input data
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400 text-black">
-              <Link href="/data/addHealthData" className="text-black">
+            <Link href="/data/addHealthData">
+              <Button className="m-4 hover:text-black hover:bg-green-500 ">
                 Input Wellness Data
-              </Link>
-            </button>
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              <Link href="/data/addMealData" className="text-black">
+              </Button>
+            </Link>
+            <Link href="/data/addMealData">
+              <Button className="m-4 hover:text-black hover:bg-green-500">
                 Input Meals
-              </Link>
-            </button>
+              </Button>
+            </Link>
           </div>
 
           {/* Show Data */}
           <div className="flex flex-col items-center p-4">
             View my Progress
-            <button
-              className="p-2 border rounded m-4 hover:border-black hover:bg-green-400"
-              onClick={() => setSewData(!sewData)}
+            <Button
+              className="m-4 hover:text-black hover:bg-green-500"
+              onPress={() => setSewData(!sewData)}
             >
               Sleep/Exercise/Weight
-            </button>
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+            </Button>
+            <Button className="m-4 hover:text-black hover:bg-green-500">
               Meals
-            </button>
+            </Button>
           </div>
         </div>
 
