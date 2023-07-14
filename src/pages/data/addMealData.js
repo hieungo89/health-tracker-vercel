@@ -13,6 +13,7 @@ import FoodDisplayCard from "../../components/FoodDisplayCard";
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState([]);
   const [chosenItems, setChosenItems] = useState([]);
+  const [itemsQuantity, setItemsQuantity] = useState({});
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -20,11 +21,19 @@ const AddMealData = () => {
     e.preventDefault();
 
     console.log("handle click ~ ", e.target);
+    const foodArray = e.target;
+    console.log("food array ~~ ", e.target.chosenFoodItems);
+    for (let i = 0; i < foodArray.length; i++) {
+      console.log(foodArray[i]);
+    }
 
     const data = {
       email: session.user.email,
       date: e.target.date.value,
+      mealType: e.target.mealType.value,
     };
+
+    console.log("data from submit form ~~ ", data);
 
     //   await axios.post("/api/wellnessData", data);
     //   router.push("/profile");
@@ -67,14 +76,22 @@ const AddMealData = () => {
   };
 
   useEffect(() => {
-    console.log("food items ~~ ", foodItems);
-  }, [foodItems]);
+    console.log("food items ~~ ", itemsQuantity);
+  }, [itemsQuantity]);
 
   const removeItem = (item) => {
     const pickedFoodItems = chosenItems.filter(
       (singleItem) => singleItem.food.foodId !== item.food.foodId
     );
     setChosenItems(pickedFoodItems);
+
+    const quantity = { ...itemsQuantity };
+    // console.log("quantity before ~ ", quantity);
+    for (let key in quantity) {
+      if (item.food.label === key) delete quantity[item.food.label];
+    }
+    // console.log("quantity after ~ ", quantity);
+    setItemsQuantity(quantity);
   };
 
   if (status === "loading") {
@@ -154,11 +171,18 @@ const AddMealData = () => {
                       Estimated Servings:
                       <input
                         type="number"
-                        name={`servings${item.food.label}`}
+                        name={`${item.food.label}`}
                         className="ml-4 text-center border border-black rounded"
                         min="1"
                         max="20"
-                        value={item?.quantity}
+                        value={itemsQuantity[item.food.label]}
+                        onChange={(e) =>
+                          setItemsQuantity((prev) => {
+                            const result = { ...prev };
+                            result[item.food.label] = Number(e.target.value);
+                            return result;
+                          })
+                        }
                       />
                     </Card>
                   </Grid>
@@ -322,7 +346,14 @@ const AddMealData = () => {
               <Grid key={foodItem.foodId}>
                 <FoodDisplayCard
                   item={foodItem}
-                  clicked={() => setChosenItems([...chosenItems, foodItem])}
+                  clicked={() => {
+                    setChosenItems([...chosenItems, foodItem]);
+                    setItemsQuantity((prev) => {
+                      const result = { ...prev };
+                      result[foodItem.food.label] = foodItem.quantity || 1;
+                      return result;
+                    });
+                  }}
                 />
               </Grid>
             ))}

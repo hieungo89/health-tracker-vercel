@@ -58,20 +58,19 @@ const SEW = () => {
           <Table.Column allowsSorting>Weight Time</Table.Column>
         </Table.Header>
         <Table.Body>
-          {wellnessData.map((data) =>  (
-              <Table.Row key={data._id}>
-                <Table.Cell>{data.date}</Table.Cell>
-                <Table.Cell>
-                  {data.exercise.exercise_hr}hr {data.exercise.exercise_min}min
-                </Table.Cell>
-                <Table.Cell>
-                  {data.sleep.sleep_hr}hr {data.sleep.sleep_min}min
-                </Table.Cell>
-                <Table.Cell>{data.weight.weightData}lb</Table.Cell>
-                <Table.Cell>{data.weight.weightTime}</Table.Cell>
-              </Table.Row>
-            );
-          )}
+          {wellnessData.map((data) => (
+            <Table.Row key={data._id}>
+              <Table.Cell>{data.date}</Table.Cell>
+              <Table.Cell>
+                {data.exercise.exercise_hr}hr {data.exercise.exercise_min}min
+              </Table.Cell>
+              <Table.Cell>
+                {data.sleep.sleep_hr}hr {data.sleep.sleep_min}min
+              </Table.Cell>
+              <Table.Cell>{data.weight.weightData}lb</Table.Cell>
+              <Table.Cell>{data.weight.weightTime}</Table.Cell>
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     </div>
