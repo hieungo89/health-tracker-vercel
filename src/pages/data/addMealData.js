@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import Layout from "../../components/Layout";
-import Link from "next/link";
+// import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { QuestionMark } from "../../components/Icons";
-import { Grid, Popover, Card, Button, Text } from "@nextui-org/react";
+import { Grid, Popover, Card, Text } from "@nextui-org/react";
 import FoodCategoryInfo from "../../components/FoodCategoryInfo";
 import { useState, useEffect } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
@@ -19,13 +19,6 @@ const AddMealData = () => {
 
   const handleDataInput = async (e) => {
     e.preventDefault();
-
-    console.log("handle click ~ ", e.target);
-    const foodArray = e.target;
-    console.log("food array ~~ ", e.target.chosenFoodItems);
-    for (let i = 0; i < foodArray.length; i++) {
-      console.log(foodArray[i]);
-    }
 
     const data = {
       email: session.user.email,
@@ -86,11 +79,9 @@ const AddMealData = () => {
     setChosenItems(pickedFoodItems);
 
     const quantity = { ...itemsQuantity };
-    // console.log("quantity before ~ ", quantity);
     for (let key in quantity) {
-      if (item.food.label === key) delete quantity[item.food.label];
+      if (item.food.foodId === key) delete quantity[item.food.foodId];
     }
-    // console.log("quantity after ~ ", quantity);
     setItemsQuantity(quantity);
   };
 
@@ -112,12 +103,12 @@ const AddMealData = () => {
           <h4>You must complete the following in order to record your meal:</h4>
           <li>Select Date</li>
           <li>Choose a meal type</li>
-          <li>Search and add foods that you've eaten</li>
-          Click "ADD MEAL" to input your data.
+          <li>Search and add foods that you&apos;ve eaten</li>
+          Click &quot;ADD MEAL&quot; to input your data.
         </div>
         <form onSubmit={(e) => handleDataInput(e)} className="flex flex-col">
           <div className="py-8">
-            <label>Select Date: </label>
+            <labe htmlFor="selectDate">Select Date: </labe>
             <input
               type="date"
               name="date"
@@ -127,7 +118,7 @@ const AddMealData = () => {
           </div>
           {/* Meal Type */}
           <div className="py-8">
-            <label>Meal Type:</label>
+            <label htmlFor="mealType">Meal Type:</label>
             <select name="mealType" required>
               <option hidden></option>
               <option value="Breakfast">Breakfast</option>
@@ -138,7 +129,7 @@ const AddMealData = () => {
               <option value="TeaTime">TeaTime</option>
               <option value="Other">Other</option>
             </select>
-            <label className="italic ml-2">
+            <label htmlFor="warning" className="italic ml-2">
               <b>*Warning:</b> choosing the same Meal Type for the same date
               will override your previous data.
             </label>
@@ -171,15 +162,15 @@ const AddMealData = () => {
                       Estimated Servings:
                       <input
                         type="number"
-                        name={`${item.food.label}`}
+                        name={`${item.food.foodId}`}
                         className="ml-4 text-center border border-black rounded"
                         min="1"
                         max="20"
-                        value={itemsQuantity[item.food.label]}
+                        value={itemsQuantity[item.food.foodId]}
                         onChange={(e) =>
                           setItemsQuantity((prev) => {
                             const result = { ...prev };
-                            result[item.food.label] = Number(e.target.value);
+                            result[item.food.foodId] = Number(e.target.value);
                             return result;
                           })
                         }
@@ -202,7 +193,7 @@ const AddMealData = () => {
           <div className="flex flex-col max-w-7xl border-2 rounded p-4 mt-12">
             <div className="flex justify-start">
               <div className="mr-4">
-                <label>Amount:</label>
+                <label htmlFor="amount">Amount:</label>
                 <input
                   className="text-end ml-2"
                   type="number"
@@ -214,7 +205,7 @@ const AddMealData = () => {
               </div>
 
               <div className="px-12">
-                <label>Measurement:</label>
+                <label htmlFor="measurement">Measurement:</label>
                 <select name="measurement" className="mx-2 text-center">
                   <option value=""></option>
                   <option value="Serving">Serving</option>
@@ -237,7 +228,7 @@ const AddMealData = () => {
               </div>
 
               <div>
-                <label>Food/Ingredients:</label>
+                <label htmlFor="ingredients">Food/Ingredients:</label>
                 <input
                   className="text-center mx-2"
                   type="text"
@@ -254,7 +245,7 @@ const AddMealData = () => {
             <div className="flex items-start pb-12">
               {/* currently not working */}
               <div className="flex mr-2">
-                <label>Health Labels:</label>
+                <label htmlFor="healthLabel">Health Labels:</label>
                 <select name="healthLabel" multiple>
                   <option value="alcohol-free">alcohol-free</option>
                   <option value="celery-free">celery-free</option>
@@ -286,7 +277,7 @@ const AddMealData = () => {
 
               {/* Category */}
               <div className="flex mx-2">
-                <label className="flex">
+                <label htmlFor="category" className="flex">
                   Category
                   <Popover>
                     <Popover.Trigger>
@@ -311,7 +302,7 @@ const AddMealData = () => {
 
               {/* Brand */}
               <div className="flex">
-                <label>Brand:</label>
+                <label htmlFor="brand">Brand:</label>
                 <input
                   className="text-center ml-2"
                   type="text"
@@ -350,7 +341,7 @@ const AddMealData = () => {
                     setChosenItems([...chosenItems, foodItem]);
                     setItemsQuantity((prev) => {
                       const result = { ...prev };
-                      result[foodItem.food.label] = foodItem.quantity || 1;
+                      result[foodItem.food.foodId] = foodItem.quantity || 1;
                       return result;
                     });
                   }}
