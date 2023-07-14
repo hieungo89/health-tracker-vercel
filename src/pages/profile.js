@@ -103,7 +103,9 @@ const Profile = () => {
               </Link>
             </button>
             <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              Input Meals
+              <Link href="/data/addMealData" className="text-black">
+                Input Meals
+              </Link>
             </button>
           </div>
 

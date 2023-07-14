@@ -39,17 +39,14 @@ const mealDataSchema = new Schema({
   email: String,
   date: String,
   mealType: String,
-  mealId: Number,
-  foodsEaten: String,
-  nutrientCount: {
-    calories: { quantity: Number, unit: String },
-    fat: { quantity: Number, unit: String },
+  foodsEaten: [String],
+  foodsId: [String],
+  totalNutrientCount: {
+    calorie: { quantity: Number, unit: String },
     carbohydrate: { quantity: Number, unit: String },
+    fat: { quantity: Number, unit: String },
     fiber: { quantity: Number, unit: String },
-    sugar: { quantity: Number, unit: String },
     protein: { quantity: Number, unit: String },
-    cholesterol: { quantity: Number, unit: String },
-    sodium: { quantity: Number, unit: String },
   },
 });
 export const MealData = models.MealData || model("MealData", mealDataSchema);
