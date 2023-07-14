@@ -4,11 +4,11 @@ import Layout from "../../components/Layout";
 // import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { QuestionMark } from "../../components/Icons";
 import { Grid, Popover, Card, Text } from "@nextui-org/react";
 import FoodCategoryInfo from "../../components/FoodCategoryInfo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
+import Popup from "../../components/Popup";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState([]);
@@ -20,16 +20,42 @@ const AddMealData = () => {
   const handleDataInput = async (e) => {
     e.preventDefault();
 
+    const foodsEaten = chosenItems.map((item) => {
+      return item.food.label;
+    });
+    const foodsId = chosenItems.map((item) => {
+      return item.food.foodId;
+    });
+    const totalNutrientCount = {
+      calorie: 0,
+      carbohydrate: 0,
+      fat: 0,
+      fiber: 0,
+      protein: 0,
+    };
+
+    await chosenItems.forEach((item) => {
+      let quantity = itemsQuantity?.hasOwnProperty(item.food.foodId)
+        ? itemsQuantity[item.food.foodId]
+        : null;
+      totalNutrientCount.calorie += quantity * item.food.nutrients.ENERC_KCAL;
+      totalNutrientCount.carbohydrate += quantity * item.food.nutrients.CHOCDF;
+      totalNutrientCount.fat += quantity * item.food.nutrients.FAT;
+      totalNutrientCount.fiber += quantity * item.food.nutrients.FIBTG;
+      totalNutrientCount.protein += quantity * item.food.nutrients.PROCNT;
+    });
+
     const data = {
       email: session.user.email,
       date: e.target.date.value,
       mealType: e.target.mealType.value,
+      foodsEaten: foodsEaten,
+      foodsId: foodsId,
+      totalNutrientCount: totalNutrientCount,
     };
 
-    console.log("data from submit form ~~ ", data);
-
-    //   await axios.post("/api/wellnessData", data);
-    //   router.push("/profile");
+    await axios.post("/api/mealData", data);
+    router.push("/profile");
   };
 
   const handleSearchIngredients = async (e) => {
@@ -48,29 +74,35 @@ const AddMealData = () => {
 
     const data = {
       amount: e.target.amount.value,
-      measurement: e.target.measurement.value,
+      // measurement: e.target.measurement.value,
       ingredients: e.target.ingredients.value,
       healthLabel: healthLabel,
       category: categoryLabel,
       brand: e.target.brand.value,
     };
 
-    await axios
-      .get(
-        `https://api.edamam.com/api/food-database/v2/parser?app_id=c68c9a1d&app_key=4ce474a24202f7f68e0308435ed057c4
-        &ingr=${data.amount} serving ${data.ingredients}
+    if (!data.ingredients && !data.brand) {
+      alert(`\nPlease provide a food ingredient or a brand`);
+    }
+
+    if (data.ingredients || data.brand) {
+      await axios
+        .get(
+          `https://api.edamam.com/api/food-database/v2/parser?app_id=c68c9a1d&app_key=4ce474a24202f7f68e0308435ed057c4
+        ${
+          data.ingredients
+            ? `&ingr=${data.amount} serving ${data.ingredients}`
+            : ""
+        }
         ${data.brand ? "&brand=" + data.brand : ""}
         ${data.category.length ? "&category=" + data.category : ""}`
-        // ${data.healthLabel.length ? "&health=" + data.healthLabel : ""}
-      )
-      .then((result) => {
-        setFoodItems([...result.data.parsed, ...result.data.hints]);
-      });
+        )
+        .then((result) => {
+          console.log("result ~~ ", result);
+          setFoodItems([...result.data.parsed, ...result.data.hints]);
+        });
+    }
   };
-
-  useEffect(() => {
-    console.log("food items ~~ ", itemsQuantity);
-  }, [itemsQuantity]);
 
   const removeItem = (item) => {
     const pickedFoodItems = chosenItems.filter(
@@ -108,7 +140,7 @@ const AddMealData = () => {
         </div>
         <form onSubmit={(e) => handleDataInput(e)} className="flex flex-col">
           <div className="py-8">
-            <labe htmlFor="selectDate">Select Date: </labe>
+            <label htmlFor="selectDate">Select Date: </label>
             <input
               type="date"
               name="date"
@@ -147,23 +179,18 @@ const AddMealData = () => {
               >
                 {chosenItems.map((item) => (
                   <Grid key={item.foodId}>
-                    <FoodDisplayCard
-                      item={item}
-                      clicked={() => removeItem(item)}
-                    />
                     <Card
                       css={{
                         flexDirection: "row",
-                        marginTop: 8,
-                        paddingLeft: 6,
+                        marginBottom: 8,
                         justifyContent: "center",
                       }}
                     >
-                      Estimated Servings:
+                      <b>Estimated Servings:</b>
                       <input
                         type="number"
                         name={`${item.food.foodId}`}
-                        className="ml-4 text-center border border-black rounded"
+                        className="ml-4 text-end border border-black rounded"
                         min="1"
                         max="20"
                         value={itemsQuantity[item.food.foodId]}
@@ -176,6 +203,10 @@ const AddMealData = () => {
                         }
                       />
                     </Card>
+                    <FoodDisplayCard
+                      item={item}
+                      clicked={() => removeItem(item)}
+                    />
                   </Grid>
                 ))}
               </Grid.Container>
@@ -193,6 +224,7 @@ const AddMealData = () => {
           <div className="flex flex-col max-w-7xl border-2 rounded p-4 mt-12">
             <div className="flex justify-start">
               <div className="mr-4">
+                {/* Amount */}
                 <label htmlFor="amount">Amount:</label>
                 <input
                   className="text-end ml-2"
@@ -204,12 +236,22 @@ const AddMealData = () => {
                 />
               </div>
 
-              <div className="px-12">
-                <label htmlFor="measurement">Measurement:</label>
+              {/* Measurements */}
+              <div className="flex px-12">
+                <label htmlFor="measurement" className="flex">
+                  Measurement
+                  <Popup
+                    text={`API only returns nutrient results for ONE serving. Therefore, ONLY serving is an option for measurement.`}
+                    card={true}
+                    placement="top"
+                  />
+                  :
+                </label>
+                {/* API search result only considers servings */}
                 <select name="measurement" className="mx-2 text-center">
-                  <option value=""></option>
+                  {/* <option value=""></option> */}
                   <option value="Serving">Serving</option>
-                  <option value="Ounce">Ounce</option>
+                  {/* <option value="Ounce">Ounce</option>
                   <option value="Gram">Gram</option>
                   <option value="Pound">Pound</option>
                   <option value="Kilogram">Kilogram</option>
@@ -223,28 +265,36 @@ const AddMealData = () => {
                   <option value="Drop">Drop</option>
                   <option value="Cup">Cup</option>
                   <option value="Tablespoon">Tablespoon</option>
-                  <option value="Teaspoon">Teaspoon</option>
+                  <option value="Teaspoon">Teaspoon</option> */}
                 </select>
               </div>
 
-              <div>
-                <label htmlFor="ingredients">Food/Ingredients:</label>
+              {/* Ingredients */}
+              <div className="flex">
+                <label htmlFor="ingredients" className="flex">
+                  Food/Ingredients
+                  <Popup
+                    text="NOT REQUIRED if 'brand' is specified."
+                    card={true}
+                    placement="top"
+                  />
+                  :
+                </label>
                 <input
                   className="text-center mx-2"
                   type="text"
                   name="ingredients"
                   placeholder="spaghetti"
-                  required
                 />
               </div>
             </div>
 
-            <div className="pt-4 font-bold">
+            <div className="pt-8 pb-2 font-bold">
               *ALL Sections below are OPTIONAL
             </div>
+            {/* Health Labels -- NOT WORKING WITH API*/}
             <div className="flex items-start pb-12">
-              {/* currently not working */}
-              <div className="flex mr-2">
+              {/*<div className="flex mr-2">
                 <label htmlFor="healthLabel">Health Labels:</label>
                 <select name="healthLabel" multiple>
                   <option value="alcohol-free">alcohol-free</option>
@@ -273,25 +323,20 @@ const AddMealData = () => {
                   <option value="vegetarian">vegetarian</option>
                   <option value="wheat-free">wheat-free</option>
                 </select>
-              </div>
+              </div> */}
 
               {/* Category */}
               <div className="flex mx-2">
                 <label htmlFor="category" className="flex">
                   Category
-                  <Popover>
-                    <Popover.Trigger>
-                      <Text>
-                        <QuestionMark className="mx-2 text-red-600" />
-                      </Text>
-                    </Popover.Trigger>
-                    <Popover.Content>
-                      <FoodCategoryInfo />
-                    </Popover.Content>
-                  </Popover>
+                  <Popup
+                    text={<FoodCategoryInfo />}
+                    card={false}
+                    placement="top"
+                  />
                   :
                 </label>
-                <select name="category" className="mx-2 text-center" multiple>
+                <select name="category" className="mx-2 text-start" multiple>
                   <option value="" hidden></option>
                   <option value="generic-foods">generic-foods</option>
                   <option value="generic-meals">generic-meals</option>

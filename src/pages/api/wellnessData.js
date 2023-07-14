@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     const data = req.body;
-    const filter = { date: data.date };
+    const filter = { email: data.email, date: data.date };
 
     try {
       await UserData.findOneAndUpdate(filter, data, { upsert: true });
