@@ -6,7 +6,7 @@ const Popup = ({ text, placement, card }) => {
     <Popover placement={placement}>
       <Popover.Trigger>
         <Text>
-          <QuestionMark className="mx-2 text-red-600" />
+          <QuestionMark className="mx-1 text-red-600" />
         </Text>
       </Popover.Trigger>
       <Popover.Content>

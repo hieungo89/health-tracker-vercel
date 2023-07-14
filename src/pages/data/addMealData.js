@@ -1,10 +1,9 @@
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import Layout from "../../components/Layout";
-// import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { Grid, Popover, Card, Text } from "@nextui-org/react";
+import { Grid, Card } from "@nextui-org/react";
 import FoodCategoryInfo from "../../components/FoodCategoryInfo";
 import { useState } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
@@ -35,7 +34,10 @@ const AddMealData = () => {
     };
 
     await chosenItems.forEach((item) => {
-      let quantity = itemsQuantity?.hasOwnProperty(item.food.foodId)
+      let quantity = Object.prototype.hasOwnProperty.call(
+        itemsQuantity,
+        item.food.foodId
+      )
         ? itemsQuantity[item.food.foodId]
         : null;
       totalNutrientCount.calorie += quantity * item.food.nutrients.ENERC_KCAL;
@@ -54,8 +56,14 @@ const AddMealData = () => {
       totalNutrientCount: totalNutrientCount,
     };
 
-    await axios.post("/api/mealData", data);
-    router.push("/profile");
+    if (!data.foodsEaten.length) {
+      alert(`\nPlease add food that you've eaten before you submit.`);
+    }
+
+    if (data.mealType && data.date && data.foodsEaten.length) {
+      await axios.post("/api/mealData", data);
+      router.push("/profile");
+    }
   };
 
   const handleSearchIngredients = async (e) => {
@@ -66,17 +74,17 @@ const AddMealData = () => {
     for (let i = 0; i < catData.length; i++) {
       categoryLabel.push(catData[i].value);
     }
-    const healthLabel = [];
-    const healthData = e.target.healthLabel.selectedOptions;
-    for (let i = 0; i < healthData.length; i++) {
-      healthLabel.push(healthData[i].value);
-    }
+    // const healthLabel = [];
+    // const healthData = e.target.healthLabel.selectedOptions;
+    // for (let i = 0; i < healthData.length; i++) {
+    //   healthLabel.push(healthData[i].value);
+    // }
 
     const data = {
       amount: e.target.amount.value,
       // measurement: e.target.measurement.value,
       ingredients: e.target.ingredients.value,
-      healthLabel: healthLabel,
+      // healthLabel: healthLabel,
       category: categoryLabel,
       brand: e.target.brand.value,
     };
@@ -98,7 +106,6 @@ const AddMealData = () => {
         ${data.category.length ? "&category=" + data.category : ""}`
         )
         .then((result) => {
-          console.log("result ~~ ", result);
           setFoodItems([...result.data.parsed, ...result.data.hints]);
         });
     }
@@ -131,15 +138,22 @@ const AddMealData = () => {
       </Head>
 
       <Layout className="flex flex-col items-center">
-        <div>
-          <h4>You must complete the following in order to record your meal:</h4>
-          <li>Select Date</li>
-          <li>Choose a meal type</li>
-          <li>Search and add foods that you&apos;ve eaten</li>
-          Click &quot;ADD MEAL&quot; to input your data.
+        {/* Info */}
+        <div className="flex flex-col -ml-[250px]">
+          <h3>You must complete the following in order to record your meal:</h3>
+          <ol>
+            <li>Select Date</li>
+            <li>Choose a meal type</li>
+            <li>Search and add foods that you&apos;ve eaten</li>
+          </ol>
+          <p>
+            Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to input
+            your data.
+          </p>
         </div>
+        {/* Input Data to DB */}
         <form onSubmit={(e) => handleDataInput(e)} className="flex flex-col">
-          <div className="py-8">
+          <div className="pt-8">
             <label htmlFor="selectDate">Select Date: </label>
             <input
               type="date"
@@ -149,9 +163,17 @@ const AddMealData = () => {
             />
           </div>
           {/* Meal Type */}
-          <div className="py-8">
-            <label htmlFor="mealType">Meal Type:</label>
-            <select name="mealType" required>
+          <div className="flex py-4">
+            <label htmlFor="mealType" className="flex">
+              Meal Type
+              <Popup
+                text="Choose OTHER if you have want to add additional meals data."
+                placement="top"
+                card={true}
+              />
+              :
+            </label>
+            <select name="mealType" className="ml-2" required>
               <option hidden></option>
               <option value="Breakfast">Breakfast</option>
               <option value="Brunch">Brunch</option>
