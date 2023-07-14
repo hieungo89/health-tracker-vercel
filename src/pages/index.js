@@ -5,10 +5,12 @@ import axios from "axios";
 import Link from "next/link";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
+import {useRouter} from 'next/router';
 
 export default function Home() {
   const [account, setAccount] = useState({});
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const getData = async () => {
     const { data } = await axios.get(`/api/user?email=${session?.user.email}`);
@@ -48,6 +50,8 @@ export default function Home() {
     );
   }
 
+  if (status === "unauthenticated") router.push("/");
+
   return (
     <div>
       <Head>
@@ -66,7 +70,9 @@ export default function Home() {
               Welcome back {account.firstName}!
             </h2>
             <button className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded hover:bg-green-400 hover:font-bold">
-              <Link href="/profile">Go To Profile</Link>
+              <Link href="/profile" className="text-black">
+                Go To Profile
+              </Link>
             </button>
           </>
         ) : (
@@ -87,14 +93,14 @@ export default function Home() {
           </>
         )}
 
-        <div className="flex flex-col pl-20 border p-12">
+        {/* <div className="flex flex-col pl-20 border p-12">
           <div>Status: {status}</div>
           <div>{JSON.stringify(session, null, 1)}</div>
           <div>Name: {session.user.name}</div>
           <div>Email: {session.user.email}</div>
           <div>Image: {session.user.image}</div>
           <div>Expires: {session.expires}</div>
-        </div>
+        </div> */}
       </Layout>
     </div>
   );
