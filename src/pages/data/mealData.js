@@ -1,12 +1,12 @@
+import { Table } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
-import { Table } from "@nextui-org/react";
-import Link from "next/link";
 
-const MealData = () => {
+const MealData = ({ something }) => {
   const { data: session, status } = useSession();
   const [mealData, setMealData] = useState([]);
   const router = useRouter();
@@ -23,10 +23,6 @@ const MealData = () => {
     getData();
   }, [session]);
 
-  useEffect(() => {
-    console.log("meal Data ~~ ", mealData);
-  }, [mealData]);
-
   if (status === "loading") {
     return <Layout>...Loading</Layout>;
   }
@@ -35,6 +31,7 @@ const MealData = () => {
 
   return (
     <div className="py-8">
+      <div>data ~~ {something}</div>
       {mealData.length ? (
         <Table
           aria-label="Sleep, Exercise, Weight Data"
@@ -71,19 +68,19 @@ const MealData = () => {
                   )}
                 </Table.Cell>
                 <Table.Cell>
-                  {data.totalNutrientCount.calorie.toFixed()}kcal
+                  {data.totalNutrientCount.calorie.toFixed()} kcal
                 </Table.Cell>
                 <Table.Cell>
-                  {data.totalNutrientCount.carbohydrate.toFixed()}g
+                  {data.totalNutrientCount.carbohydrate.toFixed()} g
                 </Table.Cell>
                 <Table.Cell>
-                  {data.totalNutrientCount.fat.toFixed()}g
+                  {data.totalNutrientCount.fat.toFixed()} g
                 </Table.Cell>
                 <Table.Cell>
-                  {data.totalNutrientCount.fiber.toFixed()}g
+                  {data.totalNutrientCount.fiber.toFixed()} g
                 </Table.Cell>
                 <Table.Cell>
-                  {data.totalNutrientCount.protein.toFixed()}g
+                  {data.totalNutrientCount.protein.toFixed()} g
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -109,3 +106,25 @@ const MealData = () => {
 };
 
 export default MealData;
+
+export async function getServerSideProps() {
+  // const session = await getServerAuthSession(ctx.req, ctx.res);
+
+  // const { data } = await axios.get(
+  //   `/api/mealData?email=${session?.user.email}`
+  // );
+
+  // if (session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //     },
+  //   };
+  // }
+
+  return {
+    props: {
+      something: "hi",
+    },
+  };
+}

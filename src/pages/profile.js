@@ -8,8 +8,8 @@ import { Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
-import SEW from "./data/sew";
 import MealData from "./data/mealData";
+import SEW from "./data/sew";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
