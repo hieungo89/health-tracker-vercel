@@ -1,18 +1,21 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
 import Head from "next/head";
-import Layout from "../components/Layout";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Layout from "../components/Layout";
 // import { getServerAuthSession } from "./api/auth/[...nextauth]";
+import { Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
-import SEW from "./sew";
+import MealData from "./data/mealData";
+import SEW from "./data/sew";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
-  const [sewData, setSewData] = useState(false);
   const [age, setAge] = useState("");
+  const [sewData, setSewData] = useState(false);
+  const [mealsData, setMealsData] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
   const format = useFormatter();
@@ -93,38 +96,48 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex border rounded px-4 justify-around">
+        <div className="flex px-4 justify-around">
           {/* Input Data */}
           <div className="flex flex-col items-center p-4">
             Input data
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400 text-black">
-              <Link href="/data/addHealthData" className="text-black">
+            <Link href="/data/addHealthData">
+              <Button className="m-4 hover:text-black hover:bg-green-500 ">
                 Input Wellness Data
-              </Link>
-            </button>
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
-              <Link href="/data/addMealData" className="text-black">
+              </Button>
+            </Link>
+            <Link href="/data/addMealData">
+              <Button className="m-4 hover:text-black hover:bg-green-500">
                 Input Meals
-              </Link>
-            </button>
+              </Button>
+            </Link>
           </div>
 
           {/* Show Data */}
           <div className="flex flex-col items-center p-4">
             View my Progress
-            <button
-              className="p-2 border rounded m-4 hover:border-black hover:bg-green-400"
-              onClick={() => setSewData(!sewData)}
+            <Button
+              className="m-4 hover:text-black hover:bg-green-500"
+              onPress={() => {
+                setMealsData(false);
+                setSewData(!sewData);
+              }}
             >
               Sleep/Exercise/Weight
-            </button>
-            <button className="p-2 border rounded m-4 hover:border-black hover:bg-green-400">
+            </Button>
+            <Button
+              className="m-4 hover:text-black hover:bg-green-500"
+              onPress={() => {
+                setSewData(false);
+                setMealsData(!mealsData);
+              }}
+            >
               Meals
-            </button>
+            </Button>
           </div>
         </div>
 
         {sewData ? <SEW /> : null}
+        {mealsData ? <MealData /> : null}
       </Layout>
     </>
   );
