@@ -1,87 +1,98 @@
-import { Card, Text } from "@nextui-org/react";
+import { Grid, Card, Text } from "@nextui-org/react";
 
 const FoodDisplayCard = ({ item, clicked }) => {
-  const {
-    label,
-    foodContentsLabel,
-    image,
-    brand,
-    category,
-    categoryLabel,
-    nutrients,
-  } = item.food;
+  // const {
+  //   label,
+  //   foodContentsLabel,
+  //   image,
+  //   brand,
+  //   category,
+  //   categoryLabel,
+  //   nutrients,
+  // } = item.food;
+
+  const nutritionalValues = item.nutrition?.nutrients;
+  // console.log("item ~~ ", item);
+  if (nutritionalValues !== undefined) {
+    nutritionalValues.sort((a, b) => {
+      const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      return nameA < nameB ? -1 : 1;
+    });
+
+    // console.log("Nutrient values SORTED ~~ ", nutritionalValues);
+  }
+  const shownNutrients = nutritionalValues?.filter(
+    (item) =>
+      item.name === "Sugar" ||
+      item.name === "Calories" ||
+      item.name === "Carbohydrates" ||
+      item.name === "Cholesterol" ||
+      item.name === "Fat" ||
+      item.name === "Fiber" ||
+      item.name === "Protein" ||
+      item.name === "Saturated Fat" ||
+      item.name === "Sodium"
+  );
 
   return (
-    <div>
-      <Card
-        isPressable
-        isHoverable
-        css={{ width: "400px", height: "auto" }}
-        name={label}
-        onClick={clicked}
-      >
-        <Card.Header>
-          <Text css={{ fontWeight: "bold" }}>{label}</Text>
-        </Card.Header>
-        <Card.Body>
-          {image ? <Card.Image src={image} alt={label} width="50%" /> : null}
-          <Text css={{ display: "flex", justifyContent: "space-between" }}>
-            <span>
-              <b>Category:&nbsp;</b> {category}
-            </span>
-            <span>
-              <b className="ml-2">Category Label:&nbsp;</b> {categoryLabel}
-            </span>
-          </Text>
-          <Text>
-            {brand ? (
-              <span>
-                <b>Brand:&nbsp;</b> {brand}
-              </span>
-            ) : (
-              ""
-            )}
-          </Text>
-          <Text css={{ display: "flex", justifyContent: "space-between" }}>
-            <span>
-              <b>Calories: </b>
-              {nutrients.ENERC_KCAL > 0 ? nutrients.ENERC_KCAL.toFixed(0) : 0}
-              kcal
-            </span>
-            <span>
-              <b>Carbohydrate: </b>
-              {nutrients.CHOCDF > 0 ? nutrients.CHOCDF.toFixed(0) : 0}g
-            </span>
-          </Text>
-          <Text css={{ display: "flex", justifyContent: "space-between" }}>
-            <span>
-              <b>Fat: </b>
-              {nutrients.FAT > 0 ? nutrients.FAT.toFixed(0) : 0}g
-            </span>
-            <span>
-              <b>Fiber: </b>
-              {nutrients.FIBTG > 0 ? nutrients.FIBTG.toFixed(0) : 0}g
-            </span>
-            <span>
-              <b>Protein: </b>
-              {nutrients.PROCNT > 0 ? nutrients.PROCNT.toFixed(0) : 0}g
-            </span>
-          </Text>
-        </Card.Body>
-        <Card.Footer>
-          {foodContentsLabel ? (
+    <div key={item.id}>
+      {/* Chosen food to save */}
+      {nutritionalValues ? (
+        <Card
+          isPressable
+          isHoverable
+          css={{ width: "fit", height: "auto" }}
+          name={item.id}
+          onClick={clicked}
+        >
+          <Card.Header css={{ justifyContent: "space-between" }}>
+            <Text css={{ fontWeight: "bold" }}>{item.name}</Text>
+            {item.image ? (
+              <Card.Image
+                src={`${process.env.NEXT_PUBLIC_SPOONACULAR_IMAGE}/${item.image}`}
+                alt={item.image}
+                width="50px"
+              />
+            ) : null}
             <Text>
-              <b className="text-lg">Ingredients: </b>
-              {foodContentsLabel}
+              <b>Amount:</b> {item.amount} {item.unit}
             </Text>
-          ) : (
-            <Text>
-              <b className="text-lg">Ingredients: </b>
-              &quot;N/A&quot;
-            </Text>
-          )}
-        </Card.Footer>
-      </Card>
+          </Card.Header>
+          <Card.Body>
+            <Grid.Container gap={1}>
+              {shownNutrients.map((nutrient) => (
+                <Grid key={nutrient.id} css={{ padding: "0 24px 4px 0" }}>
+                  <b>{nutrient.name}:</b> {nutrient.amount}
+                  {nutrient.unit}
+                  {/* {nutrient.percentOfDailyNeeds} */}
+                </Grid>
+              ))}
+            </Grid.Container>
+          </Card.Body>
+        </Card>
+      ) : (
+        <Card
+          isPressable
+          isHoverable
+          css={{ width: "200px", height: "auto" }}
+          name={item.id}
+          onClick={clicked}
+        >
+          {/* Cards display for ingredients search */}
+          <Card.Header css={{ justifyContent: "center" }}>
+            <Text css={{ fontWeight: "bold" }}>{item.name}</Text>
+          </Card.Header>
+          <Card.Body>
+            {item.image ? (
+              <Card.Image
+                src={`${process.env.NEXT_PUBLIC_SPOONACULAR_IMAGE}/${item.image}`}
+                alt={item.image}
+              />
+            ) : null}
+          </Card.Body>
+        </Card>
+      )}
     </div>
   );
 };
