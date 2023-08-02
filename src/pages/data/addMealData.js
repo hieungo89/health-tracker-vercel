@@ -3,48 +3,126 @@ import { useSession } from "next-auth/react";
 import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { Grid, Card } from "@nextui-org/react";
-import FoodCategoryInfo from "../../components/FoodCategoryInfo";
+import { Grid, Card, Modal, Button, Text } from "@nextui-org/react";
 import { useState } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
 import Popup from "../../components/Popup";
 
 const AddMealData = () => {
-  const [foodItems, setFoodItems] = useState([]);
+  const [foodItems, setFoodItems] = useState({});
+  const [foodItemModal, setFoodItemModal] = useState(false);
+  const [chosenFood, setChosenFood] = useState({});
+  const [itemsQuantity, setItemsQuantity] = useState(1);
   const [chosenItems, setChosenItems] = useState([]);
-  const [itemsQuantity, setItemsQuantity] = useState({});
+  const [editMode, setEditMode] = useState(false);
+
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const handleDataInput = async (e) => {
+  //! Search API for specific food ingredients & setFoodItems
+  const handleSearchIngredients = async (e) => {
+    e.preventDefault();
+    const data = { ingredients: e.target.ingredients.value };
+    console.log("Search ingredients ~~ ", data);
+
+    axios
+      .get(
+        `https://api.spoonacular.com/food/ingredients/search?apiKey=${process.env.NEXT_PUBLIC_SPOONACULAR_KEY}&query=${data.ingredients}&number=100`
+      )
+      .then((result) => setFoodItems(result.data))
+      .catch((err) => console.log("Error searching ingredient in API : ", err));
+  };
+
+  //! Add ingredient to the list
+  const handleAddIngredient = (e) => {
     e.preventDefault();
 
+    //! Edit Mode
+    if (chosenFood.unit) removeItem(chosenFood);
+
+    //! Regular Adding
+    axios
+      .get(
+        `https://api.spoonacular.com/food/ingredients/${
+          chosenFood.id
+        }/information?apiKey=${
+          process.env.NEXT_PUBLIC_SPOONACULAR_KEY
+        }&amount=${e.target.amount.value}&unit=${
+          e.target.measurement.value || e.target.unit.value
+        }`
+      )
+      .then((result) => {
+        setChosenItems((prev) => [...prev, result.data]);
+        setFoodItemModal(false);
+        setEditMode(false);
+      });
+  };
+
+  //! Add ALL chosen food items to the DB
+  const handleMealInput = async (e) => {
+    e.preventDefault();
+
+    if (!chosenItems.length) {
+      alert(
+        `\nPlease add food that you've eaten using the SEARCH Ingredients on top.`
+      );
+      return;
+    }
+
     const foodsEaten = chosenItems.map((item) => {
-      return item.food.label;
+      return item.amount + " " + item.unit + " " + item.name;
     });
     const foodsId = chosenItems.map((item) => {
-      return item.food.foodId;
+      return item.id;
     });
-    const totalNutrientCount = {
-      calorie: 0,
-      carbohydrate: 0,
-      fat: 0,
-      fiber: 0,
-      protein: 0,
+
+    const totalNutrientData = {
+      Calories: { quantity: 0, unit: "kcal", perOfDailyNeeds: 0 },
+      Carbohydrates: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Cholesterol: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Fat: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Fiber: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Protein: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      "Saturated Fat": { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Sodium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Sugar: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Calcium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Choline: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Copper: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Fluoride: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Folate: { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Folic Acid": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      Iron: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Lycopene: { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      Magnesium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Manganese: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Mono Unsaturated Fat": { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Phosphorus: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Poly Unsaturated Fat": { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Potassium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Selenium: { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Vitamin A": { quantity: 0, unit: "IU", perOfDailyNeeds: 0 },
+      "Vitamin B1": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B12": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Vitamin B2": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B3": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B5": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B6": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin C": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin D": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Vitamin E": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin K": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      Zinc: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
     };
 
     await chosenItems.forEach((item) => {
-      let quantity = Object.prototype.hasOwnProperty.call(
-        itemsQuantity,
-        item.food.foodId
-      )
-        ? itemsQuantity[item.food.foodId]
-        : null;
-      totalNutrientCount.calorie += quantity * item.food.nutrients.ENERC_KCAL;
-      totalNutrientCount.carbohydrate += quantity * item.food.nutrients.CHOCDF;
-      totalNutrientCount.fat += quantity * item.food.nutrients.FAT;
-      totalNutrientCount.fiber += quantity * item.food.nutrients.FIBTG;
-      totalNutrientCount.protein += quantity * item.food.nutrients.PROCNT;
+      item.nutrition.nutrients.forEach((nutrient) => {
+        if (totalNutrientData[nutrient.name]) {
+          totalNutrientData[nutrient.name].quantity += nutrient.amount;
+          totalNutrientData[nutrient.name].perOfDailyNeeds +=
+            nutrient.percentOfDailyNeeds;
+        }
+      });
     });
 
     const data = {
@@ -53,81 +131,32 @@ const AddMealData = () => {
       mealType: e.target.mealType.value,
       foodsEaten: foodsEaten,
       foodsId: foodsId,
-      totalNutrientCount: totalNutrientCount,
+      totalNutrientCount: totalNutrientData,
     };
 
-    if (!data.foodsEaten.length) {
-      alert(`\nPlease add food that you've eaten before you submit.`);
-    }
-
     if (data.mealType && data.date && data.foodsEaten.length) {
-      await axios.post("/api/mealData", data);
+      await axios.post("/api/mealData", data).then(() => setChosenItems([]));
       router.push("/profile");
     }
   };
 
-  const handleSearchIngredients = async (e) => {
-    e.preventDefault();
-
-    const categoryLabel = [];
-    const catData = e.target.category.selectedOptions;
-    for (let i = 0; i < catData.length; i++) {
-      categoryLabel.push(catData[i].value);
-    }
-    // const healthLabel = [];
-    // const healthData = e.target.healthLabel.selectedOptions;
-    // for (let i = 0; i < healthData.length; i++) {
-    //   healthLabel.push(healthData[i].value);
-    // }
-
-    const data = {
-      amount: e.target.amount.value,
-      // measurement: e.target.measurement.value,
-      ingredients: e.target.ingredients.value,
-      // healthLabel: healthLabel,
-      category: categoryLabel,
-      brand: e.target.brand.value,
-    };
-
-    if (!data.ingredients && !data.brand) {
-      alert(`\nPlease provide a food ingredient or a brand`);
-    }
-
-    if (data.ingredients || data.brand) {
-      await axios
-        .get(
-          `https://api.edamam.com/api/food-database/v2/parser?app_id=c68c9a1d&app_key=4ce474a24202f7f68e0308435ed057c4
-        ${
-          data.ingredients
-            ? `&ingr=${data.amount} serving ${data.ingredients}`
-            : ""
-        }
-        ${data.brand ? "&brand=" + data.brand : ""}
-        ${data.category.length ? "&category=" + data.category : ""}`
-        )
-        .then((result) => {
-          setFoodItems([...result.data.parsed, ...result.data.hints]);
-        });
-    }
+  const editItem = (item) => {
+    setFoodItemModal(true);
+    setChosenFood(item);
+    setItemsQuantity(item.amount);
+    setEditMode(true);
   };
 
   const removeItem = (item) => {
     const pickedFoodItems = chosenItems.filter(
-      (singleItem) => singleItem.food.foodId !== item.food.foodId
+      (singleItem) => singleItem.id !== item.id
     );
     setChosenItems(pickedFoodItems);
-
-    const quantity = { ...itemsQuantity };
-    for (let key in quantity) {
-      if (item.food.foodId === key) delete quantity[item.food.foodId];
-    }
-    setItemsQuantity(quantity);
+    setFoodItemModal(false);
+    setEditMode(false);
   };
 
-  if (status === "loading") {
-    return <Layout>...Loading</Layout>;
-  }
-
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
@@ -137,286 +166,268 @@ const AddMealData = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout className="flex flex-col items-center">
-        {/* Info */}
-        <div className="flex flex-col -ml-[250px]">
-          <h3>You must complete the following in order to record your meal:</h3>
-          <ol>
-            <li>Select Date</li>
-            <li>Choose a meal type</li>
-            <li>Search and add foods that you&apos;ve eaten</li>
-          </ol>
-          <p>
-            Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to input
-            your data.
-          </p>
-        </div>
-        {/* Input Data to DB */}
-        <form onSubmit={(e) => handleDataInput(e)} className="flex flex-col">
-          <div className="pt-8">
-            <label htmlFor="selectDate">Select Date: </label>
-            <input
-              type="date"
-              name="date"
-              max={new Date().toISOString().slice(0, 10)}
-              required
-            />
+      <Layout className="flex">
+        <div className="flex flex-col">
+          {/* Instructions */}
+          <div className="flex flex-col">
+            <h3>Instructions:</h3>
+            <ol>
+              <li>Search and add foods that you&apos;ve eaten</li>
+              <li>Select Date</li>
+              <li>Choose a meal type</li>
+              <li>
+                Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to
+                save your data.
+              </li>
+            </ol>
           </div>
-          {/* Meal Type */}
-          <div className="flex py-4">
-            <label htmlFor="mealType" className="flex">
-              Meal Type
-              <Popup
-                text="Choose OTHER if you have want to add additional meals data."
-                placement="top"
-                card={true}
-              />
-              :
-            </label>
-            <select name="mealType" className="ml-2" required>
-              <option hidden></option>
-              <option value="Breakfast">Breakfast</option>
-              <option value="Brunch">Brunch</option>
-              <option value="Lunch">Lunch</option>
-              <option value="Dinner">Dinner</option>
-              <option value="Snack">Snack</option>
-              <option value="TeaTime">TeaTime</option>
-              <option value="Other">Other</option>
-            </select>
-            <label htmlFor="warning" className="italic ml-2">
-              <b>*Warning:</b> choosing the same Meal Type for the same date
-              will override your previous data.
-            </label>
-          </div>
-          {/* My chosen food items */}
-          {chosenItems.length ? (
-            <>
-              <h3 className="self-center underline">
-                Click on the card to remove from your list.
-              </h3>
-              <Grid.Container
-                gap={2}
-                justify="flex-start"
-                name="chosenFoodItems"
-              >
-                {chosenItems.map((item) => (
-                  <Grid key={item.foodId}>
-                    <Card
-                      css={{
-                        flexDirection: "row",
-                        marginBottom: 8,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <b>Estimated Servings:</b>
-                      <input
-                        type="number"
-                        name={`${item.food.foodId}`}
-                        className="ml-4 text-end border border-black rounded"
-                        min="1"
-                        max="20"
-                        value={itemsQuantity[item.food.foodId]}
-                        onChange={(e) =>
-                          setItemsQuantity((prev) => {
-                            const result = { ...prev };
-                            result[item.food.foodId] = Number(e.target.value);
-                            return result;
-                          })
-                        }
-                      />
-                    </Card>
-                    <FoodDisplayCard
-                      item={item}
-                      clicked={() => removeItem(item)}
-                    />
-                  </Grid>
-                ))}
-              </Grid.Container>
-            </>
-          ) : null}
-          <input
-            className="text-2xl border-2 p-2 my-4 rounded hover:bg-green-400 hover:border-black"
-            type="submit"
-            value="ADD MEAL"
-          />
-        </form>
 
-        {/* Search Food */}
-        <form onSubmit={(e) => handleSearchIngredients(e)}>
-          <div className="flex flex-col max-w-7xl border-2 rounded p-4 mt-12">
-            <div className="flex justify-start">
-              <div className="mr-4">
-                {/* Amount */}
-                <label htmlFor="amount">Amount:</label>
+          {/* Search Food */}
+          <form
+            onSubmit={(e) => handleSearchIngredients(e)}
+            className="flex max-w-7xl mt-12"
+          >
+            <div className="flex justify-start items-center">
+              {/* Ingredients */}
+              <label htmlFor="ingredients" className="flex">
+                Food/Ingredients
+                <Popup
+                  text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
+                  card={true}
+                  placement="top"
+                />
+                :
+              </label>
+              <input
+                className="text-center mx-2"
+                type="text"
+                name="ingredients"
+                placeholder="spaghetti"
+              />
+            </div>
+            <input
+              className="text-lg border-2 rounded-xl py-2 px-4 ml-8 hover:bg-green-400 hover:border-black"
+              type="submit"
+              value="Search"
+            />
+          </form>
+
+          {/* Input Data to DB */}
+          <form onSubmit={(e) => handleMealInput(e)} className="flex flex-col">
+            <div className="pt-8">
+              <label htmlFor="selectDate">Select Date: </label>
+              <input
+                type="date"
+                name="date"
+                max={new Date().toISOString().slice(0, 10)}
+                required
+              />
+            </div>
+            {/* Meal Type */}
+            <div className="flex flex-col py-4">
+              <div className="flex">
+                <label htmlFor="mealType" className="flex">
+                  Meal Type
+                  <Popup
+                    text="Choose OTHER if you have want to add additional meals data."
+                    placement="top"
+                    card={true}
+                  />
+                  :
+                </label>
+                <select name="mealType" className="ml-2" required>
+                  <option hidden></option>
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Brunch">Brunch</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                  <option value="Snack">Snack</option>
+                  <option value="TeaTime">TeaTime</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <label htmlFor="warning" className="italic">
+                <b className="text-red-600">*Warning:</b> choosing the same Meal
+                Type for the same date will override your previous data.
+              </label>
+            </div>
+
+            <input
+              className="text-2xl border-2 p-2 my-4 rounded hover:bg-green-400 hover:border-black"
+              type="submit"
+              value="ADD MEAL"
+            />
+
+            {/* My chosen food items */}
+            {chosenItems.length ? (
+              <>
+                <h3 className="self-center underline">
+                  CLICK on the card to EDIT.
+                </h3>
+                <Grid.Container
+                  gap={2}
+                  justify="flex-start"
+                  name="chosenFoodItems"
+                >
+                  {chosenItems.map((item) => (
+                    <Grid key={item.id + item.amount + item.unit}>
+                      <FoodDisplayCard
+                        item={item}
+                        clicked={() => editItem(item)}
+                      />
+                    </Grid>
+                  ))}
+                </Grid.Container>
+              </>
+            ) : null}
+          </form>
+        </div>
+
+        {/* Right Side - Display Food Cards */}
+        {foodItems.results?.length ? (
+          <div className="p-2 border rounded-lg mx-4">
+            <Grid.Container gap={1} justify="center">
+              <h4>
+                <span className="text-red-600">DISCLAIMER:</span> Due to usage
+                of the FREE API, there is a limited amount of API usage per day.
+                Once the limit is reached, this will NOT display any results.
+              </h4>
+              {foodItems.results.map((item) => (
+                <Grid key={item.id}>
+                  <FoodDisplayCard
+                    item={item}
+                    clicked={() => {
+                      setFoodItemModal(true);
+                      setChosenFood(item);
+                      setItemsQuantity(1);
+                    }}
+                  />
+                </Grid>
+              ))}
+            </Grid.Container>
+          </div>
+        ) : null}
+
+        {/* Add/Edit Food eaten to Meals */}
+        <Modal
+          aria-labelledby="get-ingredient-info-modal"
+          open={foodItemModal}
+          onClose={() => setFoodItemModal(false)}
+          css={{ cursor: "default" }}
+        >
+          <form onSubmit={(e) => handleAddIngredient(e)}>
+            <Modal.Header>
+              <Text id="get-ingredient-info-modal" size={32}>
+                {chosenFood.name}
+                {chosenFood.image ? (
+                  <Card.Image
+                    src={`${process.env.NEXT_PUBLIC_SPOONACULAR_IMAGE}/${chosenFood.image}`}
+                    alt={chosenFood.image}
+                  />
+                ) : null}
+              </Text>
+            </Modal.Header>
+            <Modal.Body css={{ display: "flex", width: "fit" }}>
+              <Text>
+                Amount:
                 <input
-                  className="text-end ml-2"
+                  className="text-end ml-2 border rounded"
                   type="number"
                   name="amount"
-                  placeholder="0"
-                  min="0"
+                  value={itemsQuantity}
+                  min="1"
                   max="100"
-                />
-              </div>
-
-              {/* Measurements */}
-              <div className="flex px-12">
-                <label htmlFor="measurement" className="flex">
-                  Measurement
-                  <Popup
-                    text={`API only returns nutrient results for ONE serving. Therefore, ONLY serving is an option for measurement.`}
-                    card={true}
-                    placement="top"
-                  />
-                  :
-                </label>
-                {/* API search result only considers servings */}
-                <select name="measurement" className="mx-2 text-center">
-                  {/* <option value=""></option> */}
-                  <option value="Serving">Serving</option>
-                  {/* <option value="Ounce">Ounce</option>
-                  <option value="Gram">Gram</option>
-                  <option value="Pound">Pound</option>
-                  <option value="Kilogram">Kilogram</option>
-                  <option value="Pinch">Pinch</option>
-                  <option value="Liter">Liter</option>
-                  <option value="Fluid ounce">Fluid ounce</option>
-                  <option value="Gallon">Gallon</option>
-                  <option value="Pint">Pint</option>
-                  <option value="Quart">Quart</option>
-                  <option value="Milliliter">Milliliter</option>
-                  <option value="Drop">Drop</option>
-                  <option value="Cup">Cup</option>
-                  <option value="Tablespoon">Tablespoon</option>
-                  <option value="Teaspoon">Teaspoon</option> */}
-                </select>
-              </div>
-
-              {/* Ingredients */}
-              <div className="flex">
-                <label htmlFor="ingredients" className="flex">
-                  Food/Ingredients
-                  <Popup
-                    text="NOT REQUIRED if 'brand' is specified."
-                    card={true}
-                    placement="top"
-                  />
-                  :
-                </label>
-                <input
-                  className="text-center mx-2"
-                  type="text"
-                  name="ingredients"
-                  placeholder="spaghetti"
-                />
-              </div>
-            </div>
-
-            <div className="pt-8 pb-2 font-bold">
-              *ALL Sections below are OPTIONAL
-            </div>
-            {/* Health Labels -- NOT WORKING WITH API*/}
-            <div className="flex items-start pb-12">
-              {/*<div className="flex mr-2">
-                <label htmlFor="healthLabel">Health Labels:</label>
-                <select name="healthLabel" multiple>
-                  <option value="alcohol-free">alcohol-free</option>
-                  <option value="celery-free">celery-free</option>
-                  <option value="crustacean-free">crustacean-free</option>
-                  <option value="dairy-free">dairy-free</option>
-                  <option value="egg-free">egg-free</option>
-                  <option value="fish-free">fish-free</option>
-                  <option value="gluten-free">gluten-free</option>
-                  <option value="immuno-supporive">immuno-supporive</option>
-                  <option value="keto-friendly">keto-friendly</option>
-                  <option value="kosher">kosher</option>
-                  <option value="low-fat-abs">low-fat-abs</option>
-                  <option value="low-potassium">low-potassium</option>
-                  <option value="low-sugar">low-sugar</option>
-                  <option value="no-oil-added">no-oil-added</option>
-                  <option value="paleo">paleo</option>
-                  <option value="peanut-free">peanut-free</option>
-                  <option value="pork-free">pork-free</option>
-                  <option value="red-meat-free">red-meat-free</option>
-                  <option value="sesame-free">sesame-free</option>
-                  <option value="shellfish-free">shellfish-free</option>
-                  <option value="soy-free">soy-free</option>
-                  <option value="tree-nut-free">tree-nut-free</option>
-                  <option value="vegan">vegan</option>
-                  <option value="vegetarian">vegetarian</option>
-                  <option value="wheat-free">wheat-free</option>
-                </select>
-              </div> */}
-
-              {/* Category */}
-              <div className="flex mx-2">
-                <label htmlFor="category" className="flex">
-                  Category
-                  <Popup
-                    text={<FoodCategoryInfo />}
-                    card={false}
-                    placement="top"
-                  />
-                  :
-                </label>
-                <select name="category" className="mx-2 text-start" multiple>
-                  <option value="" hidden></option>
-                  <option value="generic-foods">generic-foods</option>
-                  <option value="generic-meals">generic-meals</option>
-                  <option value="packaged-foods">packaged-foods</option>
-                  <option value="fast-foods">fast-foods</option>
-                </select>
-              </div>
-
-              {/* Brand */}
-              <div className="flex">
-                <label htmlFor="brand">Brand:</label>
-                <input
-                  className="text-center ml-2"
-                  type="text"
-                  name="brand"
-                  placeholder="Cheerios"
-                  size="13"
-                />
-              </div>
-            </div>
-
-            <input
-              className="text-2xl border-2 rounded-xl mx-12 hover:bg-green-400 hover:border-black"
-              type="submit"
-              value="SEARCH"
-            />
-          </div>
-        </form>
-
-        {/* Display card for each food item */}
-        {foodItems.length ? (
-          <Grid.Container gap={2} justify="flex-start">
-            <h4 className="py-4">
-              <span className="text-red-600">DISCLAIMER:</span> Due to usage of
-              the FREE API, there is a limited amount of nutrient data
-              retrieved. Only nutrients that are currently available are
-              calories, carbohydrate, fat, protein, and fiber.&nbsp;
-              <b className="text-red-700 text-2xl underline">
-                ITEMS DISPLAYED ARE FOR 1 SERVING.
-              </b>
-            </h4>
-            {foodItems.map((foodItem) => (
-              <Grid key={foodItem.foodId}>
-                <FoodDisplayCard
-                  item={foodItem}
-                  clicked={() => {
-                    setChosenItems([...chosenItems, foodItem]);
+                  onChange={(e) =>
                     setItemsQuantity((prev) => {
-                      const result = { ...prev };
-                      result[foodItem.food.foodId] = foodItem.quantity || 1;
-                      return result;
-                    });
-                  }}
+                      prev = e.target.value;
+                      return prev;
+                    })
+                  }
                 />
-              </Grid>
-            ))}
-          </Grid.Container>
-        ) : null}
+              </Text>
+              {chosenFood.possibleUnits?.length ? (
+                <Text>
+                  Possible Measurements:
+                  <select
+                    name="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer"
+                  >
+                    <option value="">Select one</option>
+                    {chosenFood.possibleUnits.map((unit) => {
+                      return (
+                        <option value={unit} key={unit}>
+                          {unit}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </Text>
+              ) : (
+                <Text>
+                  Measurements:
+                  <select
+                    name="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer"
+                  >
+                    <option value="">Select one</option>
+                    <option value="Piece">Piece</option>
+                    <option value="Slice">Slice</option>
+                    <option value="Whole">Whole</option>
+                    <option value="Serving">Serving</option>
+                    <option value="Pinch">Pinch</option>
+                    <option value="Ounce">Ounce</option>
+                    <option value="Pound">Pound</option>
+                    <option value="Gram">Gram</option>
+                    <option value="Kilogram">Kilogram</option>
+                    <option value="Cup">Cup</option>
+                    <option value="Pint">Pint</option>
+                    <option value="Quart">Quart</option>
+                    <option value="Gallon">Gallon</option>
+                    <option value="Teaspoon">Teaspoon</option>
+                    <option value="Tablespoon">Tablespoon</option>
+                    <option value="Fluid ounce">Fluid ounce</option>
+                    <option value="Milliliter">Milliliter</option>
+                    <option value="Liter">Liter</option>
+                  </select>
+                  or
+                  <input
+                    className="text-end ml-2 border rounded px-1"
+                    size="10"
+                    type="text"
+                    name="unit"
+                    placeholder="input unit"
+                  />
+                </Text>
+              )}
+            </Modal.Body>
+            <Modal.Footer css={{ justifyContent: "space-between" }}>
+              <Button
+                auto
+                flat
+                color="error"
+                onPress={() => {
+                  setFoodItemModal(false);
+                  setEditMode(false);
+                }}
+              >
+                Close
+              </Button>
+              {editMode ? (
+                <Button
+                  auto
+                  flat
+                  color="error"
+                  onPress={() => removeItem(chosenFood)}
+                >
+                  Remove
+                </Button>
+              ) : null}
+              <Button auto>
+                <input type="submit" value="Add" className="cursor-pointer" />
+              </Button>
+            </Modal.Footer>
+          </form>
+        </Modal>
       </Layout>
     </>
   );
