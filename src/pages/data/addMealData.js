@@ -4,7 +4,6 @@ import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Grid, Card, Modal, Button, Text } from "@nextui-org/react";
-// import FoodCategoryInfo from "../../components/FoodCategoryInfo";
 import { useState, useEffect } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
 import Popup from "../../components/Popup";
@@ -15,13 +14,12 @@ const AddMealData = () => {
   const [chosenFood, setChosenFood] = useState({});
   const [itemsQuantity, setItemsQuantity] = useState(1);
   const [chosenItems, setChosenItems] = useState([]);
-  // const [searchFood, setSearchFood] = useState({});
+  const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
   const { data: session, status } = useSession();
 
-
-  //* Search API for specific food ingredients & setFoodItems
+  //! Search API for specific food ingredients & setFoodItems
   const handleSearchIngredients = async (e) => {
     e.preventDefault();
     const data = { ingredients: e.target.ingredients.value };
@@ -35,19 +33,14 @@ const AddMealData = () => {
       .catch((err) => console.log("Error searching ingredient in API : ", err));
   };
 
-  //* Add ingredient to the list
+  //! Add ingredient to the list
   const handleAddIngredient = (e) => {
     e.preventDefault();
-    // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    // console.log(
-    //   "ingredient ~ ",
-    //   e.target.amount.value,
-    //   e.target.measurement.value,
-    //   e.target.unit.value,
-    //   chosenFood.name
-    // );
-    // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
+    //! Edit Mode
+    if (chosenFood.unit) removeItem(chosenFood);
+
+    //! Regular Adding
     axios
       .get(
         `https://api.spoonacular.com/food/ingredients/${
@@ -59,12 +52,13 @@ const AddMealData = () => {
         }`
       )
       .then((result) => {
-        setChosenItems([...chosenItems, result.data]);
+        setChosenItems((prev) => [...prev, result.data]);
         setFoodItemModal(false);
+        setEditMode(false);
       });
   };
 
-  //* Add ALL chosen food items to the DB
+  //! Add ALL chosen food items to the DB
   const handleMealInput = async (e) => {
     e.preventDefault();
 
@@ -72,6 +66,7 @@ const AddMealData = () => {
       alert(
         `\nPlease add food that you've eaten using the SEARCH Ingredients on top.`
       );
+      return;
     }
 
     const foodsEaten = chosenItems.map((item) => {
@@ -140,77 +135,40 @@ const AddMealData = () => {
     };
 
     if (data.mealType && data.date && data.foodsEaten.length) {
-      await axios.post("/api/mealData", data).then(() => console.log('added to DB'));
+      await axios
+        .post("/api/mealData", data)
+        .then(() => console.log("added to DB"));
       // router.push("/profile");
     }
   };
 
-  // Show logs
-  useEffect(() => {
-    console.log("food Items ~~ ", foodItems);
-    console.log("Chosen Items ~~ ", chosenItems);
-    console.log("food Items Modal ~~ ", foodItemModal);
-    console.log("Chosen food ~~ ", chosenFood);
-    // console.log("Search Food ~~ ", searchFood);
-    console.log("Quantity ~~ ", itemsQuantity);
-  }, [chosenItems, chosenFood]);
-
-  // const handleSearchIngredients = async (e) => {
-  //   e.preventDefault();
-
-  //   const categoryLabel = [];
-  //   const catData = e.target.category.selectedOptions;
-  //   for (let i = 0; i < catData.length; i++) {
-  //     categoryLabel.push(catData[i].value);
-  //   }
-  //   // const healthLabel = [];
-  //   // const healthData = e.target.healthLabel.selectedOptions;
-  //   // for (let i = 0; i < healthData.length; i++) {
-  //   //   healthLabel.push(healthData[i].value);
-  //   // }
-
-  //   const data = {
-  //     amount: e.target.amount.value,
-  //     // measurement: e.target.measurement.value,
-  //     ingredients: e.target.ingredients.value,
-  //     // healthLabel: healthLabel,
-  //     category: categoryLabel,
-  //     brand: e.target.brand.value,
-  //   };
-
-  //   if (!data.ingredients && !data.brand) {
-  //     alert(`\nPlease provide a food ingredient or a brand`);
-  //   }
-
-  //   if (data.ingredients || data.brand) {
-  //     await axios
-  //       .get(
-  //         `https://api.edamam.com/api/food-database/v2/parser?app_id=c68c9a1d&app_key=4ce474a24202f7f68e0308435ed057c4
-  //       ${
-  //         data.ingredients
-  //           ? `&ingr=${data.amount} serving ${data.ingredients}`
-  //           : ""
-  //       }
-  //       ${data.brand ? "&brand=" + data.brand : ""}
-  //       ${data.category.length ? "&category=" + data.category : ""}`
-  //       )
-  //       .then((result) => {
-  //         setFoodItems([...result.data.parsed, ...result.data.hints]);
-  //       });
-  //   }
-  // };
+  const editItem = (item) => {
+    setFoodItemModal(true);
+    setChosenFood(item);
+    setItemsQuantity(item.amount);
+    setEditMode(true);
+  };
 
   const removeItem = (item) => {
     const pickedFoodItems = chosenItems.filter(
       (singleItem) => singleItem.id !== item.id
     );
     setChosenItems(pickedFoodItems);
+    setFoodItemModal(false);
+    setEditMode(false);
   };
 
-  if (status === "loading") {
-    return <Layout>...Loading</Layout>;
-  }
+  //! Show logs
+  useEffect(() => {
+    console.log("food Items ~~ ", foodItems);
+    console.log("Chosen Items ~~ ", chosenItems);
+    console.log("food Items Modal ~~ ", foodItemModal);
+    console.log("Chosen food ~~ ", chosenFood);
+    console.log("Edit Mode ~~ ", editMode);
+    console.log("Quantity ~~ ", itemsQuantity);
+  }, [chosenItems, chosenFood, editMode]);
 
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
@@ -316,7 +274,7 @@ const AddMealData = () => {
             {chosenItems.length ? (
               <>
                 <h3 className="self-center underline">
-                  To Remove - CLICK on the card.
+                  CLICK on the card to EDIT.
                 </h3>
                 <Grid.Container
                   gap={2}
@@ -327,7 +285,7 @@ const AddMealData = () => {
                     <Grid key={item.id + item.amount + item.unit}>
                       <FoodDisplayCard
                         item={item}
-                        clicked={() => removeItem(item)}
+                        clicked={() => editItem(item)}
                       />
                     </Grid>
                   ))}
@@ -362,7 +320,7 @@ const AddMealData = () => {
           </div>
         ) : null}
 
-        {/* Modal to add Food eaten to Meals */}
+        {/* Add/Edit Food eaten to Meals */}
         <Modal
           aria-labelledby="get-ingredient-info-modal"
           open={foodItemModal}
@@ -399,51 +357,83 @@ const AddMealData = () => {
                   }
                 />
               </Text>
-              <Text>
-                Measurements:
-                <select
-                  name="measurement"
-                  className="mx-2 text-center border rounded cursor-pointer"
-                >
-                  <option value="">Select one</option>
-                  <option value="Piece">Piece</option>
-                  <option value="Slice">Slice</option>
-                  <option value="Whole">Whole</option>
-                  <option value="Serving">Serving</option>
-                  <option value="Pinch">Pinch</option>
-                  <option value="Ounce">Ounce</option>
-                  <option value="Pound">Pound</option>
-                  <option value="Gram">Gram</option>
-                  <option value="Kilogram">Kilogram</option>
-                  <option value="Cup">Cup</option>
-                  <option value="Pint">Pint</option>
-                  <option value="Quart">Quart</option>
-                  <option value="Gallon">Gallon</option>
-                  <option value="Teaspoon">Teaspoon</option>
-                  <option value="Tablespoon">Tablespoon</option>
-                  <option value="Fluid ounce">Fluid ounce</option>
-                  <option value="Milliliter">Milliliter</option>
-                  <option value="Liter">Liter</option>
-                </select>
-                or
-                <input
-                  className="text-end ml-2 border rounded px-1"
-                  size="10"
-                  type="text"
-                  name="unit"
-                  placeholder="input unit"
-                />
-              </Text>
+              {chosenFood.possibleUnits?.length ? (
+                <Text>
+                  Possible Measurements:
+                  <select
+                    name="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer"
+                  >
+                    <option value="">Select one</option>
+                    {chosenFood.possibleUnits.map((unit) => {
+                      return (
+                        <option value={unit} key={unit}>
+                          {unit}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </Text>
+              ) : (
+                <Text>
+                  Measurements:
+                  <select
+                    name="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer"
+                  >
+                    <option value="">Select one</option>
+                    <option value="Piece">Piece</option>
+                    <option value="Slice">Slice</option>
+                    <option value="Whole">Whole</option>
+                    <option value="Serving">Serving</option>
+                    <option value="Pinch">Pinch</option>
+                    <option value="Ounce">Ounce</option>
+                    <option value="Pound">Pound</option>
+                    <option value="Gram">Gram</option>
+                    <option value="Kilogram">Kilogram</option>
+                    <option value="Cup">Cup</option>
+                    <option value="Pint">Pint</option>
+                    <option value="Quart">Quart</option>
+                    <option value="Gallon">Gallon</option>
+                    <option value="Teaspoon">Teaspoon</option>
+                    <option value="Tablespoon">Tablespoon</option>
+                    <option value="Fluid ounce">Fluid ounce</option>
+                    <option value="Milliliter">Milliliter</option>
+                    <option value="Liter">Liter</option>
+                  </select>
+                  or
+                  <input
+                    className="text-end ml-2 border rounded px-1"
+                    size="10"
+                    type="text"
+                    name="unit"
+                    placeholder="input unit"
+                  />
+                </Text>
+              )}
             </Modal.Body>
             <Modal.Footer css={{ justifyContent: "space-between" }}>
               <Button
                 auto
                 flat
                 color="error"
-                onPress={() => setFoodItemModal(false)}
+                onPress={() => {
+                  setFoodItemModal(false);
+                  setEditMode(false);
+                }}
               >
                 Close
               </Button>
+              {editMode ? (
+                <Button
+                  auto
+                  flat
+                  color="error"
+                  onPress={() => removeItem(chosenFood)}
+                >
+                  Remove
+                </Button>
+              ) : null}
               <Button auto>
                 <input type="submit" value="Add" className="cursor-pointer" />
               </Button>
