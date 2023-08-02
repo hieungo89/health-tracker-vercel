@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 
-const MealData = ({ something }) => {
+const MealData = () => {
   const { data: session, status } = useSession();
   const [mealData, setMealData] = useState([]);
   const router = useRouter();
@@ -31,7 +31,6 @@ const MealData = ({ something }) => {
 
   return (
     <div className="py-8">
-      <div>data ~~ {something}</div>
       {mealData.length ? (
         <Table
           aria-label="Sleep, Exercise, Weight Data"
@@ -107,24 +106,24 @@ const MealData = ({ something }) => {
 
 export default MealData;
 
-export async function getServerSideProps() {
-  // const session = await getServerAuthSession(ctx.req, ctx.res);
+// export async function getServerSideProps() {
+// const session = await getServerAuthSession(ctx.req, ctx.res);
 
-  // const { data } = await axios.get(
-  //   `/api/mealData?email=${session?.user.email}`
-  // );
+// const { data } = await axios.get(
+//   `/api/mealData?email=${session?.user.email}`
+// );
 
-  // if (session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //     },
-  //   };
-  // }
+// if (session) {
+//   return {
+//     redirect: {
+//       destination: "/",
+//     },
+//   };
+// }
 
-  return {
-    props: {
-      something: "hi",
-    },
-  };
-}
+// return {
+//   props: {
+//     something: "hi",
+//   },
+// };
+// }

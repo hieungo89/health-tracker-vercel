@@ -4,72 +4,24 @@ import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Grid, Card, Modal, Button, Text } from "@nextui-org/react";
-import FoodCategoryInfo from "../../components/FoodCategoryInfo";
+// import FoodCategoryInfo from "../../components/FoodCategoryInfo";
 import { useState, useEffect } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
 import Popup from "../../components/Popup";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState({});
-  const [chosenItems, setChosenItems] = useState([]);
   const [foodItemModal, setFoodItemModal] = useState(false);
   const [chosenFood, setChosenFood] = useState({});
-  const [searchFood, setSearchFood] = useState({});
   const [itemsQuantity, setItemsQuantity] = useState(1);
+  const [chosenItems, setChosenItems] = useState([]);
+  // const [searchFood, setSearchFood] = useState({});
+
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const handleDataInput = async (e) => {
-    e.preventDefault();
 
-    const foodsEaten = chosenItems.map((item) => {
-      return item.food.label;
-    });
-    const foodsId = chosenItems.map((item) => {
-      return item.food.foodId;
-    });
-    const totalNutrientCount = {
-      calorie: 0,
-      carbohydrate: 0,
-      fat: 0,
-      fiber: 0,
-      protein: 0,
-    };
-
-    await chosenItems.forEach((item) => {
-      let quantity = Object.prototype.hasOwnProperty.call(
-        itemsQuantity,
-        item.food.foodId
-      )
-        ? itemsQuantity[item.food.foodId]
-        : null;
-      totalNutrientCount.calorie += quantity * item.food.nutrients.ENERC_KCAL;
-      totalNutrientCount.carbohydrate += quantity * item.food.nutrients.CHOCDF;
-      totalNutrientCount.fat += quantity * item.food.nutrients.FAT;
-      totalNutrientCount.fiber += quantity * item.food.nutrients.FIBTG;
-      totalNutrientCount.protein += quantity * item.food.nutrients.PROCNT;
-    });
-
-    const data = {
-      email: session.user.email,
-      date: e.target.date.value,
-      mealType: e.target.mealType.value,
-      foodsEaten: foodsEaten,
-      foodsId: foodsId,
-      totalNutrientCount: totalNutrientCount,
-    };
-
-    if (!data.foodsEaten.length) {
-      alert(`\nPlease add food that you've eaten before you submit.`);
-    }
-
-    if (data.mealType && data.date && data.foodsEaten.length) {
-      await axios.post("/api/mealData", data);
-      router.push("/profile");
-    }
-  };
-
-  // TODO: Fix This to use spoonacular
+  //* Search API for specific food ingredients & setFoodItems
   const handleSearchIngredients = async (e) => {
     e.preventDefault();
     const data = { ingredients: e.target.ingredients.value };
@@ -83,17 +35,18 @@ const AddMealData = () => {
       .catch((err) => console.log("Error searching ingredient in API : ", err));
   };
 
-  const handleSearchSpecificFood = (e) => {
+  //* Add ingredient to the list
+  const handleAddIngredient = (e) => {
     e.preventDefault();
-    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    console.log(
-      "ingredient ~ ",
-      e.target.amount.value,
-      e.target.measurement.value,
-      e.target.unit.value,
-      chosenFood.name
-    );
-    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    // console.log(
+    //   "ingredient ~ ",
+    //   e.target.amount.value,
+    //   e.target.measurement.value,
+    //   e.target.unit.value,
+    //   chosenFood.name
+    // );
+    // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
     axios
       .get(
@@ -111,14 +64,96 @@ const AddMealData = () => {
       });
   };
 
+  //* Add ALL chosen food items to the DB
+  const handleMealInput = async (e) => {
+    e.preventDefault();
+
+    if (!chosenItems.length) {
+      alert(
+        `\nPlease add food that you've eaten using the SEARCH Ingredients on top.`
+      );
+    }
+
+    const foodsEaten = chosenItems.map((item) => {
+      return item.amount + " " + item.unit + " " + item.name;
+    });
+    const foodsId = chosenItems.map((item) => {
+      return item.id;
+    });
+
+    const totalNutrientData = {
+      Calories: { quantity: 0, unit: "kcal", perOfDailyNeeds: 0 },
+      Carbohydrates: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Cholesterol: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Fat: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Fiber: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Protein: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      "Saturated Fat": { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Sodium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Sugar: { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Calcium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Choline: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Copper: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Fluoride: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Folate: { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Folic Acid": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      Iron: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Lycopene: { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      Magnesium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Manganese: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Mono Unsaturated Fat": { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Phosphorus: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Poly Unsaturated Fat": { quantity: 0, unit: "g", perOfDailyNeeds: 0 },
+      Potassium: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      Selenium: { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Vitamin A": { quantity: 0, unit: "IU", perOfDailyNeeds: 0 },
+      "Vitamin B1": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B12": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Vitamin B2": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B3": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B5": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin B6": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin C": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin D": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      "Vitamin E": { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+      "Vitamin K": { quantity: 0, unit: "µg", perOfDailyNeeds: 0 },
+      Zinc: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
+    };
+
+    await chosenItems.forEach((item) => {
+      item.nutrition.nutrients.forEach((nutrient) => {
+        if (totalNutrientData[nutrient.name]) {
+          totalNutrientData[nutrient.name].quantity += nutrient.amount;
+          totalNutrientData[nutrient.name].perOfDailyNeeds +=
+            nutrient.percentOfDailyNeeds;
+        }
+      });
+    });
+
+    const data = {
+      email: session.user.email,
+      date: e.target.date.value,
+      mealType: e.target.mealType.value,
+      foodsEaten: foodsEaten,
+      foodsId: foodsId,
+      totalNutrientCount: totalNutrientData,
+    };
+
+    if (data.mealType && data.date && data.foodsEaten.length) {
+      await axios.post("/api/mealData", data).then(() => console.log('added to DB'));
+      // router.push("/profile");
+    }
+  };
+
+  // Show logs
   useEffect(() => {
     console.log("food Items ~~ ", foodItems);
     console.log("Chosen Items ~~ ", chosenItems);
     console.log("food Items Modal ~~ ", foodItemModal);
     console.log("Chosen food ~~ ", chosenFood);
-    console.log("Search Food ~~ ", searchFood);
+    // console.log("Search Food ~~ ", searchFood);
     console.log("Quantity ~~ ", itemsQuantity);
-  }, [chosenItems, searchFood, chosenFood]);
+  }, [chosenItems, chosenFood]);
 
   // const handleSearchIngredients = async (e) => {
   //   e.preventDefault();
@@ -211,7 +246,7 @@ const AddMealData = () => {
               <label htmlFor="ingredients" className="flex">
                 Food/Ingredients
                 <Popup
-                  text="NOT REQUIRED if 'brand' is specified."
+                  text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
                   card={true}
                   placement="top"
                 />
@@ -232,7 +267,7 @@ const AddMealData = () => {
           </form>
 
           {/* Input Data to DB */}
-          <form onSubmit={(e) => handleDataInput(e)} className="flex flex-col">
+          <form onSubmit={(e) => handleMealInput(e)} className="flex flex-col">
             <div className="pt-8">
               <label htmlFor="selectDate">Select Date: </label>
               <input
@@ -281,7 +316,7 @@ const AddMealData = () => {
             {chosenItems.length ? (
               <>
                 <h3 className="self-center underline">
-                  Click on the card to remove from your list.
+                  To Remove - CLICK on the card.
                 </h3>
                 <Grid.Container
                   gap={2}
@@ -289,7 +324,7 @@ const AddMealData = () => {
                   name="chosenFoodItems"
                 >
                   {chosenItems.map((item) => (
-                    <Grid key={item.id}>
+                    <Grid key={item.id + item.amount + item.unit}>
                       <FoodDisplayCard
                         item={item}
                         clicked={() => removeItem(item)}
@@ -334,7 +369,7 @@ const AddMealData = () => {
           onClose={() => setFoodItemModal(false)}
           css={{ cursor: "default" }}
         >
-          <form onSubmit={(e) => handleSearchSpecificFood(e)}>
+          <form onSubmit={(e) => handleAddIngredient(e)}>
             <Modal.Header>
               <Text id="get-ingredient-info-modal" size={32}>
                 {chosenFood.name}
