@@ -135,10 +135,8 @@ const AddMealData = () => {
     };
 
     if (data.mealType && data.date && data.foodsEaten.length) {
-      await axios
-        .post("/api/mealData", data)
-        .then(() => console.log("added to DB"));
-      // router.push("/profile");
+      await axios.post("/api/mealData", data).then(() => setChosenItems([]));
+      router.push("/profile");
     }
   };
 
@@ -157,16 +155,6 @@ const AddMealData = () => {
     setFoodItemModal(false);
     setEditMode(false);
   };
-
-  //! Show logs
-  useEffect(() => {
-    console.log("food Items ~~ ", foodItems);
-    console.log("Chosen Items ~~ ", chosenItems);
-    console.log("food Items Modal ~~ ", foodItemModal);
-    console.log("Chosen food ~~ ", chosenFood);
-    console.log("Edit Mode ~~ ", editMode);
-    console.log("Quantity ~~ ", itemsQuantity);
-  }, [chosenItems, chosenFood, editMode]);
 
   if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");

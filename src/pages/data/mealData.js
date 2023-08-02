@@ -1,129 +1,318 @@
-import { Table } from "@nextui-org/react";
+import { Table, Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
+import { Line } from "../../components/Icons";
 
 const MealData = () => {
   const { data: session, status } = useSession();
   const [mealData, setMealData] = useState([]);
+  const [sortedMealData, setSortedMealData] = useState([]);
+  const [minerals] = useState([
+    "Calcium",
+    "Choline",
+    "Copper",
+    "Fluoride",
+    "Folate",
+    "Folic Acid",
+    "Iron",
+    "Lycopene",
+    "Magnesium",
+    "Manganese",
+    "Phosphorus",
+    "Potassium",
+    "Selenium",
+    "Vitamin A",
+    "Vitamin B1",
+    "Vitamin B2",
+    "Vitamin B3",
+    "Vitamin B5",
+    "Vitamin B6",
+    "Vitamin B12",
+    "Vitamin C",
+    "Vitamin D",
+    "Vitamin E",
+    "Vitamin K",
+    "Zinc",
+  ]);
+
   const router = useRouter();
 
-  const getData = async () => {
+  const getMealData = async () => {
     const { data } = await axios.get(
       `/api/mealData?email=${session?.user.email}`
     );
-    setMealData(data);
+    await setMealData(data);
+  };
+
+  const sortDataByDate = () => {
+    const dates = mealData.map((meal) => {
+      return meal.date;
+    });
+
+    const sortedData = [];
+
+    for (let i = 0; i < dates.length; i++) {
+      if (dates[i] !== dates[i - 1]) {
+        sortedData.push(mealData[i]);
+        sortedData[sortedData.length - 1].mealType = [mealData[i].mealType];
+      } else {
+        sortedData[sortedData.length - 1].foodsEaten = [
+          ...sortedData[sortedData.length - 1].foodsEaten,
+          ...mealData[i].foodsEaten,
+        ];
+        sortedData[sortedData.length - 1].foodsId = [
+          ...sortedData[sortedData.length - 1].foodsId,
+          ...mealData[i].foodsId,
+        ];
+        sortedData[sortedData.length - 1].mealType = [
+          ...sortedData[sortedData.length - 1].mealType,
+          mealData[i].mealType,
+        ];
+
+        const allNutrients =
+          sortedData[sortedData.length - 1].totalNutrientCount;
+
+        for (let nutrient in allNutrients) {
+          sortedData[sortedData.length - 1].totalNutrientCount[
+            nutrient
+          ].quantity += mealData[i].totalNutrientCount[nutrient].quantity;
+          sortedData[sortedData.length - 1].totalNutrientCount[
+            nutrient
+          ].perOfDailyNeeds +=
+            mealData[i].totalNutrientCount[nutrient].perOfDailyNeeds;
+        }
+      }
+    }
+
+    setSortedMealData(sortedData);
   };
 
   useEffect(() => {
     if (!session) return;
-    getData();
+    getMealData();
   }, [session]);
 
-  if (status === "loading") {
-    return <Layout>...Loading</Layout>;
-  }
+  useEffect(() => {
+    if (!mealData) return;
+    sortDataByDate();
+  }, [mealData]);
 
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
     <div className="py-8">
-      {mealData.length ? (
-        <Table
-          aria-label="Sleep, Exercise, Weight Data"
-          className="min-w-fit h-auto text-center"
-        >
-          <Table.Header>
-            <Table.Column width="4" css={{ textAlign: "center" }} allowsSorting>
-              Date
-            </Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Meal Type</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>
-              Foods Eaten
-            </Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Calorie</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>
-              Carbohydrate
-            </Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Fat</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Fiber</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Protein</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {mealData.map((data) => (
-              <Table.Row key={data._id}>
-                <Table.Cell>{data.date}</Table.Cell>
-                <Table.Cell>{data.mealType}</Table.Cell>
-                <Table.Cell>
-                  {data.foodsEaten.map((food) =>
-                    food === data.foodsEaten[data.foodsEaten.length - 1] ? (
-                      <>{food}</>
-                    ) : (
-                      <>{food}, </>
-                    )
-                  )}
-                </Table.Cell>
-                <Table.Cell>
-                  {data.totalNutrientCount.calorie.toFixed()} kcal
-                </Table.Cell>
-                <Table.Cell>
-                  {data.totalNutrientCount.carbohydrate.toFixed()} g
-                </Table.Cell>
-                <Table.Cell>
-                  {data.totalNutrientCount.fat.toFixed()} g
-                </Table.Cell>
-                <Table.Cell>
-                  {data.totalNutrientCount.fiber.toFixed()} g
-                </Table.Cell>
-                <Table.Cell>
-                  {data.totalNutrientCount.protein.toFixed()} g
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-          {mealData.length > 10 ? (
-            <Table.Pagination shadow noMargin align="center" rowsPerPage={10} />
-          ) : null}
-        </Table>
-      ) : (
-        <div className="flex justify-center py-4 font-semibold text-lg">
-          You Don&apos;t have any data yet. Go to
-          <Link
-            href="/data/addMealData"
-            className="text-red-700 font-bold px-1 hover:underline hover:underline-offset-2"
-          >
-            Input Meal Data
-          </Link>
-          to get add data about yourself!
+      {sortedMealData.length ? (
+        <div className="flex justify-evenly">
+          {sortedMealData.map((data, index) => {
+            return (
+              <Card
+                key={index + data.date}
+                css={{ width: 360, height: "auto" }}
+              >
+                <Card.Header css={{ display: "flex", flexDirection: "column" }}>
+                  <h4>{data.date}</h4>
+                </Card.Header>
+                <Card.Body css={{ border: "solid", borderWidth: 1 }}>
+                  <h1>Nutrition Facts</h1>
+                  <Line length="short" />
+                  <Line length="short" />
+                  <h6 className="m-0">Total Daily Nutritioinal Value</h6>
+                  {/* //!Calories */}
+                  <h2 className="flex justify-between">
+                    <span>Calories </span>
+                    <span>
+                      {data.totalNutrientCount.Calories.quantity.toFixed()}
+                    </span>
+                  </h2>
+                  <Line length="short" />
+
+                  {/* //! Fats */}
+                  <div className="flex justify-between">
+                    <span>
+                      <b className="font-bold">Total Fat </b>{" "}
+                      {data.totalNutrientCount.Fat.quantity.toFixed()}
+                      {data.totalNutrientCount.Fat.unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount.Fat.perOfDailyNeeds.toFixed()}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line length="medium" />
+                  <div className="flex justify-between pl-8">
+                    <span>
+                      Saturated Fat{" "}
+                      {data.totalNutrientCount[
+                        "Saturated Fat"
+                      ].quantity.toFixed()}
+                      {data.totalNutrientCount["Saturated Fat"].unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount["Saturated Fat"].perOfDailyNeeds}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line length="medium" />
+                  <div className="pl-8">
+                    Mono Unsaturated Fat{" "}
+                    {data.totalNutrientCount[
+                      "Mono Unsaturated Fat"
+                    ].quantity.toFixed()}
+                    {data.totalNutrientCount["Mono Unsaturated Fat"].unit}
+                  </div>
+                  <Line length="medium" />
+                  <div className="pl-8">
+                    Poly Unsaturated Fat{" "}
+                    {data.totalNutrientCount[
+                      "Poly Unsaturated Fat"
+                    ].quantity.toFixed()}
+                    {data.totalNutrientCount["Poly Unsaturated Fat"].unit}
+                  </div>
+                  <Line length="medium" />
+                  <div className="pl-8">
+                    Trans Fat{" "}
+                    {Number(
+                      data.totalNutrientCount.Fat.quantity -
+                        (data.totalNutrientCount["Saturated Fat"].quantity +
+                          data.totalNutrientCount["Mono Unsaturated Fat"]
+                            .quantity +
+                          data.totalNutrientCount["Poly Unsaturated Fat"]
+                            .quantity)
+                    ).toFixed(2)}
+                    {data.totalNutrientCount.Fat.unit}
+                  </div>
+                  <Line length="long" />
+
+                  {/* //!Cholesterol */}
+                  <div className="flex justify-between">
+                    <span>
+                      <b className="font-bold">Cholesterol </b>{" "}
+                      {data.totalNutrientCount.Cholesterol.quantity.toFixed()}
+                      {data.totalNutrientCount.Cholesterol.unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount.Cholesterol.perOfDailyNeeds.toFixed()}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line length="long" />
+                  {/* //! Sodium */}
+                  <div className="flex justify-between">
+                    <span>
+                      <b className="font-bold">Sodium </b>{" "}
+                      {data.totalNutrientCount.Sodium.quantity.toFixed()}
+                      {data.totalNutrientCount.Sodium.unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount.Sodium.perOfDailyNeeds.toFixed()}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line length="long" />
+
+                  {/* //! Carbohydrates, Fiber, Sugar */}
+                  <div className="flex justify-between">
+                    <span>
+                      <b className="font-bold">Total Carbohydrate </b>{" "}
+                      {data.totalNutrientCount.Carbohydrates.quantity.toFixed()}
+                      {data.totalNutrientCount.Carbohydrates.unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount.Carbohydrates.perOfDailyNeeds.toFixed()}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line length="medium" />
+                  <div className="flex justify-between pl-8">
+                    <span>
+                      Dietary Fiber{" "}
+                      {data.totalNutrientCount.Fiber.quantity.toFixed()}
+                      {data.totalNutrientCount.Fiber.unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount.Fiber.perOfDailyNeeds.toFixed()}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line length="medium" />
+                  <div className="pl-8">
+                    Total Sugars{" "}
+                    {data.totalNutrientCount.Sugar.quantity.toFixed()}
+                    {data.totalNutrientCount.Sugar.unit}
+                  </div>
+                  <Line length="long" />
+
+                  {/* //!Protein */}
+                  <div className="flex justify-between">
+                    <span>
+                      <b className="font-bold">Protein </b>{" "}
+                      {data.totalNutrientCount.Protein.quantity.toFixed()}
+                      {data.totalNutrientCount.Protein.unit}
+                    </span>
+                    <span>
+                      {data.totalNutrientCount.Protein.perOfDailyNeeds.toFixed()}
+                      &#37;
+                    </span>
+                  </div>
+                  <Line className="-mt-[85px]" length="short" />
+
+                  {/* //!All Other minerals & vitamins */}
+                  {minerals.map((mineral, index) => {
+                    if (data.totalNutrientCount[mineral].quantity === 0) return;
+
+                    return (
+                      <div key={mineral}>
+                        <div className="flex justify-between ">
+                          <span>
+                            {mineral}{" "}
+                            {data.totalNutrientCount[
+                              mineral
+                            ].quantity.toFixed() <= 1
+                              ? data.totalNutrientCount[
+                                  mineral
+                                ].quantity.toFixed(2)
+                              : data.totalNutrientCount[
+                                  mineral
+                                ].quantity.toFixed()}
+                            {data.totalNutrientCount[mineral].unit}
+                          </span>
+                          <span>
+                            {data.totalNutrientCount[
+                              mineral
+                            ].perOfDailyNeeds.toFixed()}
+                            &#37;
+                          </span>
+                        </div>
+                        {minerals.length - 1 === index ? null : (
+                          <Line length="long" />
+                        )}
+                      </div>
+                    );
+                  })}
+                </Card.Body>
+                <Card.Footer>
+                  <Text>
+                    <b>All Recorded Foods Eaten: </b>{" "}
+                    {data.foodsEaten.map((food, index) => {
+                      if (index === data.foodsEaten.length - 1) {
+                        return <span key={index + food}>and {food}.</span>;
+                      }
+                      return <span key={index + food}>{food},&nbsp;</span>;
+                    })}
+                  </Text>
+                </Card.Footer>
+              </Card>
+            );
+          })}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
 
 export default MealData;
-
-// export async function getServerSideProps() {
-// const session = await getServerAuthSession(ctx.req, ctx.res);
-
-// const { data } = await axios.get(
-//   `/api/mealData?email=${session?.user.email}`
-// );
-
-// if (session) {
-//   return {
-//     redirect: {
-//       destination: "/",
-//     },
-//   };
-// }
-
-// return {
-//   props: {
-//     something: "hi",
-//   },
-// };
-// }

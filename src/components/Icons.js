@@ -70,3 +70,28 @@ export const Profile = ({ className }) => (
     />
   </svg>
 );
+
+export const Line = ({ className, length }) => {
+  if (length === "short")
+    return (
+      <h1 className={`overflow-hidden text-8xl -mt-[100px] mb-2 ${className}`}>
+        _______
+      </h1>
+    );
+  if (length === "medium")
+    return (
+      <div
+        className={`overflow-hidden -mt-[20px] -mb-[4px] text-end ${className}`}
+      >
+        ____________________________________
+      </div>
+    );
+  if (length === "long")
+    return (
+      <div
+        className={`overflow-hidden -mt-[20px] -mb-[4px] text-end ${className}`}
+      >
+        ________________________________________
+      </div>
+    );
+};
