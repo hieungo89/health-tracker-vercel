@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Grid, Card, Modal, Button, Text } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
 import Popup from "../../components/Popup";
 
