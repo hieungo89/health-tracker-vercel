@@ -8,10 +8,10 @@ const userSchema = new Schema({
   image: String,
   birthday: Date,
   height: {
-    foot: Number,
-    inch: Number,
+    height_ft: Number,
+    height_in: Number,
   },
-  dietaryGoals: { type: String, required: true },
+  dietaryGoals: [{ type: String, required: true }],
   dietaryRestrictions: { type: String, default: null },
   healthComplications: { type: String, default: "None" },
 });

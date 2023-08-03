@@ -13,38 +13,31 @@ export default async function handler(req, res) {
   await mongooseConnect();
 
   if (req.method === "POST") {
-    const {
-      googleName,
-      email,
-      image,
-      firstName,
-      lastName,
-      birthday,
-      height_ft,
-      height_in,
-      dietary_goals,
-      dietary_restrictions,
-      health_complications,
-    } = req.body;
+    const data = {
+      googleName: req.body.googleName,
+      email: req.body.email,
+      image: req.body.image,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      birthday: req.body.birthday,
+      height: {
+        height_ft: req.body.height_ft,
+        height_in: req.body.height_in,
+      },
+      dietaryGoals: req.body.dietaryGoals,
+      dietaryRestrictions: req.body.dietaryRestrictions
+        ? req.body.dietaryRestrictions
+        : "None",
+      healthComplications: req.body.healthComplications
+        ? req.body.healthComplications
+        : "None",
+    };
 
     try {
-      await User.create({
-        googleName,
-        email,
-        image,
-        firstName,
-        lastName,
-        birthday,
-        height_ft,
-        height_in,
-        dietaryGoals: dietary_goals,
-        dietaryRestrictions: dietary_restrictions ? dietary_restrictions : null,
-        healthComplications: health_complications
-          ? health_complications
-          : "none",
-      }).then((result) => {
-        res.status(200).json(result);
+      await User.findOneAndUpdate({ email: req.body.email }, data, {
+        upsert: true,
       });
+      res.status(200).json();
     } catch (err) {
       console.log("error ~ ", err.message);
     }

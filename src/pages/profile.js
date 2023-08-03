@@ -10,12 +10,14 @@ import { useFormatter } from "next-intl";
 import Link from "next/link";
 import MealData from "./data/mealData";
 import SEW from "./data/sew";
+import { Setting } from "../components/Icons";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
   const [age, setAge] = useState("");
   const [sewData, setSewData] = useState(false);
   const [mealsData, setMealsData] = useState(false);
+
   const router = useRouter();
   const { data: session, status } = useSession();
   const format = useFormatter();
@@ -43,20 +45,18 @@ const Profile = () => {
     date();
   }, [age]);
 
-  if (status === "loading") {
-    return <Layout>...Loading</Layout>;
-  }
-
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
     <>
       <Head>
-        <title>Health Tracker - Profile</title>
+        <title>HT - Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Layout>
+        {/* //! Profile Photo, Name, Email, Age, Settings */}
         <div>
           <div className="flex justify-center items start">
             <div className="rounded border w-32 h-32 mr-6">
@@ -74,8 +74,20 @@ const Profile = () => {
               <div className="py-4">Email: {userProfile.email}</div>
               <div>Age: {age}</div>
             </div>
+            <Link
+              href={{
+                pathname: "/AccountSettings",
+                query: {
+                  type: "update",
+                },
+              }}
+              as="/AccountSettings"
+            >
+              <Setting className="p-0.5 ml-4" />
+            </Link>
           </div>
 
+          {/* //! Dietary & Health */}
           <div className="grid grid-cols-4 my-12">
             <div className="col-span-4">
               <span className="text-2xl">Your Dietary Goals:&nbsp;</span>
@@ -97,7 +109,7 @@ const Profile = () => {
         </div>
 
         <div className="flex px-4 justify-around">
-          {/* Input Data */}
+          {/*//! Input Data Section */}
           <div className="flex flex-col items-center p-4">
             Input data
             <Link href="/data/addHealthData">
@@ -112,7 +124,7 @@ const Profile = () => {
             </Link>
           </div>
 
-          {/* Show Data */}
+          {/*//! Show Data Section */}
           <div className="flex flex-col items-center p-4">
             View my Progress
             <Button

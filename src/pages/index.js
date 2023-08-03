@@ -88,7 +88,16 @@ export default function Home() {
               className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded
               hover:bg-green-400 hover:font-bold"
             >
-              <Link href="/AccountCreation">Setup Profile</Link>
+              <Link
+                href={{
+                  pathName: "/AccountSettings",
+                  query: {
+                    type: "create",
+                  },
+                }}
+              >
+                Setup Profile
+              </Link>
             </button>
           </>
         )}
