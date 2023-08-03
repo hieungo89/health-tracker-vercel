@@ -8,9 +8,9 @@ import { Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
+import { Setting } from "../components/Icons";
 import MealData from "./data/mealData";
 import SEW from "./data/sew";
-import { Setting } from "../components/Icons";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -47,112 +47,113 @@ const Profile = () => {
 
   if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
+  if (!userProfile) router.push("/");
 
-  return (
-    <>
-      <Head>
-        <title>HT - Profile</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+  if (userProfile.firstName)
+    return (
+      <>
+        <Head>
+          <title>HT - Profile</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <Layout>
-        {/* //! Profile Photo, Name, Email, Age, Settings */}
-        <div>
-          <div className="flex justify-center items start">
-            <div className="rounded border w-32 h-32 mr-6">
-              <img
-                src={userProfile.image}
-                alt="profile"
-                className="w-full h-full"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <div>
-                Name: {userProfile.firstName} {userProfile.lastName}
+        <Layout>
+          {/* //! Profile Photo, Name, Email, Age, Settings */}
+          <div>
+            <div className="flex justify-center items start">
+              <div className="rounded border w-32 h-32 mr-6">
+                <img
+                  src={userProfile.image}
+                  alt="profile"
+                  className="w-full h-full"
+                />
               </div>
-              <div className="py-4">Email: {userProfile.email}</div>
-              <div>Age: {age}</div>
+
+              <div className="flex flex-col">
+                <div>
+                  Name: {userProfile.firstName} {userProfile.lastName}
+                </div>
+                <div className="py-4">Email: {userProfile.email}</div>
+                <div>Age: {age}</div>
+              </div>
+              <Link
+                href={{
+                  pathname: "/AccountSettings",
+                  query: {
+                    type: "update",
+                  },
+                }}
+              >
+                <Setting className="p-0.5 ml-4" />
+              </Link>
             </div>
-            <Link
-              href={{
-                pathname: "/AccountSettings",
-                query: {
-                  type: "update",
-                },
-              }}
-              as="/AccountSettings"
-            >
-              <Setting className="p-0.5 ml-4" />
-            </Link>
+
+            {/* //! Dietary & Health */}
+            <div className="grid grid-cols-4 my-12">
+              <div className="col-span-4">
+                <span className="text-2xl">Your Dietary Goals:&nbsp;</span>
+                {userProfile.dietaryGoals}
+              </div>
+              <div className="col-span-2">
+                <span className="text-2xl">
+                  Current Dietary Restrictions:&nbsp;
+                </span>
+                {userProfile.dietaryRestrictions
+                  ? userProfile.dietaryRestrictions
+                  : "none"}
+              </div>
+              <div className="col-span-2">
+                <span className="text-2xl">Health Complications:&nbsp;</span>
+                {userProfile.healthComplications}
+              </div>
+            </div>
           </div>
 
-          {/* //! Dietary & Health */}
-          <div className="grid grid-cols-4 my-12">
-            <div className="col-span-4">
-              <span className="text-2xl">Your Dietary Goals:&nbsp;</span>
-              {userProfile.dietaryGoals}
+          <div className="flex px-4 justify-around">
+            {/*//! Input Data Section */}
+            <div className="flex flex-col items-center p-4">
+              Input data
+              <Link href="/data/addHealthData">
+                <Button className="m-4 hover:text-black hover:bg-green-500 ">
+                  Input Wellness Data
+                </Button>
+              </Link>
+              <Link href="/data/addMealData">
+                <Button className="m-4 hover:text-black hover:bg-green-500">
+                  Input Meals
+                </Button>
+              </Link>
             </div>
-            <div className="col-span-2">
-              <span className="text-2xl">
-                Current Dietary Restrictions:&nbsp;
-              </span>
-              {userProfile.dietaryRestrictions
-                ? userProfile.dietaryRestrictions
-                : "none"}
-            </div>
-            <div className="col-span-2">
-              <span className="text-2xl">Health Complications:&nbsp;</span>
-              {userProfile.healthComplications}
-            </div>
-          </div>
-        </div>
 
-        <div className="flex px-4 justify-around">
-          {/*//! Input Data Section */}
-          <div className="flex flex-col items-center p-4">
-            Input data
-            <Link href="/data/addHealthData">
-              <Button className="m-4 hover:text-black hover:bg-green-500 ">
-                Input Wellness Data
+            {/*//! Show Data Section */}
+            <div className="flex flex-col items-center p-4">
+              View my Progress
+              <Button
+                className="m-4 hover:text-black hover:bg-green-500"
+                onPress={() => {
+                  setMealsData(false);
+                  setSewData(!sewData);
+                }}
+              >
+                Sleep/Exercise/Weight
               </Button>
-            </Link>
-            <Link href="/data/addMealData">
-              <Button className="m-4 hover:text-black hover:bg-green-500">
-                Input Meals
+              <Button
+                className="m-4 hover:text-black hover:bg-green-500"
+                onPress={() => {
+                  setSewData(false);
+                  setMealsData(!mealsData);
+                }}
+              >
+                Meals
               </Button>
-            </Link>
+            </div>
           </div>
 
-          {/*//! Show Data Section */}
-          <div className="flex flex-col items-center p-4">
-            View my Progress
-            <Button
-              className="m-4 hover:text-black hover:bg-green-500"
-              onPress={() => {
-                setMealsData(false);
-                setSewData(!sewData);
-              }}
-            >
-              Sleep/Exercise/Weight
-            </Button>
-            <Button
-              className="m-4 hover:text-black hover:bg-green-500"
-              onPress={() => {
-                setSewData(false);
-                setMealsData(!mealsData);
-              }}
-            >
-              Meals
-            </Button>
-          </div>
-        </div>
-
-        {sewData ? <SEW /> : null}
-        {mealsData ? <MealData /> : null}
-      </Layout>
-    </>
-  );
+          {sewData ? <SEW /> : null}
+          {mealsData ? <MealData /> : null}
+        </Layout>
+      </>
+    );
 };
 
 export default Profile;

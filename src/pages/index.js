@@ -90,7 +90,7 @@ export default function Home() {
             >
               <Link
                 href={{
-                  pathName: "/AccountSettings",
+                  pathname: "/AccountSettings",
                   query: {
                     type: "create",
                   },

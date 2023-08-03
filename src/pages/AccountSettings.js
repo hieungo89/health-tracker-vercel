@@ -1,10 +1,10 @@
-import Head from "next/head";
-import Layout from "../components/Layout";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Layout from "../components/Layout";
 
 const AccountCreation = ({ type }) => {
   const [option, setOption] = useState("");
@@ -68,28 +68,12 @@ const AccountCreation = ({ type }) => {
     if (type === "update") getUserData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("option ~ ", option);
-  //   console.log("userProfile ~ ", userProfile);
-  // }, [option, userProfile]);
-
   if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
-  //! Any other method of entering this section will be rejected
-  if (type === null)
-    return (
-      <Layout className="text-center">
-        <h1>Error Please try again from the profile tab</h1>
-        <button
-          className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded
-        hover:bg-green-400 hover:font-bold"
-        >
-          <Link href="/profile">Profile</Link>
-        </button>
-      </Layout>
-    );
+  //! Redirect back to profile if user refreshes page
+  if (userProfile === "") router.push("/profile");
 
-  //! New Account Settings
+  //! New Account Profile Setup
   if (session && option === "create") {
     return (
       <>
@@ -170,14 +154,39 @@ const AccountCreation = ({ type }) => {
               <div className="flex flex-col">
                 {/* Dietary Goals */}
                 <label htmlFor="dietaryGoals">*Dietary Goals:</label>
-                <textarea
-                  className="p-2 bg-blue-100"
-                  type="text"
-                  rows="4"
-                  cols="40"
-                  name="dietaryGoals"
-                  required
-                />
+                <ol className="flex">
+                  <li className="mr-8">
+                    <input
+                      className="p-2 bg-blue-100"
+                      type="text"
+                      rows="4"
+                      cols="40"
+                      name="dietaryGoals1"
+                      placeholder="Goal 1"
+                      required
+                    />
+                  </li>
+                  <li className="mr-8">
+                    <input
+                      className="p-2 bg-blue-100"
+                      type="text"
+                      rows="4"
+                      cols="40"
+                      name="dietaryGoals2"
+                      placeholder="(Optional)"
+                    />
+                  </li>
+                  <li>
+                    <input
+                      className="p-2 bg-blue-100"
+                      type="text"
+                      rows="4"
+                      cols="40"
+                      name="dietaryGoals3"
+                      placeholder="(Optional)"
+                    />
+                  </li>
+                </ol>
                 {/* Dietary Restrictions */}
                 <label htmlFor="dietaryRestrictions">
                   Dietary Restrictions (<em>optional</em>):
