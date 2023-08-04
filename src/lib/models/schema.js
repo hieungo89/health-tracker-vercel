@@ -1,7 +1,7 @@
 import { model, Schema, models } from "mongoose";
 
 const userSchema = new Schema({
-  googleName: { type: String, required: true },
+  googleName: { type: String },
   firstName: String,
   lastName: String,
   email: { type: String, required: true, unique: true, lowercase: true },
@@ -12,7 +12,7 @@ const userSchema = new Schema({
     height_in: Number,
   },
   dietaryGoals: [{ type: String, required: true }],
-  dietaryRestrictions: { type: String, default: null },
+  dietaryRestrictions: { type: String, default: "None" },
   healthComplications: { type: String, default: "None" },
 });
 export const User = models.User || model("User", userSchema);
