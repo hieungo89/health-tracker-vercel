@@ -35,6 +35,10 @@ const AccountCreation = ({ type }) => {
       dietaryRestrictions: e.target.dietaryRestrictions.value,
       healthComplications: e.target.healthComplications.value,
     };
+    console.log(
+      "🚀 ~ file: AccountSettings.js:38 ~ handleSubmit ~ data:",
+      data
+    );
 
     axios
       .post("./api/user", data)
