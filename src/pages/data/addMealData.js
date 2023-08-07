@@ -185,31 +185,37 @@ const AddMealData = () => {
           {/* Search Food */}
           <form
             onSubmit={(e) => handleSearchIngredients(e)}
-            className="flex max-w-7xl mt-12"
+            className="flex flex-col max-w-7xl mt-12"
           >
-            <div className="flex justify-start items-center">
-              {/* Ingredients */}
-              <label htmlFor="ingredients" className="flex">
-                Food/Ingredients
-                <Popup
-                  text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
-                  card={true}
-                  placement="top"
+            <p className="text-lg font-semibold pb-2">
+              This search feature is specifically for searching food ingredients
+              only. Specific foods may be added in the future.
+            </p>
+            <div className="flex">
+              <div className="flex justify-start items-center border rounded px-4">
+                {/* Ingredients */}
+                <label htmlFor="ingredients" className="flex">
+                  Food Ingredients
+                  <Popup
+                    text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
+                    card={true}
+                    placement="top"
+                  />
+                  :
+                </label>
+                <input
+                  className="text-center mx-2"
+                  type="text"
+                  name="ingredients"
+                  placeholder="spaghetti"
                 />
-                :
-              </label>
+              </div>
               <input
-                className="text-center mx-2"
-                type="text"
-                name="ingredients"
-                placeholder="spaghetti"
+                className="text-lg border-2 rounded-xl py-2 px-4 ml-8 hover:bg-green-400 hover:border-black"
+                type="submit"
+                value="Search"
               />
             </div>
-            <input
-              className="text-lg border-2 rounded-xl py-2 px-4 ml-8 hover:bg-green-400 hover:border-black"
-              type="submit"
-              value="Search"
-            />
           </form>
 
           {/* Input Data to DB */}
