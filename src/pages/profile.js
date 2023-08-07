@@ -59,8 +59,8 @@ const Profile = () => {
 
         <Layout className="flex flex-col items-center">
           {/* //! Profile Photo, Name, Email, Age, Height, Settings */}
-          <div className="flex justify-center">
-            <div className="w-40 h-auto mr-6">
+          <div className="flex sm:flex-col">
+            <div className="w-40 h-40 mr-6 md:w-28 md:h-28 sm:w-44 sm:h-44 sm:self-center sm:mb-2">
               <img
                 src={userProfile.image}
                 alt="profile"
@@ -68,12 +68,12 @@ const Profile = () => {
               />
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col sm:text-sm">
               <div>
                 Name: {userProfile.firstName} {userProfile.lastName}
               </div>
-              <div className="py-4">Email: {userProfile.email}</div>
-              <div className="pb-4">Age: {age}</div>
+              <div className="py-4 md:py-1">Email: {userProfile.email}</div>
+              <div className="pb-4 md:py-1">Age: {age}</div>
               <div>
                 Height: {userProfile.height.height_ft}ft.{" "}
                 {userProfile.height.height_in}in.
@@ -88,83 +88,99 @@ const Profile = () => {
                 },
               }}
             >
-              <Setting className="p-0.5 ml-4" />
+              <Setting className="p-0.5 ml-4 md:text-xl sm:text-xs sm:p-0 sm:ml-0 sm:mt-2" />
             </Link>
           </div>
 
           {/* //! Dietary & Health */}
           <div className="flex p-2 my-12 w-full min-h-[8rem] max-w-4xl border rounded">
-            <div className="w-1/3 pl-2">
-              <span className="text-2xl font-semibold">
+            <div className="w-1/3 pl-2 md:w-2/5">
+              <span className="text-2xl font-semibold lg:text-xl md:text-base sm:text-sm">
                 Your Dietary Goals:&nbsp;
               </span>
               {userProfile?.dietaryGoals?.map((goal) => {
                 return (
-                  <li key={goal} className="pl-2">
+                  <li key={goal} className="md:text-sm sm:text-xs">
                     {goal}
                   </li>
                 );
               })}
             </div>
-            <div className="w-2/3 pl-4">
-              <div className="">
-                <span className="text-2xl font-semibold pr-4">
+            <div className="w-2/3 pl-4 md:w-3/5">
+              <div className="sm:flex sm:flex-col">
+                <span className="text-2xl font-semibold pr-4 lg:text-xl md:text-base sm:text-sm">
                   Current Dietary Restrictions:&nbsp;
                 </span>
-                {userProfile.dietaryRestrictions
-                  ? userProfile.dietaryRestrictions
-                  : "none"}
+                <span className="md:text-sm sm:text-xs sm:py-1">
+                  {userProfile.dietaryRestrictions
+                    ? userProfile.dietaryRestrictions
+                    : "none"}
+                </span>
               </div>
-              <div className="">
-                <span className="text-2xl font-semibold pr-4">
+              <div className="sm:flex sm:flex-col">
+                <span className="text-2xl font-semibold pr-4 lg:text-xl md:text-base sm:text-sm">
                   Health Complications:&nbsp;
                 </span>
-                {userProfile.healthComplications}
+                <span className="md:text-sm sm:text-xs sm:py-1">
+                  {userProfile.healthComplications}
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="flex px-4 justify-around">
+          <div className="flex sm:flex-col">
             {/*//! Input Data Section */}
-            <div className="flex flex-col items-center p-4">
-              <span className="text-xl font-bold uppercase underline">
+            <div className="flex flex-col items-center px-4 ">
+              <span className="text-xl font-bold uppercase underline sm:text-base">
                 Input data
               </span>
-              <Link href="/data/addHealthData">
-                <Button className="m-4 hover:text-black hover:bg-green-500 ">
+              <button
+                className="w-full m-4 border-2 rounded-lg p-2 font-semibold bg-white/80
+              hover:text-black hover:bg-green-500
+              md:text-sm sm:text-xs"
+              >
+                <Link href="/data/addHealthData" className="text-black">
                   Input Wellness Data
-                </Button>
-              </Link>
-              <Link href="/data/addMealData">
-                <Button className="m-4 hover:text-black hover:bg-green-500">
+                </Link>
+              </button>
+              <button
+                className="w-full m-4 border-2 rounded-lg p-2 font-semibold bg-white/80
+              hover:text-black hover:bg-green-500
+              md:text-sm sm:text-xs"
+              >
+                <Link href="/data/addMealData" className="text-black">
                   Input Meals
-                </Button>
-              </Link>
+                </Link>
+              </button>
             </div>
 
             {/*//! Show Data Section */}
-            <div className="flex flex-col items-center p-4">
-              <span className="text-xl font-bold uppercase underline">
+            <div className="flex flex-col items-center px-4 ">
+              <span className="text-xl font-bold uppercase underline sm:text-base">
                 View my Progress
               </span>
-              <Button
-                className="m-4 hover:text-black hover:bg-green-500"
-                onPress={() => {
+              <button
+                className="w-full m-4 border-2 rounded-lg p-2 font-semibold bg-white/80 text-black
+                hover:text-black hover:bg-green-500
+                md:text-sm sm:text-xs"
+                onClick={() => {
                   setMealsData(false);
                   setSewData(!sewData);
                 }}
               >
                 Sleep/Exercise/Weight
-              </Button>
-              <Button
-                className="m-4 hover:text-black hover:bg-green-500"
-                onPress={() => {
+              </button>
+              <button
+                className="w-full m-4 border-2 rounded-lg p-2 font-semibold bg-white/80 text-black
+                hover:text-black hover:bg-green-500
+                md:text-sm sm:text-xs"
+                onClick={() => {
                   setSewData(false);
                   setMealsData(!mealsData);
                 }}
               >
                 Meals
-              </Button>
+              </button>
             </div>
           </div>
 
