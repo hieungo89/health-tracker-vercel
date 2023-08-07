@@ -65,17 +65,17 @@ const AddHealthData = () => {
       </Head>
 
       <Layout className="flex flex-col items-center">
-        <h1 className="text-4xl underline">Data Input</h1>
+        <h1 className="underline">Data Input</h1>
 
-        <div className="my-4 p-4">
+        <div className="my-4">
           <h4>Please fill out ALL fields in order to record your data.</h4>
           <li>
             Put 0&apos;s for any data you <b>don&apos;t</b> want to record
           </li>
           <br />
           <em>
-            *Warning: Adding data on the same date will override the previous
-            data.
+            <b className="text-red-600">*Warning: </b>Adding data on the same
+            date will override the previous data.
           </em>
         </div>
 
@@ -83,6 +83,7 @@ const AddHealthData = () => {
           onSubmit={(e) => handleDataInput(e)}
           className="flex flex-col border rounded px-16 p-4"
         >
+          {/* Date */}
           <div className="grid grid-cols-2 py-4">
             <label htmlFor="date">Select Date: </label>
             <input
@@ -93,6 +94,8 @@ const AddHealthData = () => {
               className="text-center"
             />
           </div>
+
+          {/* Exercise */}
           <div className="grid grid-cols-2 py-4">
             <label htmlFor="exercise">Exercise:</label>
             <div>
@@ -116,6 +119,8 @@ const AddHealthData = () => {
               Minutes
             </div>
           </div>
+
+          {/* Sleep */}
           <div className="grid grid-cols-2 py-4">
             <label htmlFor="sleep">Sleep:</label>
             <div>
@@ -139,6 +144,8 @@ const AddHealthData = () => {
               Minutes
             </div>
           </div>
+
+          {/* Weight */}
           <div className="flex justify-between py-4">
             <label htmlFor="weight">Weight:</label>
             <div>
@@ -159,15 +166,15 @@ const AddHealthData = () => {
               />
             </div>
           </div>
-          {/* <div className="flex justify-between"> */}
+
           <input
-            className="text-2xl p-2 border-2 rounded hover:border-black hover:bg-green-400"
+            className="text-2xl bg-white/70 p-2 border-2 rounded hover:border-black hover:bg-green-400"
             type="submit"
             value="Record Data"
           />
           {/* </div> */}
         </form>
-        <button className="text-lg text-gray-900 m-4 p-2 border rounded font hover:border-black hover:bg-green-400">
+        <button className="text-lg bg-white/70 text-gray-900 m-4 p-2 border rounded font hover:border-black hover:bg-green-400">
           <Link href="/profile" className="text-black">
             Return to Profile
           </Link>
