@@ -305,30 +305,31 @@ const AddMealData = () => {
           </div>
 
           {/* Right Side - Display Food Cards */}
-          {foodItems.results?.length ? (
-            <div className="p-2 border rounded-lg mx-4">
-              <Grid.Container gap={1} justify="center">
-                <h4>
-                  <span className="text-red-600">DISCLAIMER:</span> Due to usage
-                  of the FREE API, there is a limited amount of API usage per
-                  day. Once the limit is reached, this will NOT display any
-                  results.
-                </h4>
-                {foodItems.results.map((item) => (
-                  <Grid key={item.id}>
-                    <FoodDisplayCard
-                      item={item}
-                      clicked={() => {
-                        setFoodItemModal(true);
-                        setChosenFood(item);
-                        setItemsQuantity(1);
-                      }}
-                    />
-                  </Grid>
-                ))}
-              </Grid.Container>
-            </div>
-          ) : null}
+          <div>
+            <h4 className="pl-4">
+              <span className="text-red-600">*DISCLAIMER:</span> Due to usage of
+              the FREE API, there is a limited amount of API usage per day. Once
+              the limit is reached, this will NOT display any results.
+            </h4>
+            {foodItems.results?.length ? (
+              <div className="p-2 border rounded-lg mx-4">
+                <Grid.Container gap={1} justify="center">
+                  {foodItems.results.map((item) => (
+                    <Grid key={item.id}>
+                      <FoodDisplayCard
+                        item={item}
+                        clicked={() => {
+                          setFoodItemModal(true);
+                          setChosenFood(item);
+                          setItemsQuantity(1);
+                        }}
+                      />
+                    </Grid>
+                  ))}
+                </Grid.Container>
+              </div>
+            ) : null}
+          </div>
         </div>
 
         {/* Add/Edit Food eaten to Meals */}
