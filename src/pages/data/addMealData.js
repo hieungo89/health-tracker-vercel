@@ -7,6 +7,7 @@ import { Grid, Card, Modal, Button, Text } from "@nextui-org/react";
 import { useState } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
 import Popup from "../../components/Popup";
+import Link from "next/link";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState({});
@@ -166,153 +167,169 @@ const AddMealData = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout className="flex">
-        <div className="flex flex-col">
-          {/* Instructions */}
+      <Layout>
+        <h1 className="text-center underline">Meal Input</h1>
+        <div className="flex">
           <div className="flex flex-col">
-            <h3>Instructions:</h3>
-            <ol>
-              <li>Search and add foods that you&apos;ve eaten</li>
-              <li>Select Date</li>
-              <li>Choose a meal type</li>
-              <li>
-                Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to
-                save your data.
-              </li>
-            </ol>
-          </div>
+            {/* Instructions */}
+            <div className="flex flex-col">
+              <div>
+                <button className="text-lg bg-white/70 text-gray-900 p-2 mb-4 border rounded font hover:border-black hover:bg-green-400">
+                  <Link href="/profile" className="text-black">
+                    Return to Profile
+                  </Link>
+                </button>
+              </div>
 
-          {/* Search Food */}
-          <form
-            onSubmit={(e) => handleSearchIngredients(e)}
-            className="flex flex-col max-w-7xl mt-12"
-          >
-            <p className="text-lg font-semibold pb-2">
-              This search feature is specifically for searching food ingredients
-              only. Specific foods may be added in the future.
-            </p>
-            <div className="flex">
-              <div className="flex justify-start items-center border rounded px-4">
-                {/* Ingredients */}
-                <label htmlFor="ingredients" className="flex">
-                  Food Ingredients
-                  <Popup
-                    text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
-                    card={true}
-                    placement="top"
+              <h3>Instructions:</h3>
+              <ol>
+                <li>Search and add foods that you&apos;ve eaten</li>
+                <li>Select Date</li>
+                <li>Choose a meal type</li>
+                <li>
+                  Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to
+                  save your data.
+                </li>
+              </ol>
+            </div>
+
+            {/* Search Food */}
+            <form
+              onSubmit={(e) => handleSearchIngredients(e)}
+              className="flex flex-col max-w-7xl mt-12"
+            >
+              <p className="text-lg font-semibold pb-2">
+                This search feature is specifically for searching food
+                ingredients only. Specific foods may be added in the future.
+              </p>
+              <div className="flex">
+                <div className="flex justify-start items-center border rounded px-4">
+                  {/* Ingredients */}
+                  <label htmlFor="ingredients" className="flex">
+                    Food Ingredients
+                    <Popup
+                      text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
+                      card={true}
+                      placement="top"
+                    />
+                    :
+                  </label>
+                  <input
+                    className="text-center mx-2"
+                    type="text"
+                    name="ingredients"
+                    placeholder="spaghetti"
                   />
-                  :
-                </label>
+                </div>
                 <input
-                  className="text-center mx-2"
-                  type="text"
-                  name="ingredients"
-                  placeholder="spaghetti"
+                  className="text-lg bg-white/70 border-2 rounded-xl py-2 px-4 ml-8 hover:bg-green-400 hover:border-black"
+                  type="submit"
+                  value="Search"
                 />
               </div>
-              <input
-                className="text-lg border-2 rounded-xl py-2 px-4 ml-8 hover:bg-green-400 hover:border-black"
-                type="submit"
-                value="Search"
-              />
-            </div>
-          </form>
+            </form>
 
-          {/* Input Data to DB */}
-          <form onSubmit={(e) => handleMealInput(e)} className="flex flex-col">
-            <div className="pt-8">
-              <label htmlFor="selectDate">Select Date: </label>
-              <input
-                type="date"
-                name="date"
-                max={new Date().toISOString().slice(0, 10)}
-                required
-              />
-            </div>
-            {/* Meal Type */}
-            <div className="flex flex-col py-4">
-              <div className="flex">
-                <label htmlFor="mealType" className="flex">
-                  Meal Type
-                  <Popup
-                    text="Choose OTHER if you have want to add additional meals data."
-                    placement="top"
-                    card={true}
-                  />
-                  :
-                </label>
-                <select name="mealType" className="ml-2" required>
-                  <option hidden></option>
-                  <option value="Breakfast">Breakfast</option>
-                  <option value="Brunch">Brunch</option>
-                  <option value="Lunch">Lunch</option>
-                  <option value="Dinner">Dinner</option>
-                  <option value="Snack">Snack</option>
-                  <option value="TeaTime">TeaTime</option>
-                  <option value="Other">Other</option>
-                </select>
+            {/* Input Data to DB */}
+            <form
+              onSubmit={(e) => handleMealInput(e)}
+              className="flex flex-col"
+            >
+              <div className="pt-8">
+                <label htmlFor="selectDate">Select Date: </label>
+                <input
+                  className="p-1 mx-2"
+                  type="date"
+                  name="date"
+                  max={new Date().toISOString().slice(0, 10)}
+                  required
+                />
               </div>
-              <label htmlFor="warning" className="italic">
-                <b className="text-red-600">*Warning:</b> choosing the same Meal
-                Type for the same date will override your previous data.
-              </label>
-            </div>
+              {/* Meal Type */}
+              <div className="flex flex-col py-4">
+                <div className="flex">
+                  <label htmlFor="mealType" className="flex">
+                    Meal Type
+                    <Popup
+                      text="Choose OTHER if you have want to add additional meals data."
+                      placement="top"
+                      card={true}
+                    />
+                    :
+                  </label>
+                  <select name="mealType" className="ml-2" required>
+                    <option hidden></option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Brunch">Brunch</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snack">Snack</option>
+                    <option value="TeaTime">TeaTime</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <label htmlFor="warning" className="italic">
+                  <b className="text-red-600">*Warning:</b> choosing the same
+                  Meal Type for the same date will override your previous data.
+                </label>
+              </div>
 
-            <input
-              className="text-2xl border-2 p-2 my-4 rounded hover:bg-green-400 hover:border-black"
-              type="submit"
-              value="ADD MEAL"
-            />
+              <input
+                className="text-2xl bg-white/70 border-2 p-2 my-4 rounded hover:bg-green-400 hover:border-black"
+                type="submit"
+                value="ADD MEAL"
+              />
 
-            {/* My chosen food items */}
-            {chosenItems.length ? (
-              <>
-                <h3 className="self-center underline">
-                  CLICK on the card to EDIT.
-                </h3>
-                <Grid.Container
-                  gap={2}
-                  justify="flex-start"
-                  name="chosenFoodItems"
-                >
-                  {chosenItems.map((item) => (
-                    <Grid key={item.id + item.amount + item.unit}>
-                      <FoodDisplayCard
-                        item={item}
-                        clicked={() => editItem(item)}
-                      />
-                    </Grid>
-                  ))}
-                </Grid.Container>
-              </>
-            ) : null}
-          </form>
-        </div>
-
-        {/* Right Side - Display Food Cards */}
-        {foodItems.results?.length ? (
-          <div className="p-2 border rounded-lg mx-4">
-            <Grid.Container gap={1} justify="center">
-              <h4>
-                <span className="text-red-600">DISCLAIMER:</span> Due to usage
-                of the FREE API, there is a limited amount of API usage per day.
-                Once the limit is reached, this will NOT display any results.
-              </h4>
-              {foodItems.results.map((item) => (
-                <Grid key={item.id}>
-                  <FoodDisplayCard
-                    item={item}
-                    clicked={() => {
-                      setFoodItemModal(true);
-                      setChosenFood(item);
-                      setItemsQuantity(1);
-                    }}
-                  />
-                </Grid>
-              ))}
-            </Grid.Container>
+              {/* My chosen food items */}
+              {chosenItems.length ? (
+                <>
+                  <h3 className="self-center underline">
+                    CLICK on the card to EDIT.
+                  </h3>
+                  <Grid.Container
+                    gap={2}
+                    justify="flex-start"
+                    name="chosenFoodItems"
+                  >
+                    {chosenItems.map((item) => (
+                      <Grid key={item.id + item.amount + item.unit}>
+                        <FoodDisplayCard
+                          item={item}
+                          clicked={() => editItem(item)}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid.Container>
+                </>
+              ) : null}
+            </form>
           </div>
-        ) : null}
+
+          {/* Right Side - Display Food Cards */}
+          {foodItems.results?.length ? (
+            <div className="p-2 border rounded-lg mx-4">
+              <Grid.Container gap={1} justify="center">
+                <h4>
+                  <span className="text-red-600">DISCLAIMER:</span> Due to usage
+                  of the FREE API, there is a limited amount of API usage per
+                  day. Once the limit is reached, this will NOT display any
+                  results.
+                </h4>
+                {foodItems.results.map((item) => (
+                  <Grid key={item.id}>
+                    <FoodDisplayCard
+                      item={item}
+                      clicked={() => {
+                        setFoodItemModal(true);
+                        setChosenFood(item);
+                        setItemsQuantity(1);
+                      }}
+                    />
+                  </Grid>
+                ))}
+              </Grid.Container>
+            </div>
+          ) : null}
+        </div>
 
         {/* Add/Edit Food eaten to Meals */}
         <Modal
