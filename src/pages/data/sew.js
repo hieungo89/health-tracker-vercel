@@ -30,7 +30,7 @@ const SEW = () => {
   if (status === "unauthenticated") router.push("/");
 
   return (
-    <div className="py-8">
+    <div className="p-8">
       {wellnessData.length ? (
         <Table
           aria-label="Sleep, Exercise, Weight Data"
