@@ -3,7 +3,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Home, Profile, SignIn, SignOut } from "./Icons";
 
 const cssClass = {
-  icon: "flex space-x-2 px-2 hover:underline hover:underline-offset-2 text-black lg:text-sm",
+  icon: "flex space-x-2 px-2 hover:underline hover:underline-offset-2 text-black md:text-sm",
 };
 
 const NavBar = () => {
@@ -20,12 +20,15 @@ const NavBar = () => {
             <Link href="/profile" className={cssClass.icon}>
               <Profile /> Profile
             </Link>
-            <button onClick={() => signOut()} className={cssClass.icon}>
+            <button
+              onClick={() => signOut()}
+              className={`${cssClass.icon} pt-1`}
+            >
               <SignOut /> Sign-out
             </button>
           </>
         ) : (
-          <button onClick={() => signIn()} className={cssClass.icon}>
+          <button onClick={() => signIn()} className={`${cssClass.icon} pt-1`}>
             <SignIn /> Sign-in
           </button>
         )}
