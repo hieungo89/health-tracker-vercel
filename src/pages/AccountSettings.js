@@ -35,10 +35,6 @@ const AccountCreation = ({ type }) => {
       dietaryRestrictions: e.target.dietaryRestrictions.value,
       healthComplications: e.target.healthComplications.value,
     };
-    console.log(
-      "🚀 ~ file: AccountSettings.js:38 ~ handleSubmit ~ data:",
-      data
-    );
 
     axios
       .post("./api/user", data)
@@ -70,6 +66,7 @@ const AccountCreation = ({ type }) => {
   useEffect(() => {
     if (type) setOption(type);
     if (type === "update") getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (status === "loading") return <Layout>...Loading</Layout>;
@@ -83,12 +80,15 @@ const AccountCreation = ({ type }) => {
       <>
         <Head>
           <title>HT - create account</title>
-          {/* <link rel="icon" href="/favicon.ico" /> */}
+          <link rel="icon" href="/favicon.ico" />
         </Head>
 
         <Layout className="flex flex-col items-center">
           <div className="w-fit">
-            <h1 className=" text-5xl pb-20 text-center">
+            <h1
+              className=" text-5xl pb-10 text-center underline
+              md:text-4xl sm:text-3xl sm:pb-4 xs:text-2xl"
+            >
               New User Profile Creation
             </h1>
 
@@ -97,7 +97,10 @@ const AccountCreation = ({ type }) => {
 
             <form className="" onSubmit={(e) => handleSubmit(e)}>
               {/* Name */}
-              <div className="grid grid-cols-3 justify-around py-4">
+              <div
+                className="grid grid-cols-2 justify-around py-4
+                md:text-sm sm:grid-cols-1"
+              >
                 <label className="col-span-1" htmlFor="firstName">
                   *First Name:&nbsp;
                   <input
@@ -108,7 +111,7 @@ const AccountCreation = ({ type }) => {
                     required
                   />
                 </label>
-                <label className="col-span-1" htmlFor="lastName">
+                <label className="col-span-1 sm:my-2" htmlFor="lastName">
                   *Last Name:&nbsp;
                   <input
                     className="px-2 bg-blue-100"
@@ -119,7 +122,10 @@ const AccountCreation = ({ type }) => {
                   />
                 </label>
               </div>
-              <div className="grid grid-cols-3 pb-4">
+              <div
+                className="grid grid-cols-2 pb-4
+                md:text-sm sm:grid-cols-1"
+              >
                 {/* Birthday */}
                 <label className="col-span-1" htmlFor="birthday">
                   *Birthday:&nbsp;
@@ -131,10 +137,10 @@ const AccountCreation = ({ type }) => {
                   />
                 </label>
                 {/* Height */}
-                <div className="col-span-1">
+                <div className="col-span-1 sm:my-2">
                   <span>*Height:&nbsp;</span>
                   <input
-                    className="text-end bg-blue-100"
+                    className="text-center mr-1 bg-blue-100"
                     type="number"
                     min="1"
                     max="10"
@@ -144,7 +150,7 @@ const AccountCreation = ({ type }) => {
                   />
                   <label htmlFor="height_ft">ft. </label>
                   <input
-                    className="text-end bg-blue-100"
+                    className="text-center mr-1 bg-blue-100"
                     type="number"
                     min="0"
                     max="11"
@@ -155,13 +161,13 @@ const AccountCreation = ({ type }) => {
                   <label htmlFor="height_in">in.</label>
                 </div>
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col md:text-sm">
                 {/* Dietary Goals */}
                 <label htmlFor="dietaryGoals">*Dietary Goals:</label>
-                <ol className="flex">
+                <ol className="flex sm:flex-col">
                   <li className="mr-8">
                     <input
-                      className="p-2 bg-blue-100"
+                      className="p-2 bg-blue-100 md:text-sm"
                       type="text"
                       rows="4"
                       cols="40"
@@ -172,7 +178,7 @@ const AccountCreation = ({ type }) => {
                   </li>
                   <li className="mr-8">
                     <input
-                      className="p-2 bg-blue-100"
+                      className="p-2 bg-blue-100 md:text-sm"
                       type="text"
                       rows="4"
                       cols="40"
@@ -182,7 +188,7 @@ const AccountCreation = ({ type }) => {
                   </li>
                   <li>
                     <input
-                      className="p-2 bg-blue-100"
+                      className="p-2 bg-blue-100 md:text-sm"
                       type="text"
                       rows="4"
                       cols="40"
@@ -216,15 +222,15 @@ const AccountCreation = ({ type }) => {
               </div>
               <div className="flex">
                 <input
-                  className="bg-blue-200 border border-solid border-white p-2 my-4 rounded
-                hover:bg-green-500 hover:border-black"
+                  className="bg-blue-200 font-semibold border border-solid border-white p-2 my-4 rounded
+                hover:bg-green-500 hover:border-black sm:text-sm"
                   type="submit"
                   value="Submit Profile"
                 />
                 <Link
                   href="/"
-                  className="bg-blue-200 ml-4 border border-solid border-white p-2 my-4 rounded
-                hover:bg-red-500 hover:border-black"
+                  className="bg-blue-200 font-semibold ml-4 border border-solid border-white p-2 my-4 rounded
+                hover:bg-red-500 hover:border-black sm:text-sm"
                 >
                   Go Back
                 </Link>
@@ -246,15 +252,23 @@ const AccountCreation = ({ type }) => {
         </Head>
 
         <Layout className="flex flex-col items-center">
-          <div className="w-fit">
-            <h1 className=" text-5xl pb-20 text-center">Update Profile</h1>
+          <div className="w-fit sm:text-sm">
+            <h1
+              className="text-5xl pb-10 text-center underline
+              md:text-4xl sm:pb-4 sm:text-3xl"
+            >
+              Update Profile
+            </h1>
 
             <h5>You can update any of these fields.</h5>
             <p>Fields with * are required</p>
 
             <form className="" onSubmit={(e) => handleSubmit(e)}>
               {/* Name */}
-              <div className="grid grid-cols-3 justify-around py-4">
+              <div
+                className="grid grid-cols-2 justify-around py-4
+                md:text-sm sm:grid-cols-1"
+              >
                 <label className="col-span-1" htmlFor="firstName">
                   *First Name:&nbsp;
                   <input
@@ -267,7 +281,7 @@ const AccountCreation = ({ type }) => {
                     required
                   />
                 </label>
-                <label className="col-span-1" htmlFor="lastName">
+                <label className="col-span-1 sm:my-2" htmlFor="lastName">
                   *Last Name:&nbsp;
                   <input
                     className="px-2 bg-blue-100"
@@ -280,7 +294,10 @@ const AccountCreation = ({ type }) => {
                   />
                 </label>
               </div>
-              <div className="grid grid-cols-3 pb-4">
+              <div
+                className="grid grid-cols-2 pb-4
+                md:text-sm sm:grid-cols-1"
+              >
                 {/* Birthday */}
                 <label className="col-span-1" htmlFor="birthday">
                   *Birthday:&nbsp;
@@ -294,10 +311,10 @@ const AccountCreation = ({ type }) => {
                   />
                 </label>
                 {/* Height */}
-                <div className="col-span-1">
+                <div className="col-span-1 sm:my-2">
                   <span>*Height:&nbsp;</span>
                   <input
-                    className="text-end bg-blue-100"
+                    className="text-center mr-1 bg-blue-100"
                     type="number"
                     min="1"
                     max="10"
@@ -309,7 +326,7 @@ const AccountCreation = ({ type }) => {
                   />
                   <label htmlFor="height_ft">ft. </label>
                   <input
-                    className="text-end bg-blue-100"
+                    className="text-center mr-1 bg-blue-100"
                     type="number"
                     min="0"
                     max="11"
@@ -322,13 +339,13 @@ const AccountCreation = ({ type }) => {
                   <label htmlFor="height_in">in.</label>
                 </div>
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col md:text-sm">
                 {/* Dietary Goals */}
                 <label htmlFor="dietaryGoals">*Dietary Goals:</label>
-                <ol className="flex">
+                <ol className="flex sm:flex-col">
                   <li className="mr-8">
                     <input
-                      className="p-2 bg-blue-100"
+                      className="p-2 bg-blue-100 md:text-sm"
                       type="text"
                       rows="4"
                       cols="40"
@@ -341,7 +358,7 @@ const AccountCreation = ({ type }) => {
                   </li>
                   <li className="mr-8">
                     <input
-                      className="p-2 bg-blue-100"
+                      className="p-2 bg-blue-100 md:text-sm"
                       type="text"
                       rows="4"
                       cols="40"
@@ -353,7 +370,7 @@ const AccountCreation = ({ type }) => {
                   </li>
                   <li>
                     <input
-                      className="p-2 bg-blue-100"
+                      className="p-2 bg-blue-100 md:text-sm"
                       type="text"
                       rows="4"
                       cols="40"
@@ -393,15 +410,15 @@ const AccountCreation = ({ type }) => {
               </div>
               <div className="flex">
                 <input
-                  className="bg-blue-200 border border-solid border-white p-2 my-4 rounded
-                hover:bg-green-500 hover:border-black"
+                  className="bg-blue-200 font-semibold border border-solid border-white p-2 my-4 rounded
+                hover:bg-green-500 hover:border-black sm:text-sm"
                   type="submit"
                   value="Submit Profile"
                 />
                 <Link
                   href="/"
-                  className="bg-blue-200 ml-4 border border-solid border-white p-2 my-4 rounded
-                hover:bg-red-500 hover:border-black"
+                  className="bg-blue-200 font-semibold ml-4 border border-solid border-white p-2 my-4 rounded
+                hover:bg-red-500 hover:border-black sm:text-sm"
                 >
                   Go Back
                 </Link>
