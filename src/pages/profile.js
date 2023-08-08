@@ -1,14 +1,12 @@
 import axios from "axios";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-// import { getServerAuthSession } from "./api/auth/[...nextauth]";
-import { Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useFormatter } from "next-intl";
+import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { Setting } from "../components/Icons";
+import Layout from "../components/Layout";
 import MealData from "./data/mealData";
 import SEW from "./data/sew";
 
@@ -194,24 +192,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-// export async function getServerSideProps(ctx) {
-//   const session = await getServerAuthSession(ctx.req, ctx.res);
-
-//   const data = await axios.get(`/api/user?email=${session?.user.email}`);
-
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: {
-//       user: session.user,
-//     },
-//   };
-// }
