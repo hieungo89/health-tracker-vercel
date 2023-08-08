@@ -30,7 +30,7 @@ const FoodDisplayCard = ({ item, clicked }) => {
           <Card
             isPressable
             isHoverable
-            css={{ width: "fit", height: "auto" }}
+            css={{ maxWidth: "450px", width: "fit", height: "auto" }}
             name={item.id}
             onClick={clicked}
           >
@@ -65,7 +65,7 @@ const FoodDisplayCard = ({ item, clicked }) => {
           <Card
             isPressable
             isHoverable
-            css={{ width: "200px", height: "auto" }}
+            css={{ maxWidth: "200px", width: "fit", height: "auto" }}
             name={item.id}
             onClick={clicked}
           >

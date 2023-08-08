@@ -1,4 +1,3 @@
-// import clientPromise from "../lib/mongodb";
 import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
@@ -22,7 +21,7 @@ export default function Home() {
     getData();
   }, [session]);
 
-  // NOT SIGNED IN
+  //! NOT SIGNED IN
   if (!session) {
     return (
       <>
@@ -30,26 +29,37 @@ export default function Home() {
           <title>Health Tracker</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main className="bg-blue-300 flex flex-col justify-center items-center min-h-screen pb-40">
-          <h1 className="font-semibold text-6xl">Health Tracker</h1>
-          <p className="text-lg mx-60 py-20">
-            Welcome to the Health Tracker web app. This device will help you
-            track your meals, weight, exercise, and sleep with quick and easy
-            features.
+
+        <Layout className="flex flex-col justify-center items-center min-h-screen">
+          <h1 className="font-semibold text-6xl lg:text-5xl sm:text-3xl">
+            Health Tracker
+          </h1>
+          <div className="py-10 flex flex-col items-center md:py-6">
+            <p className="text-lg pb-2 lg:text-base sm:text-sm">
+              Welcome to the Health Tracker web app.
+            </p>
+            <p className="text-lg lg:text-base md:w-72 sm:text-sm">
+              This device will help you track your meals, weight, exercise, and
+              sleep with quick and easy features.
+            </p>
+          </div>
+          <p className="font-semibold text-3xl pb-2 lg:text-2xl">
+            TO GET STARTED
           </p>
-          <p className="font-semibold text-2xl pb-2">TO GET STARTED</p>
           <button
-            className="text-4xl border border-solid rounded self-center py-2 px-4 bg-blue-400
-          hover:border-black hover:bg-green-500"
+            className="text-4xl border border-solid rounded-lg self-center py-2 px-4 bg-blue-400
+          hover:border-black hover:bg-green-500
+          lg:text-3xl md:text-2xl"
             onClick={() => signIn("google")}
           >
             Sign in with Google
           </button>
-        </main>
+        </Layout>
       </>
     );
   }
 
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
@@ -60,16 +70,22 @@ export default function Home() {
       </Head>
 
       <Layout className="p-2 flex flex-col items-center">
-        <div className="flex flex-col pt-20">
-          <h1 className="text-6xl pb-12">Health Tracker!</h1>
+        <div className="flex flex-col pt-40 md:pt-20">
+          <h1 className="text-6xl pb-12 lg:text-5xl md:text-4xl">
+            Health Tracker!
+          </h1>
         </div>
 
         {account ? (
           <>
-            <h2 className="text-3xl self-center pb-4">
+            {/* Profile in System */}
+            <h2 className="text-3xl self-center pb-4 md:text-2xl">
               Welcome back {account.firstName}!
             </h2>
-            <button className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded hover:bg-green-400 hover:font-bold">
+            <button
+              className="bg-white/70 font-semibold m-12 p-2 border border-solid
+            border-black rounded hover:bg-green-400 hover:font-bold md:text-sm"
+            >
               <Link href="/profile" className="text-black">
                 Go To Profile
               </Link>
@@ -77,16 +93,19 @@ export default function Home() {
           </>
         ) : (
           <>
-            <h2 className="text-3xl self-center pb-4">
+            {/* New Profile */}
+            <h2 className="text-3xl self-center pb-4 md:text-2xl">
               Welcome {session.user.name}!
             </h2>
-            <p className="text-lg py-2">
-              Thank you for trying out the Health Tracker Application. Click
-              below to set up your profile!
+            <p className="text-lg py-2 md:text-base sm:text-sm">
+              Thank you for trying out the Health Tracker Application.
+            </p>
+            <p className="text-lg py-2 md:text-base sm:text-sm">
+              Click below to set up your profile!
             </p>
             <button
-              className="bg-blue-200 font-semibold m-12 p-2 border border-solid border-black rounded
-              hover:bg-green-400 hover:font-bold"
+              className="bg-white/70 font-semibold p-2 border border-solid border-black rounded
+              hover:bg-green-400 hover:font-bold md:text-sm"
             >
               <Link
                 href={{
@@ -95,41 +114,14 @@ export default function Home() {
                     type: "create",
                   },
                 }}
+                className="text-black"
               >
                 Setup Profile
               </Link>
             </button>
           </>
         )}
-
-        {/* <div className="flex flex-col pl-20 border p-12">
-          <div>Status: {status}</div>
-          <div>{JSON.stringify(session, null, 1)}</div>
-          <div>Name: {session.user.name}</div>
-          <div>Email: {session.user.email}</div>
-          <div>Image: {session.user.image}</div>
-          <div>Expires: {session.expires}</div>
-        </div> */}
       </Layout>
     </div>
   );
 }
-
-// export async function getServerSideProps() {
-//   try {
-//     await clientPromise;
-
-//     return {
-//       props: {
-//         isConnected: true,
-//       },
-//     };
-//   } catch (e) {
-//     console.error("error: ", e);
-//     return {
-//       props: {
-//         isConnected: false,
-//       },
-//     };
-//   }
-// }

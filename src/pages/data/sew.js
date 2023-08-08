@@ -1,14 +1,14 @@
 import { Table } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 
 const SEW = () => {
-  const { data: session, status } = useSession();
   const [wellnessData, setWellnessData] = useState([]);
+
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const getData = async () => {
@@ -21,37 +21,48 @@ const SEW = () => {
   useEffect(() => {
     if (!session) return;
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
-  if (status === "loading") {
-    return <Layout>...Loading</Layout>;
-  }
-
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
-    <div className="p-8">
+    <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
       {wellnessData.length ? (
-        <Table
-          aria-label="Sleep, Exercise, Weight Data"
-          className="min-w-fit h-auto"
-        >
+        <Table aria-label="Sleep, Exercise, Weight Data">
           <Table.Header>
-            <Table.Column allowsSorting>Date</Table.Column>
-            <Table.Column allowsSorting>Exercise</Table.Column>
-            <Table.Column allowsSorting>Sleep</Table.Column>
-            <Table.Column allowsSorting>Weight</Table.Column>
-            <Table.Column allowsSorting>Weight Time</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>Date</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>Exercise</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>Sleep</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>Weight</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>
+              Weight Time
+            </Table.Column>
           </Table.Header>
           <Table.Body>
             {wellnessData.map((data) => (
               <Table.Row key={data._id}>
                 <Table.Cell>{data.date}</Table.Cell>
                 <Table.Cell>
-                  {data.exercise.exercise_hr}hr {data.exercise.exercise_min}min
+                  {!data.exercise.exercise_hr && !data.exercise.exercise_min ? (
+                    <>none</>
+                  ) : (
+                    <>
+                      {data.exercise.exercise_hr > 0
+                        ? data.exercise.exercise_hr + "h"
+                        : ""}
+                      &nbsp;
+                      {data.exercise.exercise_min > 0
+                        ? data.exercise.exercise_min + "m"
+                        : ""}
+                    </>
+                  )}
                 </Table.Cell>
                 <Table.Cell>
-                  {data.sleep.sleep_hr}hr {data.sleep.sleep_min}min
+                  {data.sleep.sleep_hr > 0 ? data.sleep.sleep_hr + "h" : ""}
+                  &nbsp;
+                  {data.sleep.sleep_min > 0 ? data.sleep.sleep_min + "m" : ""}
                 </Table.Cell>
                 <Table.Cell>{data.weight.weightData}lb</Table.Cell>
                 <Table.Cell>{data.weight.weightTime}</Table.Cell>
@@ -60,14 +71,9 @@ const SEW = () => {
           </Table.Body>
         </Table>
       ) : (
-        <div className="flex justify-center py-4 font-semibold text-lg">
+        <div className="justify-center py-4 font-semibold text-lg lg:text-base md:text-sm">
           You Don&apos;t have any data yet. Go to
-          <Link
-            href="/data/addHealthData"
-            className="text-red-700 font-bold px-1 hover:underline hover:underline-offset-2"
-          >
-            Input Wellness Data
-          </Link>
+          <b className="text-red-700 px-1">Input Wellness Data</b>
           to get add data about yourself!
         </div>
       )}

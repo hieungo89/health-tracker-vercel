@@ -1,13 +1,13 @@
-import Head from "next/head";
-import { useSession } from "next-auth/react";
-import Layout from "../../components/Layout";
+import { Button, Card, Grid, Modal, Text } from "@nextui-org/react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { Grid, Card, Modal, Button, Text } from "@nextui-org/react";
 import { useState } from "react";
 import FoodDisplayCard from "../../components/FoodDisplayCard";
+import Layout from "../../components/Layout";
 import Popup from "../../components/Popup";
-import Link from "next/link";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState({});
@@ -168,44 +168,47 @@ const AddMealData = () => {
       </Head>
 
       <Layout>
-        <h1 className="text-center underline">Meal Input</h1>
-        <div className="flex">
+        <h1 className="text-center underline lg:text-4xl sm:text-2xl">
+          Meal Input
+        </h1>
+        <div className="flex md:flex-col">
           <div className="flex flex-col">
-            {/* Instructions */}
-            <div className="flex flex-col">
-              <div>
-                <button className="text-lg bg-white/70 text-gray-900 p-2 mb-4 border rounded font hover:border-black hover:bg-green-400">
-                  <Link href="/profile" className="text-black">
-                    Return to Profile
-                  </Link>
-                </button>
-              </div>
+            <button
+              className="w-fit text-lg bg-white/70 text-gray-900 p-2 mb-4 border rounded font
+            hover:border-black hover:bg-green-400
+            md:text-base sm:text-sm"
+            >
+              <Link href="/profile" className="text-black">
+                Return to Profile
+              </Link>
+            </button>
 
-              <h3>Instructions:</h3>
-              <ol>
-                <li>Search and add foods that you&apos;ve eaten</li>
-                <li>Select Date</li>
-                <li>Choose a meal type</li>
-                <li>
-                  Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to
-                  save your data.
-                </li>
-              </ol>
-            </div>
+            <h4 className="md:text-lg">Instructions:</h4>
+            <ol>
+              <li className="sm:text-sm">
+                Search and add foods that you&apos;ve eaten
+              </li>
+              <li className="sm:text-sm">Select Date</li>
+              <li className="sm:text-sm">Choose a meal type</li>
+              <li className="sm:text-sm">
+                Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to
+                save your data.
+              </li>
+            </ol>
 
             {/* Search Food */}
             <form
               onSubmit={(e) => handleSearchIngredients(e)}
-              className="flex flex-col max-w-7xl mt-12"
+              className="flex flex-col max-w-7xl"
             >
-              <p className="text-lg font-semibold pb-2">
+              <p className="text-lg font-semibold pb-2 md:text-base sm:text-sm">
                 This search feature is specifically for searching food
                 ingredients only. Specific foods may be added in the future.
               </p>
-              <div className="flex">
-                <div className="flex justify-start items-center border rounded px-4">
-                  {/* Ingredients */}
-                  <label htmlFor="ingredients" className="flex">
+              <div className="flex xs:flex-col">
+                {/* Ingredients */}
+                <div className="flex w-fit justify-start items-center border rounded px-4 xs:w-full">
+                  <label htmlFor="ingredients" className="flex md:text-sm">
                     Food Ingredients
                     <Popup
                       text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
@@ -215,14 +218,16 @@ const AddMealData = () => {
                     :
                   </label>
                   <input
-                    className="text-center mx-2"
+                    className="text-center mx-2 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
                     type="text"
                     name="ingredients"
                     placeholder="spaghetti"
                   />
                 </div>
                 <input
-                  className="text-lg bg-white/70 border-2 rounded-xl py-2 px-4 ml-8 hover:bg-green-400 hover:border-black"
+                  className="w-fit text-lg bg-white/70 border-2 rounded-xl py-2 px-4 ml-8
+                  hover:bg-green-400 hover:border-black
+                  md:mx-2 md:text-base sm:text-sm xs:w-full xs:mt-2 xs:ml-0"
                   type="submit"
                   value="Search"
                 />
@@ -234,7 +239,7 @@ const AddMealData = () => {
               onSubmit={(e) => handleMealInput(e)}
               className="flex flex-col"
             >
-              <div className="pt-8">
+              <div className="pt-8 md:text-sm">
                 <label htmlFor="selectDate">Select Date: </label>
                 <input
                   className="p-1 mx-2"
@@ -245,7 +250,7 @@ const AddMealData = () => {
                 />
               </div>
               {/* Meal Type */}
-              <div className="flex flex-col py-4">
+              <div className="flex flex-col py-4 md:text-sm">
                 <div className="flex">
                   <label htmlFor="mealType" className="flex">
                     Meal Type
@@ -274,7 +279,9 @@ const AddMealData = () => {
               </div>
 
               <input
-                className="text-2xl bg-white/70 border-2 p-2 my-4 rounded hover:bg-green-400 hover:border-black"
+                className="text-2xl bg-white/70 border-2 p-2 my-4 rounded
+                hover:bg-green-400 hover:border-black
+                md:text-xl sm:text-lg"
                 type="submit"
                 value="ADD MEAL"
               />
@@ -282,7 +289,7 @@ const AddMealData = () => {
               {/* My chosen food items */}
               {chosenItems.length ? (
                 <>
-                  <h3 className="self-center underline">
+                  <h3 className="self-center underline md:text-sm">
                     CLICK on the card to EDIT.
                   </h3>
                   <Grid.Container
@@ -306,14 +313,18 @@ const AddMealData = () => {
 
           {/* Right Side - Display Food Cards */}
           <div>
-            <h4 className="pl-4">
+            <h4 className="pl-4 md:pt-4 md:text-xl sm:text-base">
               <span className="text-red-600">*DISCLAIMER:</span> Due to usage of
               the FREE API, there is a limited amount of API usage per day. Once
               the limit is reached, this will NOT display any results.
             </h4>
             {foodItems.results?.length ? (
-              <div className="p-2 border rounded-lg mx-4">
-                <Grid.Container gap={1} justify="center">
+              <div className="p-4 border rounded-lg mx-4">
+                <Grid.Container
+                  gap={1}
+                  justify="center"
+                  css={{ maxHeight: "640px", overflow: "scroll" }}
+                >
                   {foodItems.results.map((item) => (
                     <Grid key={item.id}>
                       <FoodDisplayCard
@@ -355,7 +366,7 @@ const AddMealData = () => {
               <Text>
                 Amount:
                 <input
-                  className="text-end ml-2 border rounded"
+                  className="text-center ml-2 border rounded"
                   type="number"
                   name="amount"
                   value={itemsQuantity}
@@ -415,7 +426,7 @@ const AddMealData = () => {
                   </select>
                   or
                   <input
-                    className="text-end ml-2 border rounded px-1"
+                    className="text-center ml-2 border rounded px-1"
                     size="10"
                     type="text"
                     name="unit"

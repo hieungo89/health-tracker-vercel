@@ -51,25 +51,25 @@ const AddHealthData = () => {
     router.push("/profile");
   };
 
-  if (status === "loading") {
-    return <Layout>...Loading</Layout>;
-  }
-
+  if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
 
   return (
     <>
       <Head>
-        <title>Health Tracker - Wellness</title>
+        <title>HT - Wellness</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Layout className="flex flex-col items-center">
-        <h1 className="underline">Data Input</h1>
+        <h1 className="underline md:text-4xl">Data Input</h1>
 
-        <div className="my-4">
-          <h4>Please fill out ALL fields in order to record your data.</h4>
-          <li>
+        {/* Instructions */}
+        <div className="my-4 md:text-sm">
+          <h4 className="md:text-lg">
+            Please fill out ALL fields in order to record your data.
+          </h4>
+          <li className="md:text-sm">
             Put 0&apos;s for any data you <b>don&apos;t</b> want to record
           </li>
           <br />
@@ -81,10 +81,10 @@ const AddHealthData = () => {
 
         <form
           onSubmit={(e) => handleDataInput(e)}
-          className="flex flex-col border rounded px-16 p-4"
+          className="flex flex-col border rounded px-16 p-4 lg:px-12 md:px-8 sm:px-4 sm:text-sm"
         >
           {/* Date */}
-          <div className="grid grid-cols-2 py-4">
+          <div className="flex justify-between py-4 sm:py-2">
             <label htmlFor="date">Select Date: </label>
             <input
               type="date"
@@ -96,85 +96,103 @@ const AddHealthData = () => {
           </div>
 
           {/* Exercise */}
-          <div className="grid grid-cols-2 py-4">
+          <div className="flex justify-between py-4 sm:py-2">
             <label htmlFor="exercise">Exercise:</label>
-            <div>
-              <input
-                type="number"
-                min="0"
-                max="23"
-                name="exercise_hr"
-                required
-                className="text-end mx-2"
-              />
-              Hours
-              <input
-                type="number"
-                min="0"
-                max="59"
-                name="exercise_min"
-                required
-                className="text-end mx-2"
-              />
-              Minutes
+            <div className="flex">
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  max="23"
+                  name="exercise_hr"
+                  required
+                  className="text-end mx-2"
+                />
+                Hours
+              </div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  max="59"
+                  name="exercise_min"
+                  required
+                  className="text-end mx-2"
+                />
+                Minutes
+              </div>
             </div>
           </div>
 
           {/* Sleep */}
-          <div className="grid grid-cols-2 py-4">
+          <div className="flex justify-between py-4 sm:py-2">
             <label htmlFor="sleep">Sleep:</label>
-            <div>
-              <input
-                type="number"
-                min="0"
-                max="23"
-                name="sleep_hr"
-                required
-                className="text-end mx-2"
-              />
-              Hours
-              <input
-                type="number"
-                min="0"
-                max="59"
-                name="sleep_min"
-                required
-                className="text-end mx-2"
-              />
-              Minutes
+            <div className="flex">
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  max="23"
+                  name="sleep_hr"
+                  required
+                  className="text-end mx-2"
+                />
+                Hours
+              </div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  max="59"
+                  name="sleep_min"
+                  required
+                  className="text-end mx-2"
+                />
+                Minutes
+              </div>
             </div>
           </div>
 
           {/* Weight */}
-          <div className="flex justify-between py-4">
+          <div className="flex justify-between py-4 sm:py-2">
             <label htmlFor="weight">Weight:</label>
-            <div>
-              <input
-                type="number"
-                min="0"
-                max="1000"
-                name="weight"
-                required
-                className="text-end mx-2"
-              />
-              lbs, taken at
-              <input
-                type="time"
-                name="weight_time"
-                required
-                className="text-end ml-2"
-              />
+            <div className="xs:flex xs:flex-col">
+              <span>
+                <input
+                  type="number"
+                  min="0"
+                  max="999"
+                  name="weight"
+                  required
+                  className="text-end mx-2 xs:mx-0.5"
+                />
+                lbs,
+              </span>
+              <span>
+                taken at
+                <input
+                  type="time"
+                  name="weight_time"
+                  required
+                  className="text-end ml-2 xm:ml-0.5"
+                />
+              </span>
             </div>
           </div>
 
           <input
-            className="text-2xl bg-white/70 p-2 border-2 rounded hover:border-black hover:bg-green-400"
+            className="text-2xl bg-white/70 p-2 border-2 rounded
+            hover:border-black hover:bg-green-400
+            md:text-lg sm:text-base"
             type="submit"
             value="Record Data"
           />
-          {/* </div> */}
         </form>
-        <button className="text-lg bg-white/70 text-gray-900 m-4 p-2 border rounded font hover:border-black hover:bg-green-400">
+        <button
+          className="text-lg bg-white/70 text-gray-900 m-4 p-2 border rounded font
+        hover:border-black hover:bg-green-400
+        md:text-base sm:text-sm"
+        >
           <Link href="/profile" className="text-black">
             Return to Profile
           </Link>

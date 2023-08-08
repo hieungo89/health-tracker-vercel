@@ -17,7 +17,7 @@ export const SignIn = ({ className }) => (
     viewBox="0 0 24 24"
     fill="currentColor"
     height="1em"
-    width="1em"
+    width="1.2em"
   >
     <path d="M20 12a1 1 0 00-1-1h-7.59l2.3-2.29a1 1 0 10-1.42-1.42l-4 4a1 1 0 00-.21.33 1 1 0 000 .76 1 1 0 00.21.33l4 4a1 1 0 001.42 0 1 1 0 000-1.42L11.41 13H19a1 1 0 001-1zM17 2H7a3 3 0 00-3 3v14a3 3 0 003 3h10a3 3 0 003-3v-3a1 1 0 00-2 0v3a1 1 0 01-1 1H7a1 1 0 01-1-1V5a1 1 0 011-1h10a1 1 0 011 1v3a1 1 0 002 0V5a3 3 0 00-3-3z" />
   </svg>
@@ -29,7 +29,7 @@ export const SignOut = ({ className }) => (
     viewBox="0 0 24 24"
     fill="currentColor"
     height="1em"
-    width="1em"
+    width="1.2em"
   >
     <path d="M4 12a1 1 0 001 1h7.59l-2.3 2.29a1 1 0 000 1.42 1 1 0 001.42 0l4-4a1 1 0 00.21-.33 1 1 0 000-.76 1 1 0 00-.21-.33l-4-4a1 1 0 10-1.42 1.42l2.3 2.29H5a1 1 0 00-1 1zM17 2H7a3 3 0 00-3 3v3a1 1 0 002 0V5a1 1 0 011-1h10a1 1 0 011 1v14a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-2 0v3a3 3 0 003 3h10a3 3 0 003-3V5a3 3 0 00-3-3z" />
   </svg>
@@ -41,7 +41,7 @@ export const Home = ({ className }) => (
     viewBox="0 0 24 24"
     fill="currentColor"
     height="1em"
-    width="1em"
+    width="1.2em"
   >
     <path fill="none" d="M0 0h24v24H0z" />
     <path d="M20 20a1 1 0 01-1 1H5a1 1 0 01-1-1v-9H1l10.327-9.388a1 1 0 011.346 0L23 11h-3v9zm-2-1V9.157l-6-5.454-6 5.454V19h12zm-6-2l-3.359-3.359a2.25 2.25 0 113.182-3.182l.177.177.177-.177a2.25 2.25 0 113.182 3.182L12 17z" />
@@ -54,7 +54,7 @@ export const Profile = ({ className }) => (
     fill="none"
     viewBox="0 0 24 24"
     height="1em"
-    width="1em"
+    width="1.2em"
   >
     <path
       fill="currentColor"
