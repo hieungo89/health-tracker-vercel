@@ -5,8 +5,8 @@ By Hieu Ngo
 
 ## About the Project
 
-> This is a web app that allows users to record and track of their health information which includes sleep, exercise, weight, and meals.
-> It also includes:
+> This web app allows users to record and track their health information, including sleep, exercise, weight, and meals.
+> It also has:
 
 1. Google Authorization for secure access to personal data.
 2. Mobile Integration for phones and tablets.
@@ -37,7 +37,7 @@ By Hieu Ngo
 ### This project includes the following sections:
 
 1. Initial Login page
-2. Accout Settings
+2. Account Settings
 3. Profile Page
 4. Data Collection
 5. Data Analysis
@@ -53,7 +53,7 @@ By Hieu Ngo
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0671fe0a-71ef-4a06-9ba9-77d38c1901be" alt="Login Page">
     </td>
     <td>
-      This is the main page of the app. User needs to sign in with a Google account in order to get started.
+      This is the main page of the app. The user needs to sign in with a Google account in order to get started.
     </td>
   </tr>
   <tr>
@@ -61,7 +61,7 @@ By Hieu Ngo
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/823c2095-1768-4420-884f-39c0504babe9" alt="New User">
     </td>
     <td>
-      New user will be prompted to create a profile.
+      The new user will be prompted to create a profile.
     </td>
   </tr>
   <tr>
@@ -69,7 +69,7 @@ By Hieu Ngo
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0f6733f0-0aa4-43ed-9fd2-36d31460fc23" alt="Returning User">
     </td>
     <td>
-      Returning user will have the option to go to their profile page.
+      Returning users will have the option to go to their profile page.
     </td>
   </tr>
 </table>
@@ -83,14 +83,14 @@ By Hieu Ngo
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/44052dad-9aba-4796-b7e6-d979994c18b3" alt="Profile Creation">
     </td>
     <td>
-      New user will need to complete this form in order to start using the application.
+      New users will need to complete this form in order to start using the application.
     </td>
   </tr>
     <td width="50%">
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/5b5329ff-88b7-47ca-8472-44fef927d971" alt="Profile Update">
     </td>
     <td>
-      User update their profile in the Profile page. All of the user's info can be updated.
+      User updates their profile on the Profile page. All of the user's info can be updated.
     </td>
   </tr>
 </table>
@@ -104,7 +104,7 @@ By Hieu Ngo
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/6804c8ea-597b-4460-929d-41448d18c5cb" alt="Profile Page">
     </td>
     <td>
-      The profile page is the main page where user can record and view their data. The profile includes all the info that the user shared, buttons that take user to record data and buttons that opens the data records on the same page.
+      The profile page is where users can record and view their data. The profile includes all the info that the user shared, buttons that take the user to record data, and buttons that open the data records on the same page.
     </td>
   </tr>
 </table>
@@ -118,7 +118,7 @@ By Hieu Ngo
     <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/27c4bec5-82f2-41b9-84df-52286f13c13b" alt="Add Health Data">
     </td>
     <td>
-      <b>Add Health Data:</b> User can add exercise, sleep, and weight to their chart.
+      <b>Add Health Data:</b> Users can add exercise, sleep, and weight to their chart.
     </td>
   </tr>
   <tr>
@@ -126,7 +126,7 @@ By Hieu Ngo
     <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8ce5ce4e-7fe5-4732-9b65-dc4e907eb569" alt="Add Food Data">
     </td>
     <td>
-      <b>Add Food Data:</b> Utilizing Spoonacular API to search for food ingredients and add them to their health data. User can search a plethora of food ingredients and add each individually to their meal.
+      <b>Add Food Data:</b> Utilizing Spoonacular API to search for food ingredients and add them to their health data. Users can search a plethora of food ingredients and add each individually to their meal.
     </td>
   </tr>
 </table>
@@ -140,7 +140,7 @@ By Hieu Ngo
     <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/ff23210e-9903-4def-86c6-cf9adb2c043b" alt="View SEW Data">
     </td>
     <td>
-      <b>View Sleep, Exercise, Weight Data:</b> User can view their records in the user page by clicking on the "Sleep/Exercise/Weight" button.
+      <b>View Sleep, Exercise, Weight Data:</b> User can view their records on the user page by clicking on the "Sleep/Exercise/Weight" button.
     </td>
   </tr>
   <tr>
@@ -148,8 +148,30 @@ By Hieu Ngo
     <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/9e019584-f47b-4a34-a35f-72ec1127b291" alt="View Meals Data">
     </td>
     <td>
-      <b>View Meals Data:</b> User can view their meal records in the user page by clicking on the "Meals" button. A breakdown of the total Nutrition Facts of all food recorded per date will be shown and the name of the food ingredients.
+      <b>View Meals Data:</b> User can view their meal records on the user page by clicking on the "Meals" button. A breakdown of the total Nutrition Facts of all food recorded per date will be shown and the name of the food ingredients.
     </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+### Mobile Integration:
+
+<table>
+  <tr>
+    <td width="20%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/5b2a5d78-0256-486e-b103-8d92a6e30c52" alt="Mobile Login Page">
+    </td>
+    <td width="20%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/d3058b7c-9761-4047-8f6e-8d2015ac5231" alt="Mobile Profile Page">
+    </td>
+    <td width="20%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/ec7739b1-b300-4135-bc3f-bf7982cda104" alt="Mobile Account Settings">
+    </td>
+    <td width="20%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/a7134987-d532-49ef-b815-3e06a53c67a7" alt="Mobile Add Health Data">
+    </td>
+    <td width="20%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/7fd6d139-2729-4017-bbfb-d09b7b1b2da7" alt="Mobile Add Meal Data">
   </tr>
 </table>
 <p align="right">(<a href="#top">back to top</a>)</p>
