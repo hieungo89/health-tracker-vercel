@@ -24,7 +24,6 @@ const AddMealData = () => {
   const handleSearchIngredients = async (e) => {
     e.preventDefault();
     const data = { ingredients: e.target.ingredients.value };
-    console.log("Search ingredients ~~ ", data);
 
     axios
       .get(

@@ -14,7 +14,7 @@ const AddHealthData = () => {
 
     const time24hr = e.target.weight_time.value;
     let time12hr;
-    // convert to Standard Time
+    //* convert to Standard Time
     if (Number(time24hr.slice(0, 2)) === 0) {
       time12hr = "12" + time24hr.slice(2) + " AM";
     } else if (Number(time24hr.slice(0, 2)) === 12) {

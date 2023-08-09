@@ -1,14 +1,10 @@
 import { User } from "../../lib/models/schema";
 import { mongooseConnect } from "../../lib/mongoose";
 import { getServerAuthSession } from "./auth/[...nextauth]";
-// import { models } from "mongoose";
 
 export default async function handler(req, res) {
-  // console.log("Mongoose Models ~ ", models);
   const session = await getServerAuthSession(req, res);
-  if (!session) {
-    res.status(404);
-  }
+  if (!session) res.status(404);
 
   await mongooseConnect();
 
@@ -39,7 +35,7 @@ export default async function handler(req, res) {
       });
       res.status(200).json();
     } catch (err) {
-      console.log("error ~ ", err.message);
+      res.status(400).json("error ~ ", err.message);
     }
   }
 
@@ -50,7 +46,7 @@ export default async function handler(req, res) {
         return res.json(data[0]);
       });
     } catch (err) {
-      console.log("error ~ ", err.message);
+      res.status(400).json("error ~ ", err.message);
     }
   }
 }
