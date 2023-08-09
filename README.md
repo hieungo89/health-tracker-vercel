@@ -1,82 +1,157 @@
-## Example app using MongoDB
+<h1 align="center">
+  Health Tracker <br> Deployed with Vercel and Mongo Atlas
+</h1>
+By Hieu Ngo
 
-[MongoDB](https://www.mongodb.com/) is a general purpose, document-based, distributed database built for modern application developers and for the cloud era. This example will show you how to connect to and use MongoDB as your backend for your Next.js app.
+## About the Project
 
-If you want to learn more about MongoDB, visit the following pages:
+> This is a web app that allows users to record and track of their health information which includes sleep, exercise, weight, and meals.
+> It also includes:
 
-- [MongoDB Atlas](https://mongodb.com/atlas)
-- [MongoDB Documentation](https://docs.mongodb.com/)
+1. Google Authorization for secure access to personal data.
+2. Mobile Integration for phones and tablets.
+3. Navigation Bar for quick access.
 
-## Deploy your own
+## Built with:
 
-Once you have access to the environment variables you'll need, deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction">![JavaScript Badge](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=for-the-badge)</a>
+<a href="https://vercel.com/">![Vercel Badge](https://img.shields.io/badge/Vercel-000?logo=vercel&logoColor=fff&style=for-the-badge)</a>
+<a href="https://nextjs.org/">![Next.js Badge](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=fff&style=for-the-badge)</a>
+<a href="https://reactjs.org/">![React Badge](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=for-the-badge)</a>
+<a href="https://www.mongodb.com/">![MongoDB Badge](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=for-the-badge)</a>
+<a href="https://mongoosejs.com/">![Mongoose Badge](https://img.shields.io/badge/Mongoose-800?logo=mongoose&logoColor=fff&style=for-the-badge)</a>
+<a href="https://cloud.google.com/">![Google Cloud Badge](https://img.shields.io/badge/Google%20Cloud-4285F4?logo=googlecloud&logoColor=fff&style=for-the-badge)</a>
+<a href="https://tailwindcss.com/">![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=for-the-badge)</a>
+<a href="https://nextui.org/">![NextUI Badge](https://img.shields.io/badge/Next_UI-000?style=for-the-badge)</a>
+<a href="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">![HTML5 Badge](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=fff&style=for-the-badge)</a>
+<a href="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">![CSS3 Badge](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=fff&style=for-the-badge)</a>
+<a href="https://spoonacular.com/food-api">![Spoonacular Badge](https://img.shields.io/badge/Spoonacular_API-47A248?style=for-the-badge)</a>
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?project-name=with-mongodb&repository-name=with-mongodb&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-mongodb&integration-ids=oac_jnzmjqM10gllKmSrG0SGrHOH)
+<!-- <a href="https://www.chartjs.org/">![Chart.js Badge](https://img.shields.io/badge/Chart.js-FF6384?logo=chartdotjs&logoColor=fff&style=for-the-badge)</a> -->
 
-## How to use
+## Supporting Dependencies:
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+<a href="https://eslint.org/">![ESLint Badge](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=fff&style=for-the-badge)</a>
+<a href="https://prettier.io/">![Prettier Badge](https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=fff&style=for-the-badge)</a>
 
-```bash
-npx create-next-app --example with-mongodb with-mongodb-app
-```
+### This project includes the following sections:
 
-```bash
-yarn create next-app --example with-mongodb with-mongodb-app
-```
+1. Initial Login page
+2. Accout Settings
+3. Profile Page
+4. Data Collection
+5. Data Analysis
+6. Mobile Integrations
 
-```bash
-pnpm create next-app --example with-mongodb with-mongodb-app
-```
+## App Features
 
-## Configuration
+### Login Page:
 
-### Set up a MongoDB database
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0671fe0a-71ef-4a06-9ba9-77d38c1901be" alt="Login Page">
+    </td>
+    <td>
+      This is the main page of the app. User needs to sign in with a Google account in order to get started.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/823c2095-1768-4420-884f-39c0504babe9" alt="New User">
+    </td>
+    <td>
+      New user will be prompted to create a profile.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0f6733f0-0aa4-43ed-9fd2-36d31460fc23" alt="Returning User">
+    </td>
+    <td>
+      Returning user will have the option to go to their profile page.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Set up a MongoDB database either locally or with [MongoDB Atlas for free](https://mongodb.com/atlas).
+### Account Settings:
 
-### Set up environment variables
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/44052dad-9aba-4796-b7e6-d979994c18b3" alt="Profile Creation">
+    </td>
+    <td>
+      New user will need to complete this form in order to start using the application.
+    </td>
+  </tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/5b5329ff-88b7-47ca-8472-44fef927d971" alt="Profile Update">
+    </td>
+    <td>
+      User update their profile in the Profile page. All of the user's info can be updated.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Copy the `env.local.example` file in this directory to `.env.local` (which will be ignored by Git):
+### Profile Page:
 
-```bash
-cp .env.local.example .env.local
-```
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/6804c8ea-597b-4460-929d-41448d18c5cb" alt="Profile Page">
+    </td>
+    <td>
+      The profile page is the main page where user can record and view their data. The profile includes all the info that the user shared, buttons that take user to record data and buttons that opens the data records on the same page.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Set each variable on `.env.local`:
+### Data Collection:
 
-- `MONGODB_URI` - Your MongoDB connection string. If you are using [MongoDB Atlas](https://mongodb.com/atlas) you can find this by clicking the "Connect" button for your cluster.
+<table>
+  <tr>
+    <td width="50%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/27c4bec5-82f2-41b9-84df-52286f13c13b" alt="Add Health Data">
+    </td>
+    <td>
+      <b>Add Health Data:</b> User can add exercise, sleep, and weight to their chart.
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8ce5ce4e-7fe5-4732-9b65-dc4e907eb569" alt="Add Food Data">
+    </td>
+    <td>
+      <b>Add Food Data:</b> Utilizing Spoonacular API to search for food ingredients and add them to their health data. User can search a plethora of food ingredients and add each individually to their meal.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### Run Next.js in development mode
+### Data Analysis:
 
-```bash
-npm install
-npm run dev
+<table>
+  <tr>
+    <td width="50%">
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/ff23210e-9903-4def-86c6-cf9adb2c043b" alt="View SEW Data">
+    </td>
+    <td>
+      <b>View Sleep, Exercise, Weight Data:</b> User can view their records in the user page by clicking on the "Sleep/Exercise/Weight" button.
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/9e019584-f47b-4a34-a35f-72ec1127b291" alt="View Meals Data">
+    </td>
+    <td>
+      <b>View Meals Data:</b> User can view their meal records in the user page by clicking on the "Meals" button. A breakdown of the total Nutrition Facts of all food recorded per date will be shown and the name of the food ingredients.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-# or
-
-yarn install
-yarn dev
-```
-
-Your app should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
-
-You will either see a message stating "You are connected to MongoDB" or "You are NOT connected to MongoDB". Ensure that you have provided the correct `MONGODB_URI` environment variable.
-
-When you are successfully connected, you can refer to the [MongoDB Node.js Driver docs](https://mongodb.github.io/node-mongodb-native/3.4/tutorials/collections/) for further instructions on how to query your database.
-
-## Deploy on Vercel
-
-You can deploy this app to the cloud with [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
-
-#### Deploy Your Local Project
-
-To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [import to Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example).
-
-**Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
-
-#### Deploy from Our Template
-
-Alternatively, you can deploy using our template by clicking on the Deploy button below.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?project-name=with-mongodb&repository-name=with-mongodb&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-mongodb&integration-ids=oac_jnzmjqM10gllKmSrG0SGrHOH)
+# Thank you for viewing my repo!
