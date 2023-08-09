@@ -71,6 +71,7 @@ const AccountCreation = ({ type }) => {
 
   if (status === "loading") return <Layout>...Loading</Layout>;
   if (status === "unauthenticated") router.push("/");
+
   //! Redirect back to profile if user refreshes page
   if (userProfile === "") router.push("/profile");
 

@@ -1,3 +1,5 @@
+// Currently not in use
+
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -14,6 +16,7 @@ export default function Auth({ children }) {
         router.push("/");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUser, loading]);
 
   if (loading) {

@@ -36,11 +36,13 @@ const Profile = () => {
   useEffect(() => {
     if (!session) return;
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   useEffect(() => {
     if (!age) return;
     date();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [age]);
 
   if (status === "loading") return <Layout>...Loading</Layout>;

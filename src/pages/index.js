@@ -19,6 +19,7 @@ export default function Home() {
   useEffect(() => {
     if (!session) return;
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   //! NOT SIGNED IN
