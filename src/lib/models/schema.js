@@ -95,20 +95,3 @@ const mealDataSchema = new Schema({
   },
 });
 export const MealData = models.MealData || model("MealData", mealDataSchema);
-
-const nutritionDataSchema = new Schema({
-  searchString: String,
-  food: String,
-  quantity: Number,
-  measure: String,
-  calories: { label: String, quantity: Number, unit: String },
-  fat: { label: String, quantity: Number, unit: String },
-  carbohydrate: { label: String, quantity: Number, unit: String },
-  fiber: { label: String, quantity: Number, unit: String },
-  sugar: { label: String, quantity: Number, unit: String },
-  protein: { label: String, quantity: Number, unit: String },
-  cholesterol: { label: String, quantity: Number, unit: String },
-  sodium: { label: String, quantity: Number, unit: String },
-});
-export const NutritionData =
-  models.NutritionData || model("NutritionData", nutritionDataSchema);
