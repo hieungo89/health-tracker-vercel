@@ -81,6 +81,10 @@ const AccountCreation = ({ type }) => {
       <>
         <Head>
           <title>HT - create account</title>
+          <meta
+            name="create account"
+            content="New users need to create an account with all the info provided."
+          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -249,6 +253,10 @@ const AccountCreation = ({ type }) => {
       <>
         <Head>
           <title>HT - update account</title>
+          <meta
+            name="update account"
+            content="Current user can update their account info."
+          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 

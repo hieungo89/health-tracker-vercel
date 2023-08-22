@@ -54,13 +54,14 @@ const Profile = () => {
       <>
         <Head>
           <title>HT - Profile</title>
+          <meta name="profile" content="A full display of the user profile." />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
         <Layout className="flex flex-col items-center">
           {/* //! Profile Photo, Name, Email, Age, Height, Settings */}
           <div className="flex sm:flex-col">
-            <div className="w-40 h-40 mr-6 md:w-28 md:h-28 sm:w-44 sm:h-44 sm:self-center sm:mb-2">
+            <div className="w-32 h-32 mr-6 md:w-28 md:h-28 sm:w-28 sm:h-28 sm:self-center sm:mb-2">
               <img
                 src={userProfile.image}
                 alt="profile"
@@ -98,13 +99,15 @@ const Profile = () => {
               <span className="text-2xl font-semibold lg:text-xl md:text-base sm:text-sm">
                 Your Dietary Goals:&nbsp;
               </span>
-              {userProfile?.dietaryGoals?.map((goal) => {
-                return (
-                  <li key={goal} className="md:text-sm sm:text-xs">
-                    {goal}
-                  </li>
-                );
-              })}
+              <ol>
+                {userProfile?.dietaryGoals?.map((goal) => {
+                  return (
+                    <li key={goal} className="md:text-sm sm:text-xs">
+                      {goal}
+                    </li>
+                  );
+                })}
+              </ol>
             </div>
             <div className="w-2/3 pl-4 md:w-3/5">
               <div className="sm:flex sm:flex-col">
