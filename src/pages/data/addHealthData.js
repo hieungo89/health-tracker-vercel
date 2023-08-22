@@ -58,6 +58,10 @@ const AddHealthData = () => {
     <>
       <Head>
         <title>HT - Wellness</title>
+        <meta
+          name="Record wellness data"
+          content="User can record sleep, exercise, and weight data per day."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

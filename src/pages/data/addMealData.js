@@ -162,7 +162,11 @@ const AddMealData = () => {
   return (
     <>
       <Head>
-        <title>Health Tracker - Meals</title>
+        <title>HT - Meals</title>
+        <meta
+          name="Record meals data"
+          content="User can record their meals data for each type of food ingredient that they consumed."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

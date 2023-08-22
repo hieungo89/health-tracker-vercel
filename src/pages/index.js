@@ -28,6 +28,10 @@ export default function Home() {
       <>
         <Head>
           <title>Health Tracker</title>
+          <meta
+            name="main screen"
+            content="User's main screen. The user needs to login to view more info."
+          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
