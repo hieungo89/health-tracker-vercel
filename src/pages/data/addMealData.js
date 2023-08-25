@@ -18,7 +18,7 @@ const AddMealData = () => {
   const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   //! Search API for specific food ingredients & setFoodItems
   const handleSearchIngredients = async (e) => {
@@ -155,9 +155,6 @@ const AddMealData = () => {
     setFoodItemModal(false);
     setEditMode(false);
   };
-
-  if (status === "loading") return <Layout>...Loading</Layout>;
-  if (status === "unauthenticated") router.push("/");
 
   return (
     <>

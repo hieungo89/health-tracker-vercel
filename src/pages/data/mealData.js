@@ -1,13 +1,11 @@
 import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Line } from "../../components/Icons";
-import Layout from "../../components/Layout";
 
 const MealData = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [mealData, setMealData] = useState([]);
   const [sortedMealData, setSortedMealData] = useState([]);
   const [minerals] = useState([
@@ -37,8 +35,6 @@ const MealData = () => {
     "Vitamin K",
     "Zinc",
   ]);
-
-  const router = useRouter();
 
   const getMealData = async () => {
     const { data } = await axios.get(
@@ -101,9 +97,6 @@ const MealData = () => {
     sortDataByDate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mealData]);
-
-  if (status === "loading") return <Layout>...Loading</Layout>;
-  if (status === "unauthenticated") router.push("/");
 
   return (
     <div className="py-8">
