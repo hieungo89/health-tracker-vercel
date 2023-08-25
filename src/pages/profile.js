@@ -17,7 +17,7 @@ const Profile = () => {
   const [mealsData, setMealsData] = useState(false);
 
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const format = useFormatter();
 
   const getData = async () => {
@@ -45,8 +45,6 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [age]);
 
-  if (status === "loading") return <Layout>...Loading</Layout>;
-  if (status === "unauthenticated") router.push("/");
   if (!userProfile) router.push("/");
 
   if (userProfile.firstName)

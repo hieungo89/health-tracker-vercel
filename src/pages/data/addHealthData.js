@@ -7,7 +7,7 @@ import Layout from "../../components/Layout";
 
 const AddHealthData = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const handleDataInput = async (e) => {
     e.preventDefault();
@@ -50,9 +50,6 @@ const AddHealthData = () => {
     await axios.post("/api/wellnessData", data);
     router.push("/profile");
   };
-
-  if (status === "loading") return <Layout>...Loading</Layout>;
-  if (status === "unauthenticated") router.push("/");
 
   return (
     <>

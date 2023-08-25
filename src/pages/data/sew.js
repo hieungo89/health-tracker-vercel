@@ -1,15 +1,12 @@
 import { Table } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Layout from "../../components/Layout";
 
 const SEW = () => {
   const [wellnessData, setWellnessData] = useState([]);
 
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession();
 
   const getData = async () => {
     const { data } = await axios.get(
@@ -23,9 +20,6 @@ const SEW = () => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
-
-  if (status === "loading") return <Layout>...Loading</Layout>;
-  if (status === "unauthenticated") router.push("/");
 
   return (
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">

@@ -10,7 +10,7 @@ const AccountCreation = ({ type }) => {
   const [option, setOption] = useState("");
   const [userProfile, setUserProfile] = useState({});
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   const handleSubmit = (e) => {
@@ -68,9 +68,6 @@ const AccountCreation = ({ type }) => {
     if (type === "update") getUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (status === "loading") return <Layout>...Loading</Layout>;
-  if (status === "unauthenticated") router.push("/");
 
   //! Redirect back to profile if user refreshes page
   if (userProfile === "") router.push("/profile");
