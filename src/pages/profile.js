@@ -1,6 +1,7 @@
 import axios from "axios";
+import { intervalToDuration, parseISO } from "date-fns";
 import { useSession } from "next-auth/react";
-import { useFormatter } from "next-intl";
+import { useNow } from "next-intl";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,7 +19,6 @@ const Profile = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
-  const format = useFormatter();
 
   const getData = async () => {
     const { data } = await axios.get(`/api/user?email=${session?.user.email}`);
@@ -26,11 +26,25 @@ const Profile = () => {
     setAge(data.birthday);
   };
 
+  const now = useNow({
+    updateInterval: 1000 * 10,
+  });
+
   const date = () => {
-    const dateTime = userProfile.birthday;
-    const now = new Date().toISOString();
-    const formatted = format.relativeTime(dateTime, now).replace("ago", "old");
-    setAge(formatted);
+    const birthday = parseISO(userProfile.birthday);
+    const ageDifference = intervalToDuration({ start: birthday, end: now });
+
+    if (ageDifference.years > 1) {
+      setAge(ageDifference.years + " years old");
+    } else if (ageDifference.years === 1) {
+      setAge(ageDifference.years + " year old");
+    } else {
+      if (ageDifference.months !== 1) {
+        setAge(ageDifference.months + " months old");
+      } else {
+        setAge(ageDifference.months + " month old");
+      }
+    }
   };
 
   useEffect(() => {
