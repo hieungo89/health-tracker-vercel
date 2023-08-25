@@ -1,5 +1,5 @@
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { Home, Profile, SignIn, SignOut } from "./Icons";
 
 const cssClass = {
@@ -10,25 +10,22 @@ const NavBar = () => {
   const { data: session } = useSession();
   return (
     <aside className="p-4 bg-blue-300 lg:p-2">
-      <div className="flex justify-end">
+      <div className="flex justify-start">
         <Link href="/" className={cssClass.icon}>
           <Home /> Home
         </Link>
 
         {session ? (
           <>
-            <Link href="/profile" className={cssClass.icon}>
+            <Link href="/profile" className={`${cssClass.icon}`}>
               <Profile /> Profile
             </Link>
-            <button
-              onClick={() => signOut()}
-              className={`${cssClass.icon} pt-1`}
-            >
+            <button onClick={() => signOut()} className={`${cssClass.icon}`}>
               <SignOut /> Sign-out
             </button>
           </>
         ) : (
-          <button onClick={() => signIn()} className={`${cssClass.icon} pt-1`}>
+          <button onClick={() => signIn()} className={`${cssClass.icon}`}>
             <SignIn /> Sign-in
           </button>
         )}
