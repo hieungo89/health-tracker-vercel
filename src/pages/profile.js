@@ -1,7 +1,6 @@
 import axios from "axios";
 import { intervalToDuration, parseISO } from "date-fns";
 import { useSession } from "next-auth/react";
-import { useNow } from "next-intl";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,13 +25,13 @@ const Profile = () => {
     setAge(data.birthday);
   };
 
-  const now = useNow({
-    updateInterval: 1000 * 10,
-  });
-
   const date = () => {
-    const birthday = parseISO(userProfile.birthday);
-    const ageDifference = intervalToDuration({ start: birthday, end: now });
+    const birthday = parseISO(userProfile.birthday.slice(0, 10));
+
+    const ageDifference = intervalToDuration({
+      start: birthday,
+      end: new Date(),
+    });
 
     if (ageDifference.years > 1) {
       setAge(ageDifference.years + " years old");

@@ -135,6 +135,7 @@ const AccountCreation = ({ type }) => {
                     className="px-2 text-center bg-blue-100"
                     type="date"
                     name="birthday"
+                    max={new Date().toISOString().slice(0, 10)}
                     required
                   />
                 </label>
@@ -313,6 +314,7 @@ const AccountCreation = ({ type }) => {
                     name="birthday"
                     value={userProfile?.birthday?.slice(0, 10)}
                     onChange={(e) => handleChange(e)}
+                    max={new Date().toISOString().slice(0, 10)}
                     required
                   />
                 </label>
