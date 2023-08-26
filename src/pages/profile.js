@@ -9,7 +9,7 @@ import { Setting } from "../components/Icons";
 import Layout from "../components/Layout";
 import MealData from "./data/mealData";
 import SEW from "./data/sew";
-import { Popover, Card, Text } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
