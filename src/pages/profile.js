@@ -9,6 +9,7 @@ import { Setting } from "../components/Icons";
 import Layout from "../components/Layout";
 import MealData from "./data/mealData";
 import SEW from "./data/sew";
+import { Card } from "@nextui-org/react";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -71,24 +72,26 @@ const Profile = () => {
 
         <Layout className="flex flex-col items-center">
           {/* //! Profile Photo, Name, Email, Age, Height, Settings */}
-          <div className="flex sm:flex-col">
-            <div className="w-32 h-32 mr-6 md:w-28 md:h-28 sm:w-28 sm:h-28 sm:self-center sm:mb-2">
-              <img
-                src={userProfile.image}
-                alt="profile"
-                className="w-full h-full border border-white rounded-full"
-              />
-            </div>
-
-            <div className="flex flex-col sm:text-sm">
-              <div>
-                Name: {userProfile.firstName} {userProfile.lastName}
+          <div className="flex w-full max-w-3xl">
+            <div className="flex w-full justify-evenly sm:flex-col sm:items-center">
+              <div className="w-32 h-32 mr-6 self-center md:w-28 md:h-28 sm:w-28 sm:h-28 sm:self-center sm:mb-2">
+                <img
+                  src={userProfile.image}
+                  alt="profile"
+                  className="w-full h-full border border-white rounded-full"
+                />
               </div>
-              <div className="py-4 md:py-1">Email: {userProfile.email}</div>
-              <div className="pb-4 md:py-1">Age: {age}</div>
-              <div>
-                Height: {userProfile.height.height_ft}ft.{" "}
-                {userProfile.height.height_in}in.
+
+              <div className="flex flex-col sm:text-sm sm:pt-2">
+                <div>
+                  Name: {userProfile.firstName} {userProfile.lastName}
+                </div>
+                <div className="py-4 md:py-1">Email: {userProfile.email}</div>
+                <div className="pb-4 md:py-1">Age: {age}</div>
+                <div>
+                  Height: {userProfile.height.height_ft}ft.{" "}
+                  {userProfile.height.height_in}in.
+                </div>
               </div>
             </div>
 
@@ -100,49 +103,70 @@ const Profile = () => {
                 },
               }}
             >
-              <Setting className="p-0.5 ml-4 md:text-xl sm:text-xs sm:p-0 sm:ml-0 sm:mt-2" />
+              <Setting className="p-0.5 ml-4 md:text-xl sm:text-base sm:p-0 sm:ml-0" />
             </Link>
           </div>
 
           {/* //! Dietary & Health */}
-          <div className="flex p-2 my-12 w-full min-h-[8rem] max-w-4xl border rounded">
-            <div className="w-1/3 pl-2 md:w-2/5">
-              <span className="text-2xl font-semibold lg:text-xl md:text-base sm:text-sm">
-                Your Dietary Goals:&nbsp;
-              </span>
-              <ol>
-                {userProfile?.dietaryGoals?.map((goal) => {
-                  return (
-                    <li key={goal} className="md:text-sm sm:text-xs">
-                      {goal}
-                    </li>
-                  );
-                })}
-              </ol>
+          <div className="flex p-2 my-12 w-full max-w-3xl sm:flex-col sm:items-center">
+            <div className="w-1/3 sm:w-full">
+              <Card>
+                <Card.Header>
+                  <span className="text-2xl font-semibold lg:text-xl md:text-base sm:text-sm">
+                    Your Dietary Goals:
+                  </span>
+                </Card.Header>
+                <Card.Divider />
+                <Card.Body>
+                  <ol>
+                    {userProfile?.dietaryGoals?.map((goal) => {
+                      return (
+                        <li key={goal} className="md:text-sm sm:text-xs">
+                          {goal}
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </Card.Body>
+              </Card>
             </div>
-            <div className="w-2/3 pl-4 md:w-3/5">
-              <div className="sm:flex sm:flex-col">
-                <span className="text-2xl font-semibold pr-4 lg:text-xl md:text-base sm:text-sm">
-                  Current Dietary Restrictions:&nbsp;
-                </span>
-                <span className="md:text-sm sm:text-xs sm:py-1">
-                  {userProfile.dietaryRestrictions
-                    ? userProfile.dietaryRestrictions
-                    : "none"}
-                </span>
+            <div className="flex flex-col w-2/3 pl-2 sm:w-full sm:pl-0">
+              <div className="sm:py-2">
+                <Card>
+                  <Card.Header>
+                    <span className="text-2xl font-semibold pr-4 lg:text-xl md:text-base sm:text-sm">
+                      Current Dietary Restrictions:&nbsp;
+                    </span>
+                  </Card.Header>
+                  <Card.Divider />
+                  <Card.Body>
+                    <span className="md:text-sm sm:text-xs sm:py-1">
+                      {userProfile.dietaryRestrictions
+                        ? userProfile.dietaryRestrictions
+                        : "none"}
+                    </span>
+                  </Card.Body>
+                </Card>
               </div>
-              <div className="sm:flex sm:flex-col">
-                <span className="text-2xl font-semibold pr-4 lg:text-xl md:text-base sm:text-sm">
-                  Health Complications:&nbsp;
-                </span>
-                <span className="md:text-sm sm:text-xs sm:py-1">
-                  {userProfile.healthComplications}
-                </span>
+              <div className="pt-2 sm:pt-0">
+                <Card>
+                  <Card.Header>
+                    <span className="text-2xl font-semibold pr-4 lg:text-xl md:text-base sm:text-sm">
+                      Health Complications:
+                    </span>
+                  </Card.Header>
+                  <Card.Divider />
+                  <Card.Body>
+                    <span className="md:text-sm sm:text-xs sm:py-1">
+                      {userProfile.healthComplications}
+                    </span>
+                  </Card.Body>
+                </Card>
               </div>
             </div>
           </div>
 
-          <div className="flex sm:flex-col">
+          <div className="flex w-full max-w-3xl justify-between sm:flex-col">
             {/*//! Input Data Section */}
             <div className="flex flex-col items-center px-4 ">
               <span className="text-xl font-bold uppercase underline sm:text-base">
@@ -199,8 +223,8 @@ const Profile = () => {
           </div>
 
           <div className="w-screen">
-            {sewData ? <SEW /> : null}
-            {mealsData ? <MealData /> : null}
+            {sewData && <SEW />}
+            {mealsData && <MealData />}
           </div>
         </Layout>
       </>
