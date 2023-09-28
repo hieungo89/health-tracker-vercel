@@ -12,6 +12,7 @@ const cssStyles = {
 
 const Footer = () => (
   <div className="m-4">
+    <div className="underline" />
     <div className="text-center mx-20 my-12 sm:mx-12">
       &copy; HealthTracker 2023 All rights reserved.
     </div>
