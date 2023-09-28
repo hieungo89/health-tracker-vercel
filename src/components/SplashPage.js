@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Button from "@components/Button";
+import { useRouter } from "next/router";
 
 const cssStyles = {
   title: `font-semibold text-primary-light font-georgia text-9xl lg:text-8xl md:text-7xl sm:text-6xl xs:text-4xl`,
@@ -15,15 +16,10 @@ const cssStyles = {
   lg:py-[1em] lg:text-base sm:w-[70%]`,
 };
 
-const SplashPage = () => {
+const SplashPage = ({ user }) => {
+  const router = useRouter();
   return (
     <>
-      <Head>
-        <title>Health Tracker</title>
-        <meta name="home" content="Home page for app information" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Layout className="flex flex-col justify-center items-center">
         <div className="flex flex-col items-center pt-4 md:pt-2">
           <div className={cssStyles.title}>Health HQ</div>
@@ -36,6 +32,7 @@ const SplashPage = () => {
             src={homeDisplay}
             alt="home display conents"
             className="w-full h-auto pt-4"
+            priority
           />
         </div>
 
@@ -98,17 +95,28 @@ const SplashPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col w-full bg-primary-light py-20 md:py-12">
+        <div className="flex flex-col w-full bg-primary-light py-28 md:py-16">
           <div className={cssStyles.headerLight}>Get Started</div>
           <div className="flex flex-col items-center">
             <p className={cssStyles.commitmentText}>
               Ready to commit to a healthier lifestyle? Don&#39;t wait, sign up
               today, and let&#39;s make your health the number one priority.
             </p>
-            <Button
-              content="Sign in with Google"
-              click={() => signIn("google")}
-            />
+            {user?.email ? (
+              <Button
+                content="Go to Profile"
+                handleClick={() => router.push("/profile")}
+              />
+            ) : (
+              <Button
+                content="Sign in with Google"
+                handleClick={() =>
+                  signIn("google", {
+                    callbackUrl: "/profile",
+                  })
+                }
+              />
+            )}
           </div>
         </div>
 
@@ -123,7 +131,7 @@ const SplashPage = () => {
               className="bg-light text-dark px-4 min-h-[2em] w-[18em]
                 md:w-[16em] sm:w-[12em]"
             />
-            <Button content="Subscribe" />
+            <Button content="Subscribe" handleClick={() => router.push()} />
           </form>
         </div>
       </Layout>
