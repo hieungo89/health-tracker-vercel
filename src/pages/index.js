@@ -1,9 +1,10 @@
 import axios from "axios";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import SplashPage from "../components/SplashPage";
 
 export default function Home() {
   const [account, setAccount] = useState({});
@@ -22,44 +23,7 @@ export default function Home() {
 
   //! NOT SIGNED IN
   if (!session) {
-    return (
-      <>
-        <Head>
-          <title>Health Tracker</title>
-          <meta
-            name="main screen"
-            content="User's main screen. The user needs to login to view more info."
-          />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <Layout className="flex flex-col justify-center items-center min-h-screen">
-          <h1 className="font-semibold text-6xl lg:text-5xl sm:text-3xl">
-            Health Tracker
-          </h1>
-          <div className="py-10 flex flex-col items-center md:py-6">
-            <p className="text-lg pb-2 lg:text-base sm:text-sm">
-              Welcome to the Health Tracker web app.
-            </p>
-            <p className="text-lg lg:text-base md:w-72 sm:text-sm">
-              This device will help you track your meals, weight, exercise, and
-              sleep with quick and easy features.
-            </p>
-          </div>
-          <p className="font-semibold text-3xl pb-2 lg:text-2xl">
-            TO GET STARTED
-          </p>
-          <button
-            className="text-4xl border border-solid rounded-lg self-center py-2 px-4 bg-blue-400
-          hover:border-black hover:bg-green-500
-          lg:text-3xl md:text-2xl"
-            onClick={() => signIn("google")}
-          >
-            Sign in with Google
-          </button>
-        </Layout>
-      </>
-    );
+    return <SplashPage />;
   }
 
   return (
