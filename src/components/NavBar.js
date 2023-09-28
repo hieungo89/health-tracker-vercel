@@ -10,7 +10,7 @@ const NavBar = () => {
   const { data: session } = useSession();
   return (
     <aside className="p-4 lg:p-2">
-      <div className="flex justify-between">
+      <div className="flex justify-end md:justify-between">
         <Link href="/" className={cssClass.icon}>
           <Home /> Home
         </Link>
