@@ -19,20 +19,6 @@ module.exports = {
         helvetica: "Helvetica Neue",
         //* fonts included - font-sans / font-serif / font-mono
       },
-      height: {
-        "90vh": "90vh",
-        "80vh": "80vh",
-        "70vh": "70vh",
-        "60vh": "60vh",
-        "50vh": "50vh",
-      },
-      minHeight: {
-        50: "50vh",
-        60: "60vh",
-        70: "70vh",
-        80: "80vh",
-        90: "90vh",
-      },
     },
     screens: {
       "2xl": { max: "1535px" },
