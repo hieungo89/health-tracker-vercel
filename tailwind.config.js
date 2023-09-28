@@ -2,7 +2,38 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "primary-dark": "#00171F",
+        "primary-light": "#003459",
+        "secondary-dark": "#007EA7",
+        "secondary-light": "#00A8E8",
+        light: "#FFFFFF",
+        dark: "#000000",
+      },
+      fontFamily: {
+        trebuchet: "Trebuchet",
+        georgia: "Georgia",
+        arial: "Arial",
+        times: "Times New Roman",
+        helvetica: "Helvetica Neue",
+        //* fonts included - font-sans / font-serif / font-mono
+      },
+      height: {
+        "90vh": "90vh",
+        "80vh": "80vh",
+        "70vh": "70vh",
+        "60vh": "60vh",
+        "50vh": "50vh",
+      },
+      minHeight: {
+        50: "50vh",
+        60: "60vh",
+        70: "70vh",
+        80: "80vh",
+        90: "90vh",
+      },
+    },
     screens: {
       "2xl": { max: "1535px" },
       // => @media (max-width: 1535px) { ... }
