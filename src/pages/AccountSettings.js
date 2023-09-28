@@ -1,10 +1,10 @@
+import Layout from "@components/Layout";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
 
 const AccountCreation = ({ type }) => {
   const [option, setOption] = useState("");
@@ -66,7 +66,6 @@ const AccountCreation = ({ type }) => {
   useEffect(() => {
     if (type) setOption(type);
     if (type === "update") getUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //! Redirect back to profile if user refreshes page

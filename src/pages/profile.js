@@ -1,3 +1,8 @@
+import { Setting } from "@components/Icons";
+import Layout from "@components/Layout";
+import MealData from "@data/mealData";
+import SEW from "@data/sew";
+import { Card } from "@nextui-org/react";
 import axios from "axios";
 import { intervalToDuration, parseISO } from "date-fns";
 import { useSession } from "next-auth/react";
@@ -5,11 +10,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Setting } from "../components/Icons";
-import Layout from "../components/Layout";
-import MealData from "./data/mealData";
-import SEW from "./data/sew";
-import { Card } from "@nextui-org/react";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -50,13 +50,11 @@ const Profile = () => {
   useEffect(() => {
     if (!session) return;
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   useEffect(() => {
     if (!age) return;
     date();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [age]);
 
   if (!userProfile) router.push("/");

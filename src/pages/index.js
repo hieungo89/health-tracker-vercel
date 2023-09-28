@@ -1,10 +1,10 @@
+import Layout from "@components/Layout";
+import SplashPage from "@components/SplashPage";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import SplashPage from "../components/SplashPage";
 
 export default function Home() {
   const [account, setAccount] = useState({});
@@ -18,7 +18,6 @@ export default function Home() {
   useEffect(() => {
     if (!session) return;
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   //! NOT SIGNED IN

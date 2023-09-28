@@ -1,6 +1,6 @@
-import { UserData } from "../../lib/models/schema";
-import { mongooseConnect } from "../../lib/mongoose";
-import { getServerAuthSession } from "./auth/[...nextauth]";
+import { UserData } from "@lib/models/schema";
+import { mongooseConnect } from "@lib/mongoose";
+import { getServerAuthSession } from "@api/auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const session = await getServerAuthSession(req, res);

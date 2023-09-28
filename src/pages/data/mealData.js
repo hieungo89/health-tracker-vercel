@@ -1,8 +1,8 @@
+import { Line } from "@components/Icons";
 import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Line } from "../../components/Icons";
 
 const MealData = () => {
   const { data: session } = useSession();
@@ -89,13 +89,11 @@ const MealData = () => {
   useEffect(() => {
     if (!session) return;
     getMealData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   useEffect(() => {
     if (!mealData) return;
     sortDataByDate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mealData]);
 
   return (

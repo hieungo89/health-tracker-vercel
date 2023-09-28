@@ -1,5 +1,6 @@
 {
   "extends": [
+    "next",
     "eslint:recommended",
     "plugin:import/errors",
     "plugin:react/recommended",
@@ -30,7 +31,7 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx"]
+        "extensions": [".js", ".jsx", "@"]
       }
     }
   }
