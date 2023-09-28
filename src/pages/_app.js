@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import ProtectedRoute from "../components/ProtectedRoute";
 import * as ga from "../lib/ga";
@@ -43,6 +44,7 @@ export default function App({
               <NextUIProvider>
                 <NavBar />
                 <Component {...pageProps} />
+                <Footer />
               </NextUIProvider>
             </ProtectedRoute>
           </NextIntlClientProvider>
