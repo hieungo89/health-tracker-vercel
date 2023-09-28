@@ -1,5 +1,10 @@
+import {
+  FacebookIcon,
+  GithubIcon,
+  LinkedInIcon,
+  TwitterIcon,
+} from "@components/Icons";
 import { motion } from "framer-motion";
-import { FacebookIcon, GithubIcon, LinkedInIcon, TwitterIcon } from "./Icons";
 
 const cssStyles = {
   header: "text-primary-dark font-semibold text-lg mb-1",

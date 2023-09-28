@@ -1,14 +1,14 @@
+import Footer from "@components/Footer";
+import NavBar from "@components/NavBar";
+import ProtectedRoute from "@components/ProtectedRoute";
+import * as ga from "@lib/ga";
 import { NextUIProvider } from "@nextui-org/react";
+import "@styles/global.css";
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
-import ProtectedRoute from "../components/ProtectedRoute";
-import * as ga from "../lib/ga";
-import "../styles/global.css";
 
 export default function App({
   Component,
@@ -35,7 +35,7 @@ export default function App({
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="../../public/favicon.ico" />
+        <link rel="icon" href="@public/favicon.ico" />
       </Head>
       <main>
         <SessionProvider session={session}>

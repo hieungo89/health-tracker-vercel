@@ -1,5 +1,5 @@
-import { Popover, Card, Text } from "@nextui-org/react";
-import { QuestionMark } from "./Icons";
+import { QuestionMark } from "@components/Icons";
+import { Card, Popover, Text } from "@nextui-org/react";
 
 const Popup = ({ text, placement, card }) => {
   return (

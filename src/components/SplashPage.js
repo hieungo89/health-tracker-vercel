@@ -1,8 +1,8 @@
+import Layout from "@components/Layout";
+import homeDisplay from "@images/home-focus.png";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import homeDisplay from "../../public/images/home-focus.png";
-import Layout from "../components/Layout";
 
 const SplashPage = () => {
   return (

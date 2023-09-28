@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "format": "prettier --write \"pages/**/*.{js,jsx}\"",
-    "lint": "eslint \"src/pages/**/*.{js,jsx}\" --quiet"
+    "lint": "next lint --quiet"
+
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.13",

@@ -1,3 +1,6 @@
+import FoodDisplayCard from "@components/FoodDisplayCard";
+import Layout from "@components/Layout";
+import Popup from "@components/Popup";
 import { Button, Card, Grid, Modal, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -5,9 +8,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import FoodDisplayCard from "../../components/FoodDisplayCard";
-import Layout from "../../components/Layout";
-import Popup from "../../components/Popup";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState({});

@@ -1,6 +1,6 @@
+import { Home, Profile, SignIn, SignOut } from "@components/Icons";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { Home, Profile, SignIn, SignOut } from "./Icons";
 
 const cssClass = {
   icon: "flex space-x-2 px-2 hover:underline hover:underline-offset-2 text-black md:text-sm",
