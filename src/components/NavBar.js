@@ -10,20 +10,20 @@ const NavBar = () => {
   const { data: session } = useSession();
   return (
     <aside className="p-4 lg:p-2">
-      <div className="flex justify-end md:justify-between">
+      <div className="flex justify-between md:justify-between">
         <Link href="/" className={cssClass.icon}>
-          <Home /> Home
+          <Home /> HTA Home
         </Link>
 
         {session ? (
-          <>
+          <div className="flex">
             <Link href="/profile" className={`${cssClass.icon}`}>
               <Profile /> Profile
             </Link>
             <button onClick={() => signOut()} className={`${cssClass.icon}`}>
               <SignOut /> Sign-out
             </button>
-          </>
+          </div>
         ) : (
           <button onClick={() => signIn()} className={`${cssClass.icon}`}>
             <SignIn /> Sign-in
