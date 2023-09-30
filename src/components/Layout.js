@@ -1,9 +1,5 @@
 const Layout = ({ children, className = "" }) => {
-  return (
-    <div className={`w-full min-h-screen inline-block ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`m-auto px-4 py-12 ${className}`}>{children}</div>;
 };
 
 export default Layout;

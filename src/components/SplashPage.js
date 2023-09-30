@@ -31,8 +31,7 @@ const SplashPage = ({ user }) => {
           <Image
             src={homeDisplay}
             alt="home display conents"
-            className="w-full h-auto pt-4"
-            priority
+            className="w-screen h-auto"
           />
         </div>
 
