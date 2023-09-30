@@ -22,7 +22,7 @@ const SplashPage = ({ user }) => {
     <>
       <Layout className="flex flex-col justify-center items-center">
         <div className="flex flex-col items-center pt-4 md:pt-2">
-          <div className={cssStyles.title}>Health HQ</div>
+          <div className={cssStyles.title}>Health Tracker App</div>
           <p className={cssStyles.appDescription}>
             Welcome to your one-stop health tracking hub! Stay on top of your
             well-being with ease, as we help you record and track your sleep,
