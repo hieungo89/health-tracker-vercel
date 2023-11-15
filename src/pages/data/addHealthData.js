@@ -4,6 +4,12 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Button } from "@components/Button";
+
+const cssStyles = {
+  formContainer: `flex flex-col rounded px-16 mb-4 p-4 lg:px-12 md:px-8 sm:px-4 sm:text-sm`,
+  inputCategory: `flex justify-between py-4 sm:py-2`,
+};
 
 const AddHealthData = () => {
   const router = useRouter();
@@ -54,16 +60,15 @@ const AddHealthData = () => {
   return (
     <>
       <Head>
-        <title>HT - Wellness</title>
+        <title>HTA - Wellness</title>
         <meta
           name="Record wellness data"
           content="User can record sleep, exercise, and weight data per day."
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout className="flex flex-col items-center">
-        <h1 className="underline md:text-4xl">Data Input</h1>
+      <Layout className="flex flex-col items-center bg-baby-blue">
+        <h1 className="underline font-trebuchet md:text-4xl">Data Input</h1>
 
         {/* Instructions */}
         <div className="my-4 md:text-sm">
@@ -82,10 +87,10 @@ const AddHealthData = () => {
 
         <form
           onSubmit={(e) => handleDataInput(e)}
-          className="flex flex-col border rounded px-16 p-4 lg:px-12 md:px-8 sm:px-4 sm:text-sm"
+          className={cssStyles.formContainer}
         >
           {/* Date */}
-          <div className="flex justify-between py-4 sm:py-2">
+          <div className={cssStyles.inputCategory}>
             <label htmlFor="date">Select Date: </label>
             <input
               type="date"
@@ -97,65 +102,25 @@ const AddHealthData = () => {
           </div>
 
           {/* Exercise */}
-          <div className="flex justify-between py-4 sm:py-2">
+          <div className={cssStyles.inputCategory}>
             <label htmlFor="exercise">Exercise:</label>
             <div className="flex">
-              <div>
-                <input
-                  type="number"
-                  min="0"
-                  max="23"
-                  name="exercise_hr"
-                  required
-                  className="text-end mx-2"
-                />
-                Hours
-              </div>
-              <div>
-                <input
-                  type="number"
-                  min="0"
-                  max="59"
-                  name="exercise_min"
-                  required
-                  className="text-end mx-2"
-                />
-                Minutes
-              </div>
+              <TimeLabels label="exercise_hr" timeType="Hours" />
+              <TimeLabels label="exercise_min" timeType="Minutes" />
             </div>
           </div>
 
           {/* Sleep */}
-          <div className="flex justify-between py-4 sm:py-2">
+          <div className={cssStyles.inputCategory}>
             <label htmlFor="sleep">Sleep:</label>
             <div className="flex">
-              <div>
-                <input
-                  type="number"
-                  min="0"
-                  max="23"
-                  name="sleep_hr"
-                  required
-                  className="text-end mx-2"
-                />
-                Hours
-              </div>
-              <div>
-                <input
-                  type="number"
-                  min="0"
-                  max="59"
-                  name="sleep_min"
-                  required
-                  className="text-end mx-2"
-                />
-                Minutes
-              </div>
+              <TimeLabels label="sleep_hr" timeType="Hours" />
+              <TimeLabels label="sleep_min" timeType="Minutes" />
             </div>
           </div>
 
           {/* Weight */}
-          <div className="flex justify-between py-4 sm:py-2">
+          <div className={cssStyles.inputCategory}>
             <label htmlFor="weight">Weight:</label>
             <div className="xs:flex xs:flex-col">
               <span>
@@ -182,25 +147,34 @@ const AddHealthData = () => {
           </div>
 
           <input
-            className="text-2xl bg-white/70 p-2 border-2 rounded
-            hover:border-black hover:bg-green-400
-            md:text-lg sm:text-base"
+            className={`text-light rounded self-center px-4 bg-secondary-dark min-h-[2em] w-[18em]
+            hover:bg-light hover:text-dark
+            md:w-[16em] sm:w-[12em]`}
             type="submit"
             value="Record Data"
           />
         </form>
-        <button
-          className="text-lg bg-white/70 text-gray-900 m-4 p-2 border rounded font
-        hover:border-black hover:bg-green-400
-        md:text-base sm:text-sm"
-        >
-          <Link href="/profile" className="text-black">
-            Return to Profile
-          </Link>
-        </button>
+        <Button
+          content="Return to Profile"
+          handleClick={() => router.push("/profile")}
+        />
       </Layout>
     </>
   );
 };
 
 export default AddHealthData;
+
+const TimeLabels = ({ label, timeType }) => (
+  <>
+    <input
+      type="number"
+      min="0"
+      max={timeType === "hour" ? "23" : "59"}
+      name={label}
+      required
+      className="text-end mx-2"
+    />
+    {timeType}
+  </>
+);

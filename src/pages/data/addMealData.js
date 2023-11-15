@@ -1,13 +1,14 @@
 import FoodDisplayCard from "@components/FoodDisplayCard";
 import Layout from "@components/Layout";
 import Popup from "@components/Popup";
-import { Button, Card, Grid, Modal, Text } from "@nextui-org/react";
+import { Card, Grid, Modal, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Button, FormSubmit } from "@components/Button";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState({});
@@ -115,6 +116,8 @@ const AddMealData = () => {
       Zinc: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
     };
 
+    console.log("nutrition Data ~~ ", totalNutrientData);
+
     await chosenItems.forEach((item) => {
       item.nutrition.nutrients.forEach((nutrient) => {
         if (totalNutrientData[nutrient.name]) {
@@ -159,31 +162,26 @@ const AddMealData = () => {
   return (
     <>
       <Head>
-        <title>HT - Meals</title>
+        <title>HTA - Meals</title>
         <meta
           name="Record meals data"
           content="User can record their meals data for each type of food ingredient that they consumed."
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout>
-        <h1 className="text-center underline lg:text-4xl sm:text-2xl">
+      <Layout className="bg-baby-blue">
+        <h1 className="text-center underline font-trebuchet lg:text-4xl sm:text-2xl">
           Meal Input
         </h1>
         <div className="flex md:flex-col">
           <div className="flex flex-col">
-            <button
-              className="w-fit text-lg bg-white/70 text-gray-900 p-2 mb-4 border rounded font
-            hover:border-black hover:bg-green-400
-            md:text-base sm:text-sm"
-            >
-              <Link href="/profile" className="text-black">
-                Return to Profile
-              </Link>
-            </button>
-
-            <h4 className="md:text-lg">Instructions:</h4>
+            <div className="flex justify-between">
+              <h4 className="md:text-lg">Instructions:</h4>
+              <Button
+                content="Return to Profile"
+                handleClick={() => router.push("/profile")}
+              />
+            </div>
             <ol>
               <li className="sm:text-sm">
                 Search and add foods that you&apos;ve eaten
@@ -201,21 +199,21 @@ const AddMealData = () => {
               onSubmit={(e) => handleSearchIngredients(e)}
               className="flex flex-col max-w-7xl"
             >
-              <p className="text-lg font-semibold pb-2 md:text-base sm:text-sm">
+              <p className="font-semibold pb-2 font-serif sm:text-sm">
                 This search feature is specifically for searching food
                 ingredients only. Specific foods may be added in the future.
               </p>
-              <div className="flex xs:flex-col">
+              <div className="flex justify-between xs:flex-col">
                 {/* Ingredients */}
-                <div className="flex w-fit justify-start items-center border rounded px-4 xs:w-full">
+                <div className="flex w-fit items-center rounded xs:w-full">
                   <label htmlFor="ingredients" className="flex md:text-sm">
-                    Food Ingredients
+                    <p>Food Lookup</p>
                     <Popup
                       text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
                       card={true}
                       placement="top"
                     />
-                    :
+                    <span className="self-center">:</span>
                   </label>
                   <input
                     className="text-center mx-2 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
@@ -224,13 +222,7 @@ const AddMealData = () => {
                     placeholder="spaghetti"
                   />
                 </div>
-                <input
-                  className="w-fit text-lg bg-white/70 border-2 rounded-xl py-2 px-4 ml-8
-                  hover:bg-green-400 hover:border-black
-                  md:mx-2 md:text-base sm:text-sm xs:w-full xs:mt-2 xs:ml-0"
-                  type="submit"
-                  value="Search"
-                />
+                <FormSubmit name="Search" />
               </div>
             </form>
 
@@ -437,10 +429,10 @@ const AddMealData = () => {
             </Modal.Body>
             <Modal.Footer css={{ justifyContent: "space-between" }}>
               <Button
-                auto
-                flat
-                color="error"
-                onPress={() => {
+                // auto
+                // flat
+                // color="error"
+                handleClick={() => {
                   setFoodItemModal(false);
                   setEditMode(false);
                 }}
@@ -449,10 +441,10 @@ const AddMealData = () => {
               </Button>
               {editMode ? (
                 <Button
-                  auto
-                  flat
-                  color="error"
-                  onPress={() => removeItem(chosenFood)}
+                  // auto
+                  // flat
+                  // color="error"
+                  handleClick={() => removeItem(chosenFood)}
                 >
                   Remove
                 </Button>
