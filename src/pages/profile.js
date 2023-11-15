@@ -1,4 +1,4 @@
-import Button from "@components/Button";
+import { Button } from "@components/Button";
 import { DietaryGoalsCard, RestrictionsCard } from "@components/Cards";
 import { Setting } from "@components/Icons";
 import Layout from "@components/Layout";
