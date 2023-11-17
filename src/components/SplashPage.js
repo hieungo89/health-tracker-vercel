@@ -5,6 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Button } from "@components/Button";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const cssStyles = {
   title: `font-semibold text-primary-light font-georgia text-center text-9xl lg:text-8xl md:text-7xl sm:text-6xl xs:text-4xl`,
@@ -18,6 +19,8 @@ const cssStyles = {
 
 const SplashPage = ({ user }) => {
   const router = useRouter();
+  const { data: session } = useSession();
+
   return (
     <Layout className="flex flex-col justify-center items-center">
       <div className="flex flex-col items-center pt-4 md:pt-2">
@@ -100,12 +103,7 @@ const SplashPage = ({ user }) => {
             Ready to commit to a healthier lifestyle? Don&#39;t wait, sign up
             today, and let&#39;s make your health the number one priority.
           </p>
-          {user?.email ? (
-            <Button
-              content="Go to Profile"
-              handleClick={() => router.push("/profile")}
-            />
-          ) : (
+          {!session ? (
             <Button
               content="Sign in with Google"
               handleClick={() =>
@@ -113,6 +111,11 @@ const SplashPage = ({ user }) => {
                   callbackUrl: "/profile",
                 })
               }
+            />
+          ) : (
+            <Button
+              content="Go to Profile"
+              handleClick={() => router.push("/profile")}
             />
           )}
         </div>
