@@ -25,7 +25,14 @@ const NavBar = () => {
             </button>
           </div>
         ) : (
-          <button onClick={() => signIn()} className={`${cssClass.icon}`}>
+          <button
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: "/profile",
+              })
+            }
+            className={`${cssClass.icon}`}
+          >
             <SignIn /> Sign-in
           </button>
         )}
