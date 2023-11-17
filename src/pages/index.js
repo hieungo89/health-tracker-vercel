@@ -1,9 +1,7 @@
-import Layout from "@components/Layout";
 import SplashPage from "@components/SplashPage";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {

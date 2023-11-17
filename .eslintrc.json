@@ -2,10 +2,10 @@
   "extends": [
     "next",
     "eslint:recommended",
-    "plugin:import/errors",
+    "plugin:@next/next/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:react-hooks/recommended", // warns for using hooks as conditionals
+    // "plugin:react-hooks/recommended", // warns for using hooks as conditionals
     "prettier"
   ],
   "rules": {
@@ -31,7 +31,8 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", "@"]
+        "paths": ["src/"]
+        // "extensions": [".js", ".jsx", "@"]
       }
     }
   }

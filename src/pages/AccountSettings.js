@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const AccountCreation = ({ type }) => {
   const [option, setOption] = useState("");
@@ -85,10 +85,10 @@ const AccountCreation = ({ type }) => {
     </>
   );
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     const { data } = await axios.get(`/api/user?email=${session?.user.email}`);
     setUserProfile(data);
-  };
+  }, [session]);
 
   // TODO: Future update: convert onChange to use less event listener
   const handleChange = (e) => {
@@ -109,7 +109,7 @@ const AccountCreation = ({ type }) => {
   useEffect(() => {
     if (type) setOption(type);
     if (type === "update") getUserData();
-  }, []);
+  }, [getUserData, type]);
 
   //! Redirect back to profile if user refreshes page
   if (userProfile === "") router.push("/profile");

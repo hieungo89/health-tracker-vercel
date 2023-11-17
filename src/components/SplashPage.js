@@ -1,7 +1,6 @@
 import Layout from "@components/Layout";
 import homeDisplay from "@images/home-focus.png";
 import { signIn } from "next-auth/react";
-import Head from "next/head";
 import Image from "next/image";
 import { Button } from "@components/Button";
 import { useRouter } from "next/router";
@@ -17,7 +16,7 @@ const cssStyles = {
   lg:py-[1em] lg:text-base sm:w-[70%]`,
 };
 
-const SplashPage = ({ user }) => {
+const SplashPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
