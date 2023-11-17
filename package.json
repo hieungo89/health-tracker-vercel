@@ -6,9 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write \"pages/**/*.{js,jsx}\"",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "next lint --quiet"
-
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.13",
@@ -28,14 +27,28 @@
     "@types/node": "18.7.5",
     "@types/react": "16.9.17",
     "autoprefixer": "^10.4.14",
-    "eslint": "^8.43.0",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "^14.0.3",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.25.3",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
     "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "tailwindcss": "^3.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "pages/**/*.{js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }

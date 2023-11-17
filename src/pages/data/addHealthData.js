@@ -2,7 +2,6 @@ import Layout from "@components/Layout";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button } from "@components/Button";
 
