@@ -1,6 +1,6 @@
 import Layout from "@components/Layout";
 import Head from "next/head";
-import Link from "next/link";
+import { CancelButton } from "@components/Button";
 
 const NewProfile = ({ handleSubmit, NameField, GoalField, TextAreaField }) => {
   return (
@@ -85,20 +85,14 @@ const NewProfile = ({ handleSubmit, NameField, GoalField, TextAreaField }) => {
                 text="Health Complications"
               />
             </div>
-            <div className="flex">
+            <div className="flex justify-between mt-3">
+              <CancelButton text="Return" />
               <input
-                className="bg-blue-200 font-semibold border border-solid border-white p-2 my-4 rounded
-              hover:bg-green-500 hover:border-black sm:text-sm"
+                className="bg-baby-blue font-semibold p-[1rem] rounded
+              hover:bg-success hover:border-black sm:text-sm"
                 type="submit"
                 value="Submit Profile"
               />
-              <Link
-                href="/"
-                className="bg-blue-200 font-semibold ml-4 border border-solid border-white p-2 my-4 rounded
-              hover:bg-red-500 hover:border-black sm:text-sm"
-              >
-                Go Back
-              </Link>
             </div>
           </form>
         </div>

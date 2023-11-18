@@ -11,6 +11,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 
 const Profile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -73,7 +74,7 @@ const Profile = () => {
         <div className="flex w-full max-w-3xl">
           <div className="flex w-full justify-evenly sm:flex-col sm:items-center">
             <div className="w-40 h-auto">
-              <img
+              <Image
                 src={userProfile.image}
                 alt="profile-pic"
                 className="w-full h-auto rounded-full"

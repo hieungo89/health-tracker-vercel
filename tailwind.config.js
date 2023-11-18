@@ -14,6 +14,9 @@ module.exports = {
         "baby-blue": "#D4F1F4",
         light: "#FFFFFF",
         dark: "#000000",
+        warning: "#FFBD44",
+        destructive: "#FF605C",
+        success: "#00CA4E",
       },
       fontFamily: {
         trebuchet: "Trebuchet",

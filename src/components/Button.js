@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Button = ({ content, className, handleClick }) => (
   <button
     className={`text-light rounded self-center px-4 bg-secondary-dark min-h-[2em] w-[18em]
@@ -19,4 +21,14 @@ const FormSubmit = ({ name, className }) => (
   />
 );
 
-export { Button, FormSubmit };
+const CancelButton = ({ text, className }) => (
+  <Link
+    href="/"
+    className={`bg-baby-blue font-semibold p-[1rem] text-black rounded
+hover:bg-warning hover:border-black sm:text-sm ${className}`}
+  >
+    {text}
+  </Link>
+);
+
+export { Button, FormSubmit, CancelButton };
