@@ -1,4 +1,4 @@
-import { CancelButton } from "@components/Button";
+import { CancelButton, SubmitButton } from "@components/Button";
 import Layout from "@components/Layout";
 import Head from "next/head";
 
@@ -164,12 +164,8 @@ const EditProfile = ({
               />
             </div>
             <div className="flex justify-between mt-3">
-              <CancelButton text="Return" />
-              <input
-                className="bg-secondary-dark text-light font-semibold p-[1rem] rounded hover:bg-success hover:text-dark sm:text-sm"
-                type="submit"
-                value="Submit Profile"
-              />
+              <CancelButton text="Return" href="/profile" />
+              <SubmitButton text="Save" />
             </div>
           </form>
         </div>

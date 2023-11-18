@@ -20,14 +20,22 @@ const FormSubmit = ({ name, className }) => (
   />
 );
 
-const CancelButton = ({ text, className }) => (
+const CancelButton = ({ text, href, className }) => (
   <Link
-    href="/"
+    href={href}
     className={`bg-secondary-dark text-white font-semibold p-[1rem] rounded
-hover:bg-warning hover:text-black sm:text-sm ${className}`}
+hover:bg-blue-green hover:text-black sm:text-sm ${className}`}
   >
     {text}
   </Link>
 );
 
-export { Button, FormSubmit, CancelButton };
+const SubmitButton = ({ text, className }) => (
+  <input
+    className={`bg-secondary-dark text-light font-semibold p-[1rem] rounded hover:bg-success hover:text-dark sm:text-sm ${className}`}
+    type="submit"
+    value={text}
+  />
+);
+
+export { Button, FormSubmit, CancelButton, SubmitButton };

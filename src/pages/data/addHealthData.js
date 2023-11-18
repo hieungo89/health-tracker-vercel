@@ -1,9 +1,9 @@
+import { CancelButton, SubmitButton } from "@components/Button";
 import Layout from "@components/Layout";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Button } from "@components/Button";
 
 const cssStyles = {
   formContainer: `flex flex-col rounded px-16 mb-4 p-4 lg:px-12 md:px-8 sm:px-4 sm:text-sm`,
@@ -66,7 +66,7 @@ const AddHealthData = () => {
         />
       </Head>
 
-      <Layout className="flex flex-col items-center bg-baby-blue">
+      <Layout className="flex flex-col items-center">
         <h1 className="underline font-trebuchet md:text-4xl">Data Input</h1>
 
         {/* Instructions */}
@@ -92,11 +92,11 @@ const AddHealthData = () => {
           <div className={cssStyles.inputCategory}>
             <label htmlFor="date">Select Date: </label>
             <input
+              className="px-[1rem] w-[60%] text-center bg-grey-80"
               type="date"
               name="date"
               max={new Date().toISOString().slice(0, 10)}
               required
-              className="text-center"
             />
           </div>
 
@@ -129,7 +129,7 @@ const AddHealthData = () => {
                   max="999"
                   name="weight"
                   required
-                  className="text-end mx-2 xs:mx-0.5"
+                  className="text-end bg-grey-80 mx-2 xs:mx-0.5"
                 />
                 lbs,
               </span>
@@ -139,24 +139,17 @@ const AddHealthData = () => {
                   type="time"
                   name="weight_time"
                   required
-                  className="text-end ml-2 xm:ml-0.5"
+                  className="text-end bg-grey-80 ml-2 xm:ml-0.5"
                 />
               </span>
             </div>
           </div>
 
-          <input
-            className={`text-light rounded self-center px-4 bg-secondary-dark min-h-[2em] w-[18em]
-            hover:bg-light hover:text-dark
-            md:w-[16em] sm:w-[12em]`}
-            type="submit"
-            value="Record Data"
-          />
+          <div className="flex justify-between">
+            <CancelButton text="Return" href="/profile" />
+            <SubmitButton text="Save" />
+          </div>
         </form>
-        <Button
-          content="Return to Profile"
-          handleClick={() => router.push("/profile")}
-        />
       </Layout>
     </>
   );
@@ -172,7 +165,7 @@ const TimeLabels = ({ label, timeType }) => (
       max={timeType === "hour" ? "23" : "59"}
       name={label}
       required
-      className="text-end mx-2"
+      className="text-end mx-2 bg-grey-80"
     />
     {timeType}
   </>
