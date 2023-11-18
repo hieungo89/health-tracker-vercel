@@ -1,6 +1,6 @@
+import { CancelButton } from "@components/Button";
 import Layout from "@components/Layout";
 import Head from "next/head";
-import { CancelButton } from "@components/Button";
 
 const EditProfile = ({
   name,

@@ -2,7 +2,7 @@ import EditProfile from "@components/EditProfile";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const AccountCreation = ({ type }) => {
   const [option, setOption] = useState("");
@@ -66,10 +66,7 @@ const AccountCreation = ({ type }) => {
     if (type === "update") getUserData();
   }, [getUserData, type]);
 
-  //! Redirect back to profile if user refreshes page
-  if (userProfile === "") router.push("/profile");
-
-  //! New Account Profile Setup
+  //* New Account Profile Setup
   if (session && option === "create")
     return (
       <EditProfile
@@ -79,7 +76,7 @@ const AccountCreation = ({ type }) => {
       />
     );
 
-  //! Update User Profile
+  //* Update User Profile
   if (session && option === "update" && userProfile.googleName)
     return (
       <EditProfile
