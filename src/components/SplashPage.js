@@ -1,10 +1,9 @@
+import { Button } from "@components/Button";
 import Layout from "@components/Layout";
 import homeDisplay from "@images/home-focus.png";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { Button } from "@components/Button";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 
 const cssStyles = {
   title: `font-semibold text-primary-light font-georgia text-center text-9xl lg:text-8xl md:text-7xl sm:text-6xl xs:text-4xl`,
@@ -33,6 +32,7 @@ const SplashPage = () => {
           src={homeDisplay}
           alt="home display conents"
           className="w-screen h-auto"
+          priority
         />
       </div>
 
