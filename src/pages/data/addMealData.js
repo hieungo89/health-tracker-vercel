@@ -1,3 +1,4 @@
+import { Button, FormSubmit, CancelButton } from "@components/Button";
 import FoodDisplayCard from "@components/FoodDisplayCard";
 import Layout from "@components/Layout";
 import Popup from "@components/Popup";
@@ -7,7 +8,6 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Button, FormSubmit } from "@components/Button";
 
 const AddMealData = () => {
   const [foodItems, setFoodItems] = useState({});
@@ -168,7 +168,7 @@ const AddMealData = () => {
         />
       </Head>
 
-      <Layout className="bg-baby-blue">
+      <Layout className="bg-grey-90">
         <h1 className="text-center underline font-trebuchet lg:text-4xl sm:text-2xl">
           Meal Input
         </h1>
@@ -176,10 +176,7 @@ const AddMealData = () => {
           <div className="flex flex-col">
             <div className="flex justify-between">
               <h4 className="md:text-lg">Instructions:</h4>
-              <Button
-                content="Return to Profile"
-                handleClick={() => router.push("/profile")}
-              />
+              <CancelButton text="Return" href="/profile" />
             </div>
             <ol>
               <li className="sm:text-sm">

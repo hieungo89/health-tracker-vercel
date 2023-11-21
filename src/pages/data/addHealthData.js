@@ -66,90 +66,92 @@ const AddHealthData = () => {
         />
       </Head>
 
-      <Layout className="flex flex-col items-center">
+      <Layout className="flex flex-col items-center bg-grey-90">
         <h1 className="underline font-trebuchet md:text-4xl">Data Input</h1>
 
-        {/* Instructions */}
-        <div className="my-4 md:text-sm">
-          <h4 className="md:text-lg">
-            Please fill out ALL fields in order to record your data.
-          </h4>
-          <li className="md:text-sm">
-            Put 0&apos;s for any data you <b>don&apos;t</b> want to record
-          </li>
-          <br />
-          <em>
-            <b className="text-red-600">*Warning: </b>Adding data on the same
-            date will override the previous data.
-          </em>
+        <div className="m-2 p-4 border rounded bg-light">
+          {/* Instructions */}
+          <div className="my-4 md:text-sm">
+            <h4 className="md:text-lg">
+              Please fill out ALL fields in order to record your data.
+            </h4>
+            <li className="md:text-sm">
+              Put 0&apos;s for any data you <b>don&apos;t</b> want to record
+            </li>
+            <br />
+            <em>
+              <b className="text-red-600">*Warning: </b>Adding data on the same
+              date will override the previous data.
+            </em>
+          </div>
+
+          <form
+            onSubmit={(e) => handleDataInput(e)}
+            className={cssStyles.formContainer}
+          >
+            {/* Date */}
+            <div className={cssStyles.inputCategory}>
+              <label htmlFor="date">Select Date: </label>
+              <input
+                className="px-[1rem] w-[60%] text-center bg-grey-80"
+                type="date"
+                name="date"
+                max={new Date().toISOString().slice(0, 10)}
+                required
+              />
+            </div>
+
+            {/* Exercise */}
+            <div className={cssStyles.inputCategory}>
+              <label htmlFor="exercise">Exercise:</label>
+              <div className="flex">
+                <TimeLabels label="exercise_hr" timeType="Hours" />
+                <TimeLabels label="exercise_min" timeType="Minutes" />
+              </div>
+            </div>
+
+            {/* Sleep */}
+            <div className={cssStyles.inputCategory}>
+              <label htmlFor="sleep">Sleep:</label>
+              <div className="flex">
+                <TimeLabels label="sleep_hr" timeType="Hours" />
+                <TimeLabels label="sleep_min" timeType="Minutes" />
+              </div>
+            </div>
+
+            {/* Weight */}
+            <div className={cssStyles.inputCategory}>
+              <label htmlFor="weight">Weight:</label>
+              <div className="xs:flex xs:flex-col">
+                <span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="999"
+                    name="weight"
+                    required
+                    className="text-end bg-grey-80 mx-2 xs:mx-0.5"
+                  />
+                  lbs,
+                </span>
+                <span>
+                  taken at
+                  <input
+                    type="time"
+                    name="weight_time"
+                    required
+                    className="text-end bg-grey-80 ml-2 xm:ml-0.5"
+                  />
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-between">
+              <CancelButton text="Return" href="/profile" />
+              <SubmitButton text="Save" />
+            </div>
+          </form>
         </div>
-
-        <form
-          onSubmit={(e) => handleDataInput(e)}
-          className={cssStyles.formContainer}
-        >
-          {/* Date */}
-          <div className={cssStyles.inputCategory}>
-            <label htmlFor="date">Select Date: </label>
-            <input
-              className="px-[1rem] w-[60%] text-center bg-grey-80"
-              type="date"
-              name="date"
-              max={new Date().toISOString().slice(0, 10)}
-              required
-            />
-          </div>
-
-          {/* Exercise */}
-          <div className={cssStyles.inputCategory}>
-            <label htmlFor="exercise">Exercise:</label>
-            <div className="flex">
-              <TimeLabels label="exercise_hr" timeType="Hours" />
-              <TimeLabels label="exercise_min" timeType="Minutes" />
-            </div>
-          </div>
-
-          {/* Sleep */}
-          <div className={cssStyles.inputCategory}>
-            <label htmlFor="sleep">Sleep:</label>
-            <div className="flex">
-              <TimeLabels label="sleep_hr" timeType="Hours" />
-              <TimeLabels label="sleep_min" timeType="Minutes" />
-            </div>
-          </div>
-
-          {/* Weight */}
-          <div className={cssStyles.inputCategory}>
-            <label htmlFor="weight">Weight:</label>
-            <div className="xs:flex xs:flex-col">
-              <span>
-                <input
-                  type="number"
-                  min="0"
-                  max="999"
-                  name="weight"
-                  required
-                  className="text-end bg-grey-80 mx-2 xs:mx-0.5"
-                />
-                lbs,
-              </span>
-              <span>
-                taken at
-                <input
-                  type="time"
-                  name="weight_time"
-                  required
-                  className="text-end bg-grey-80 ml-2 xm:ml-0.5"
-                />
-              </span>
-            </div>
-          </div>
-
-          <div className="flex justify-between">
-            <CancelButton text="Return" href="/profile" />
-            <SubmitButton text="Save" />
-          </div>
-        </form>
       </Layout>
     </>
   );

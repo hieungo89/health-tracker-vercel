@@ -69,9 +69,9 @@ const Profile = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout className="flex flex-col items-center">
+      <Layout className="flex flex-col items-center bg-grey-90">
         {/* //! Profile Photo, Name, Email, Age, Height, Settings */}
-        <div className="flex w-full max-w-3xl">
+        <div className="flex w-full max-w-3xl bg-light rounded-lg p-2">
           <div className="flex w-full justify-evenly sm:flex-col sm:items-center">
             <div className="w-40 h-auto">
               <Image
@@ -114,7 +114,7 @@ const Profile = () => {
         </div>
 
         {/* //! Dietary & Health */}
-        <div className="flex p-2 my-12 w-full max-w-3xl sm:space-y-4 sm:flex-col sm:items-center">
+        <div className="flex my-12 w-full max-w-3xl sm:space-y-4 sm:flex-col sm:items-center">
           <div className="w-1/3 sm:w-full">
             <DietaryGoalsCard goals={userProfile?.dietaryGoals} />
           </div>
