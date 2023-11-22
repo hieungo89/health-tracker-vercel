@@ -50,7 +50,7 @@ By Hieu Ngo
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0671fe0a-71ef-4a06-9ba9-77d38c1901be" alt="Login Page">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/61a4c179-29d6-45e8-b990-cc907efaefe0" alt="Home Page">
     </td>
     <td>
       This is the main page of the app. The user needs to sign in with a Google account in order to get started.
