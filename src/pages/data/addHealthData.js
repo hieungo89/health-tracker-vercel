@@ -1,4 +1,4 @@
-import { CancelButton, SubmitButton } from "@components/Button";
+import { LinkButton, SubmitButton } from "@components/Button";
 import Layout from "@components/Layout";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -147,7 +147,7 @@ const AddHealthData = () => {
             </div>
 
             <div className="flex justify-between">
-              <CancelButton text="Return" href="/profile" />
+              <LinkButton text="Return" href="/profile" />
               <SubmitButton text="Save" />
             </div>
           </form>

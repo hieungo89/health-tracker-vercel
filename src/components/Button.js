@@ -4,6 +4,7 @@ const Button = ({ content, className, handleClick }) => (
   <button
     className={`text-light rounded self-center bg-secondary-dark min-h-[2em] w-[18em]
     hover:bg-light hover:text-dark md:w-[16em] sm:w-[12em] ${className}`}
+    type="button"
     onClick={handleClick}
   >
     {content}
@@ -20,7 +21,17 @@ const FormSubmit = ({ name, className }) => (
   />
 );
 
-const CancelButton = ({ text, href, className }) => (
+const CancelButton = ({ content, className, handleClick }) => (
+  <button
+    className={`bg-secondary-dark text-light font-semibold p-[1rem] rounded hover:bg-warning hover:text-dark sm:text-sm ${className}`}
+    type="button"
+    onClick={handleClick}
+  >
+    {content}
+  </button>
+);
+
+const LinkButton = ({ text, href, className }) => (
   <Link
     href={href}
     className={`bg-secondary-dark text-white font-semibold p-[1rem] rounded
@@ -38,4 +49,4 @@ const SubmitButton = ({ text, className }) => (
   />
 );
 
-export { Button, FormSubmit, CancelButton, SubmitButton };
+export { Button, FormSubmit, CancelButton, LinkButton, SubmitButton };

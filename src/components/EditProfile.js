@@ -1,4 +1,4 @@
-import { CancelButton, SubmitButton } from "@components/Button";
+import { LinkButton, SubmitButton } from "@components/Button";
 import Layout from "@components/Layout";
 import Head from "next/head";
 
@@ -164,7 +164,7 @@ const EditProfile = ({
               />
             </div>
             <div className="flex justify-between mt-3">
-              <CancelButton text="Return" href="/profile" />
+              <LinkButton text="Return" href="/profile" />
               <SubmitButton text="Save" />
             </div>
           </form>
