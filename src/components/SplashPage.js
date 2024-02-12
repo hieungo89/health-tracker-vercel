@@ -4,9 +4,10 @@ import homeDisplay from "@images/home-focus.png";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Logo from "../components/Logo.js";
 
 const cssStyles = {
-  title: `font-semibold text-primary-light font-georgia text-center text-9xl lg:text-8xl md:text-7xl sm:text-6xl xs:text-4xl`,
+  title: `font-semibold text-primary-light font-georgia text-9xl lg:text-8xl md:text-7xl sm:text-6xl xs:text-4xl`,
   headerLight: `self-center text-light text-center font-serif px-12 font-bold text-6xl lg:text-5xl md:text-4xl sm:text-3xl`,
   headerDark: `self-center text-dark text-center font-serif px-12 font-bold text-6xl lg:text-5xl md:text-4xl sm:text-3xl`,
   appDescription: `font-serif text-primary-light text-[1.25em] text-center mx-[8em] py-8 lg:text-lg md:text-base md:mx-[4em] sm:mx-[1em]`,
@@ -20,9 +21,9 @@ const SplashPage = () => {
   const { data: session } = useSession();
 
   return (
-    <Layout className="flex flex-col justify-center items-center">
+    <Layout className="flex flex-col justify-center items-center bg-white">
       <div className="flex flex-col items-center pt-4 md:pt-2">
-        <div className={cssStyles.title}>Health Tracker App</div>
+        <Logo className={cssStyles.title} imgClass="w-[1em]" />
         <p className={cssStyles.appDescription}>
           Welcome to your one-stop health tracking hub! Stay on top of your
           well-being with ease, as we help you record and track your sleep,
@@ -36,15 +37,15 @@ const SplashPage = () => {
         />
       </div>
 
-      <div className="flex flex-col w-full bg-secondary-dark py-40 md:py-32">
+      <div className="flex flex-col w-full bg-secondary-dark py-60 md:py-32">
         <div className={cssStyles.headerLight}>
-          Welcome to Your Personal Health Tracker!
+          Your personal health tracker at your Fingertips!
         </div>
         <div className="flex space-x-16 px-8 pt-[1em] md:flex-col md:space-x-0">
           <p className={cssStyles.contentText}>
             Tired of losing track of your health goals? We&#39;ve got your back!
-            Our Health Tracker helps you record and monitor your sleep,
-            exercise, weight, and meals like a pro.
+            Health.me helps you record and monitor your sleep, exercise, weight,
+            and meals like a pro.
           </p>
           <p className={cssStyles.contentText}>
             With our intuitive interface, tracking your habits couldn&#39;t be
@@ -131,7 +132,7 @@ const SplashPage = () => {
             className="bg-light text-dark px-4 min-h-[2em] w-[18em]
                 md:w-[16em] sm:w-[12em]"
           />
-          <Button content="Subscribe" handleClick={() => router.push()} />
+          <Button content="Subscribe" />
         </form>
       </div>
     </Layout>

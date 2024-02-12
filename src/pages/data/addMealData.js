@@ -1,5 +1,4 @@
 import {
-  Button,
   CancelButton,
   FormSubmit,
   SubmitButton,
@@ -171,14 +170,14 @@ const AddMealData = () => {
   return (
     <>
       <Head>
-        <title>HTA - Meals</title>
+        <title>Health.me - Meals</title>
         <meta
           name="Record meals data"
           content="User can record their meals data for each type of food ingredient that they consumed."
         />
       </Head>
 
-      <Layout className="bg-grey-90">
+      <Layout>
         <h1 className="text-center underline font-trebuchet lg:text-4xl sm:text-2xl">
           Meal Input
         </h1>
