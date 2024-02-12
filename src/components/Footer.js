@@ -5,6 +5,7 @@ import {
   TwitterIcon,
 } from "@components/Icons";
 import { motion } from "framer-motion";
+import Logo from "./Logo.js";
 
 const cssStyles = {
   header: "text-primary-dark font-semibold text-lg mb-1",
@@ -13,8 +14,9 @@ const cssStyles = {
 const Footer = () => (
   <div className="m-4">
     <div className="underline" />
-    <div className="text-center mx-20 my-12 sm:mx-12">
-      &copy; HealthTracker 2023 All rights reserved.
+    <div className="flex justify-center mx-20 my-12 sm:mx-12">
+      &copy; <Logo className="px-1" imgClass="w-[1rem]" />
+      {new Date().getFullYear()} All rights reserved.
     </div>
 
     <div className="flex justify-evenly mb-12">

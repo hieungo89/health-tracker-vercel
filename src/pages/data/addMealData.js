@@ -1,5 +1,4 @@
 import {
-  Button,
   CancelButton,
   FormSubmit,
   SubmitButton,
@@ -171,14 +170,14 @@ const AddMealData = () => {
   return (
     <>
       <Head>
-        <title>HTA - Meals</title>
+        <title>Health.me - Meals</title>
         <meta
           name="Record meals data"
           content="User can record their meals data for each type of food ingredient that they consumed."
         />
       </Head>
 
-      <Layout className="bg-grey-90">
+      <Layout>
         <h1 className="text-center underline font-trebuchet lg:text-4xl sm:text-2xl">
           Meal Input
         </h1>
@@ -198,38 +197,6 @@ const AddMealData = () => {
                 save your data.
               </li>
             </ol>
-
-            {/* Search Food */}
-            <form
-              onSubmit={(e) => handleSearchIngredients(e)}
-              className="flex flex-col max-w-7xl"
-            >
-              <p className="font-semibold pb-2 font-serif sm:text-sm">
-                This search feature is specifically for searching food
-                ingredients only. Specific foods may be added in the future.
-              </p>
-              <div className="flex justify-between xs:flex-col">
-                {/* Ingredients */}
-                <div className="flex w-fit items-center rounded xs:w-full">
-                  <label htmlFor="ingredients" className="flex md:text-sm">
-                    <p>Food Lookup</p>
-                    <Popup
-                      text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
-                      card={true}
-                      placement="top"
-                    />
-                    <span className="self-center">:</span>
-                  </label>
-                  <input
-                    className="text-center mx-2 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
-                    type="text"
-                    name="ingredients"
-                    placeholder="spaghetti"
-                  />
-                </div>
-                <FormSubmit name="Search" />
-              </div>
-            </form>
 
             {/* Input Data to DB */}
             <form
@@ -306,37 +273,71 @@ const AddMealData = () => {
           </div>
 
           {/* Right Side - Display Food Cards */}
-          {foodItems.results && (
-            <div className="pl-4">
-              <h4 className="md:pt-4 md:text-xl sm:text-base">
+          <div className="ml-4">
+            {/* Search Food */}
+            <form
+              onSubmit={(e) => handleSearchIngredients(e)}
+              className="flex flex-col max-w-7xl p-2 bg-light"
+            >
+              <p className="font-semibold pb-2 font-serif sm:text-sm">
+                This search feature is specifically for searching food
+                ingredients only. Specific foods may be added in the future.
+              </p>
+              <p className="md:pt-4 md:text-xl sm:text-base">
                 <span className="text-red-600">*DISCLAIMER:</span> Due to usage
                 of the FREE API, there is a limited amount of API usage per day.
                 Once the limit is reached, this will NOT display any results.
-              </h4>
-              {foodItems.results?.length ? (
-                <div className="p-4 border rounded-lg">
-                  <Grid.Container
-                    gap={1}
-                    justify="center"
-                    css={{ maxHeight: "640px", overflow: "scroll" }}
-                  >
-                    {foodItems.results.map((item) => (
-                      <Grid key={item.id}>
-                        <FoodDisplayCard
-                          item={item}
-                          clicked={() => {
-                            setFoodItemModal(true);
-                            setChosenFood(item);
-                            setItemsQuantity(1);
-                          }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid.Container>
+              </p>
+              <div className="flex justify-between xs:flex-col">
+                {/* Ingredients */}
+                <div className="flex w-fit items-center rounded xs:w-full">
+                  <label htmlFor="ingredients" className="flex md:text-sm">
+                    <p>Food Lookup</p>
+                    <Popup
+                      text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
+                      card={true}
+                      placement="top"
+                    />
+                    <span className="self-center">:</span>
+                  </label>
+                  <input
+                    className="text-center mx-2 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
+                    type="text"
+                    name="ingredients"
+                    placeholder="spaghetti"
+                  />
                 </div>
-              ) : null}
-            </div>
-          )}
+                <FormSubmit name="Search" />
+              </div>
+            </form>
+
+            {foodItems.results && (
+              <div>
+                {foodItems.results?.length && (
+                  <div className="p-4 border rounded-lg">
+                    <Grid.Container
+                      gap={1}
+                      justify="center"
+                      css={{ maxHeight: "640px", overflow: "scroll" }}
+                    >
+                      {foodItems.results.map((item) => (
+                        <Grid key={item.id}>
+                          <FoodDisplayCard
+                            item={item}
+                            clicked={() => {
+                              setFoodItemModal(true);
+                              setChosenFood(item);
+                              setItemsQuantity(1);
+                            }}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid.Container>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Add/Edit Food eaten to Meals */}

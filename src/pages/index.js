@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Health Tracker</title>
+        <title>Health.me</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

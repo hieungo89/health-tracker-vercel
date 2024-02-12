@@ -13,7 +13,7 @@ export const QuestionMark = ({ className }) => (
 
 export const SignIn = ({ className }) => (
   <svg
-    className={`self-center text-2xl ${className}`}
+    className={`text-2xl ${className}`}
     viewBox="0 0 24 24"
     fill="currentColor"
     height="1em"
@@ -25,7 +25,7 @@ export const SignIn = ({ className }) => (
 
 export const SignOut = ({ className }) => (
   <svg
-    className={`self-center text-2xl ${className}`}
+    className={`text-2xl ${className}`}
     viewBox="0 0 24 24"
     fill="currentColor"
     height="1em"
@@ -37,7 +37,7 @@ export const SignOut = ({ className }) => (
 
 export const Home = ({ className }) => (
   <svg
-    className={`self-center text-2xl ${className}`}
+    className={`text-2xl ${className}`}
     viewBox="0 0 24 24"
     fill="currentColor"
     height="1em"
@@ -50,7 +50,7 @@ export const Home = ({ className }) => (
 
 export const Profile = ({ className }) => (
   <svg
-    className={`self-center text-2xl ${className}`}
+    className={`text-2xl ${className}`}
     fill="none"
     viewBox="0 0 24 24"
     height="1em"
@@ -73,7 +73,7 @@ export const Profile = ({ className }) => (
 
 export const Setting = ({ className }) => (
   <svg
-    className={`self-center text-2xl ${className}`}
+    className={`text-2xl ${className}`}
     fill="none"
     stroke="currentColor"
     strokeLinecap="round"

@@ -1,9 +1,10 @@
-import { Home, Profile, SignIn, SignOut } from "@components/Icons";
+import { Profile, SignIn, SignOut } from "@components/Icons";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import Logo from "../components/Logo";
 
 const cssClass = {
-  icon: "flex space-x-2 px-2 hover:underline hover:underline-offset-2 text-black md:text-sm",
+  icon: "flex px-2 self-center hover:underline hover:underline-offset-2 text-black md:text-sm",
 };
 
 const NavBar = () => {
@@ -11,9 +12,7 @@ const NavBar = () => {
   return (
     <aside className="p-4 lg:p-2">
       <div className="flex justify-between md:justify-between">
-        <Link href="/" className={cssClass.icon}>
-          <Home /> HTA Home
-        </Link>
+        <Logo className={cssClass.icon} imgClass="w-[1.8rem]" />
 
         {session ? (
           <div className="flex">

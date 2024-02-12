@@ -59,14 +59,14 @@ const AddHealthData = () => {
   return (
     <>
       <Head>
-        <title>HTA - Wellness</title>
+        <title>Health.me - Wellness</title>
         <meta
           name="Record wellness data"
           content="User can record sleep, exercise, and weight data per day."
         />
       </Head>
 
-      <Layout className="flex flex-col items-center bg-grey-90">
+      <Layout className="flex flex-col items-center">
         <h1 className="underline font-trebuchet md:text-4xl">Data Input</h1>
 
         <div className="m-2 p-4 border rounded bg-light">
