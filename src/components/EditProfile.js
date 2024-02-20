@@ -164,7 +164,7 @@ const EditProfile = ({
               />
             </div>
             <div className="flex justify-between mt-3">
-              <LinkButton text="Return" href="/profile" />
+              <LinkButton text="Return" href={profile ? "/profile" : "/"} />
               <SubmitButton text="Save" />
             </div>
           </form>
