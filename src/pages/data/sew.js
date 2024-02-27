@@ -23,7 +23,7 @@ const SEW = () => {
   return (
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
       {wellnessData.length ? (
-        <Table aria-label="Sleep, Exercise, Weight Data">
+        <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
           <Table.Header>
             <Table.Column css={{ textAlign: "center" }}>Date</Table.Column>
             <Table.Column css={{ textAlign: "center" }}>Exercise</Table.Column>

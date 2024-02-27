@@ -93,7 +93,7 @@ const AddHealthData = () => {
             <div className={cssStyles.inputCategory}>
               <label htmlFor="date">Select Date: </label>
               <input
-                className="px-[1rem] w-[60%] text-center bg-grey-80"
+                className="px-[1rem] w-[60%] text-center bg-grey-70"
                 type="date"
                 name="date"
                 max={new Date().toISOString().slice(0, 10)}
@@ -130,7 +130,8 @@ const AddHealthData = () => {
                     max="999"
                     name="weight"
                     required
-                    className="text-end bg-grey-80 mx-2 xs:mx-0.5"
+                    className="text-end bg-grey-70 mx-2 xs:mx-0.5"
+                    placeholder="120"
                   />
                   lbs,
                 </span>
@@ -140,7 +141,7 @@ const AddHealthData = () => {
                     type="time"
                     name="weight_time"
                     required
-                    className="text-end bg-grey-80 ml-2 xm:ml-0.5"
+                    className="text-end bg-grey-70 ml-2 xm:ml-0.5"
                   />
                 </span>
               </div>
@@ -167,7 +168,8 @@ const TimeLabels = ({ label, timeType }) => (
       max={timeType === "hour" ? "23" : "59"}
       name={label}
       required
-      className="text-end mx-2 bg-grey-80"
+      className="text-end mx-2 bg-grey-70"
+      placeholder="0"
     />
     {timeType}
   </>
