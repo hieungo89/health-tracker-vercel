@@ -116,7 +116,7 @@ By Hieu Ngo
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8ce5ce4e-7fe5-4732-9b65-dc4e907eb569d" alt="Add Food Data">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8a7d2d03-df3d-4ac1-aea3-16314fe190e9" alt="Add Food Data">
     </td>
     <td>
       <b>Add Food Data:</b> Utilizing Spoonacular API to search for food ingredients and add them to their health data. Users can search a plethora of food ingredients and add each individually to their meal.
