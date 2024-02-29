@@ -4,9 +4,12 @@ import {
   SubmitButton,
   LinkButton,
 } from "@components/Button";
-import FoodDisplayCard from "@components/FoodDisplayCard";
+import {
+  FoodDisplayCard,
+  SearchedFoodCards,
+} from "@components/FoodDisplayCard";
 import Layout from "@components/Layout";
-import Popup from "@components/Popup";
+import { Popup, PopupErrorMessage } from "@components/Popup";
 import { Card, Grid, Modal, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -15,11 +18,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const AddMealData = () => {
-  const [foodItems, setFoodItems] = useState({});
+  const [foodItems, setFoodItems] = useState({}); // API results
   const [foodItemModal, setFoodItemModal] = useState(false);
   const [chosenFood, setChosenFood] = useState({});
   const [itemsQuantity, setItemsQuantity] = useState(1);
-  const [chosenItems, setChosenItems] = useState([]);
+  const [measurement, setMeasurement] = useState("");
+  const [chosenItems, setChosenItems] = useState([]); // Foods to be added to DB
   const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
@@ -45,25 +49,26 @@ const AddMealData = () => {
   //! Add ingredient to the list
   const handleAddIngredient = (e) => {
     e.preventDefault();
-
     //! Edit Mode
     if (chosenFood.unit) removeItem(chosenFood);
-
     //! Regular Adding
+    const food = chosenFood.id;
+    const amount = e.target.amount.value;
+    const measurement = e.target.unit?.value || e.target.measurement?.value;
+
+    if (!measurement || measurement === "other") {
+      return alert("Please select or add a measurement");
+    }
+
     axios
       .get(
-        `https://api.spoonacular.com/food/ingredients/${
-          chosenFood.id
-        }/information?apiKey=${
-          process.env.NEXT_PUBLIC_SPOONACULAR_KEY
-        }&amount=${e.target.amount.value}&unit=${
-          e.target.measurement.value || e.target.unit.value
-        }`
+        `https://api.spoonacular.com/food/ingredients/${food}/information?apiKey=${process.env.NEXT_PUBLIC_SPOONACULAR_KEY}&amount=${amount}&unit=${measurement}`
       )
       .then((result) => {
         setChosenItems((prev) => [...prev, result.data]);
         setFoodItemModal(false);
         setEditMode(false);
+        console.log("result ", result);
       });
   };
 
@@ -198,7 +203,7 @@ const AddMealData = () => {
               </li>
             </ol>
 
-            {/* Input Data to DB */}
+            {/* //! Input Data to DB */}
             <form
               onSubmit={(e) => handleMealInput(e)}
               className="flex flex-col"
@@ -209,6 +214,7 @@ const AddMealData = () => {
                   className="p-1 mx-2 bg-grey-70"
                   type="date"
                   name="date"
+                  id="selectDate"
                   max={new Date().toISOString().slice(0, 10)}
                   required
                 />
@@ -216,7 +222,7 @@ const AddMealData = () => {
               {/* Meal Type */}
               <div className="flex flex-col py-4 md:text-sm">
                 <div className="flex">
-                  <label htmlFor="mealType" className="flex">
+                  <label htmlFor="mealType" className="flex items-center">
                     Meal Type
                     <Popup
                       text="Choose OTHER if you have want to add additional meals data."
@@ -225,7 +231,7 @@ const AddMealData = () => {
                     />
                     :
                   </label>
-                  <select name="mealType" className="ml-2 bg-grey-70" required>
+                  <select id="mealType" className="ml-2 bg-grey-70" required>
                     <option hidden></option>
                     <option value="Breakfast">Breakfast</option>
                     <option value="Brunch">Brunch</option>
@@ -247,7 +253,7 @@ const AddMealData = () => {
                 <SubmitButton text="Add Meal" />
               </div>
 
-              {/* My chosen food items */}
+              {/* //! My chosen food items */}
               {chosenItems.length ? (
                 <>
                   <h4 className="text-center underline">
@@ -256,9 +262,9 @@ const AddMealData = () => {
                   <div className="flex flex-col items-center h-[50vh] overflow-scroll">
                     {chosenItems.map((item) => (
                       <FoodDisplayCard
+                        key={item.id + item.amount + item.unit}
                         item={item}
                         clicked={() => editItem(item)}
-                        key={item.id + item.amount + item.unit}
                       />
                     ))}
                   </div>
@@ -267,7 +273,7 @@ const AddMealData = () => {
             </form>
           </div>
 
-          {/* Right Side - Display Food Cards */}
+          {/* //! Right Side - Display Food Cards */}
           <div className="ml-4 border rounded bg-light w-[70vw] lg:w-[60vw] md:w-auto md:ml-0 md:mt-2">
             {/* Search Food */}
             <form
@@ -286,7 +292,10 @@ const AddMealData = () => {
               <div className="flex justify-between xs:flex-col">
                 {/* Ingredients */}
                 <div className="flex w-fit items-center rounded xs:w-full">
-                  <label htmlFor="ingredients" className="flex md:text-sm">
+                  <label
+                    htmlFor="ingredients"
+                    className="flex items-center md:text-sm"
+                  >
                     <p>Food Lookup</p>
                     <Popup
                       text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
@@ -299,6 +308,7 @@ const AddMealData = () => {
                     className="text-center mx-2 bg-grey-70 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
                     type="text"
                     name="ingredients"
+                    id="ingredients"
                     placeholder="spaghetti"
                   />
                 </div>
@@ -317,7 +327,7 @@ const AddMealData = () => {
                     >
                       {foodItems.results.map((item) => (
                         <Grid key={item.id}>
-                          <FoodDisplayCard
+                          <SearchedFoodCards
                             item={item}
                             clicked={() => {
                               setFoodItemModal(true);
@@ -335,7 +345,7 @@ const AddMealData = () => {
           </div>
         </div>
 
-        {/* Add/Edit Food eaten to Meals */}
+        {/* //! Add/Edit Food eaten to Meals */}
         <Modal
           aria-labelledby="get-ingredient-info-modal"
           open={foodItemModal}
@@ -345,10 +355,13 @@ const AddMealData = () => {
           }}
           css={{ cursor: "default" }}
         >
-          <form onSubmit={(e) => handleAddIngredient(e)}>
-            {/* <Modal.Header></Modal.Header> */}
-            <Modal.Body css={{ display: "flex", width: "fit" }}>
-              <Text id="get-ingredient-info-modal" size={32}>
+          <form onSubmit={(e) => handleAddIngredient(e)} id="addIngredients">
+            <Modal.Header>
+              <Text
+                id="get-ingredient-info-modal"
+                size={32}
+                css={{ textAlign: "center" }}
+              >
                 {chosenFood.name}
                 {chosenFood.image && (
                   <Card.Image
@@ -357,11 +370,21 @@ const AddMealData = () => {
                   />
                 )}
               </Text>
+            </Modal.Header>
+            <Modal.Body
+              css={{
+                display: "grid",
+                justifyContent: "center",
+                width: "fit",
+                alignItems: "center",
+              }}
+            >
               <Text>
-                Amount:
+                <label htmlFor="amount">Amount:</label>
                 <input
-                  className="text-center ml-2 border rounded"
+                  className="text-center ml-2 border rounded bg-grey-70"
                   type="number"
+                  id="amount"
                   name="amount"
                   value={itemsQuantity}
                   min="1"
@@ -374,62 +397,106 @@ const AddMealData = () => {
                   }
                 />
               </Text>
+              {/* //! EDIT FOOD */}
               {chosenFood.possibleUnits?.length ? (
-                <Text>
-                  Possible Measurements:
+                <Text css={{ display: "flex" }}>
+                  <label htmlFor="measurement" className="flex items-center">
+                    Measurements
+                    <Popup
+                      text="Measurement not available in the Spoonacular database will not be shown here. Please select a different measurement."
+                      placement="top"
+                      card={true}
+                    />
+                    :
+                  </label>
                   <select
-                    name="measurement"
-                    className="mx-2 text-center border rounded cursor-pointer"
+                    id="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer bg-grey-70"
+                    onChange={(e) => setMeasurement(e.target.value)}
                   >
-                    <option value="">Select one</option>
+                    <option value="" disabled selected>
+                      Select one
+                    </option>
                     {chosenFood.possibleUnits.map((unit) => {
+                      console.log("possibleUnits ", unit, measurement);
                       return (
-                        <option value={unit} key={unit}>
+                        <option
+                          value={unit}
+                          key={unit}
+                          selected={unit === measurement ? true : false}
+                        >
                           {unit}
                         </option>
                       );
                     })}
                   </select>
+                  {!chosenFood.possibleUnits.includes(chosenFood.unit) ? (
+                    <PopupErrorMessage
+                      text="Measurement not available in the Spoonacular database. Please select a different measurement."
+                      placement="top"
+                      card={true}
+                    />
+                  ) : null}
                 </Text>
               ) : (
-                <Text>
-                  Measurements:
-                  <select
-                    name="measurement"
-                    className="mx-2 text-center border rounded cursor-pointer"
-                  >
-                    <option value="" hidden>
-                      Select one
-                    </option>
-                    <option value="Piece">Piece</option>
-                    <option value="Slice">Slice</option>
-                    <option value="Whole">Whole</option>
-                    <option value="Serving">Serving</option>
-                    <option value="Pinch">Pinch</option>
-                    <option value="Ounce">Ounce</option>
-                    <option value="Pound">Pound</option>
-                    <option value="Gram">Gram</option>
-                    <option value="Kilogram">Kilogram</option>
-                    <option value="Cup">Cup</option>
-                    <option value="Pint">Pint</option>
-                    <option value="Quart">Quart</option>
-                    <option value="Gallon">Gallon</option>
-                    <option value="Teaspoon">Teaspoon</option>
-                    <option value="Tablespoon">Tablespoon</option>
-                    <option value="Fluid ounce">Fluid ounce</option>
-                    <option value="Milliliter">Milliliter</option>
-                    <option value="Liter">Liter</option>
-                    <option value="">Other</option>
-                  </select>
-                  or
-                  <input
-                    className="text-center ml-2 border rounded px-1"
-                    size="10"
-                    type="text"
-                    name="unit"
-                    placeholder="input unit"
-                  />
-                </Text>
+                <>
+                  {/* //! ADD FOOD */}
+                  <Text css={{ display: "flex" }}>
+                    <label htmlFor="measurement" className="flex items-center">
+                      Measurements
+                      <Popup
+                        text="Measurement might not match the Spoonacular database. Please look at the card again and verify the correct measurement afterward."
+                        placement="top"
+                        card={true}
+                      />
+                      :
+                    </label>
+                    <select
+                      id="measurement"
+                      className="mx-2 text-center border rounded cursor-pointer bg-grey-70"
+                      onChange={(e) => setMeasurement(e.target.value)}
+                    >
+                      <option value="" hidden selected>
+                        Select one
+                      </option>
+                      <MeasurementOptions
+                        names={[
+                          "pieces",
+                          "slice",
+                          "whole",
+                          "serving",
+                          "pinch",
+                          "ounce",
+                          "pound",
+                          "gram",
+                          "kilogram",
+                          "cup",
+                          "pint",
+                          "quart",
+                          "gallon",
+                          "teaspoon",
+                          "tablespoon",
+                          "fluid ounce",
+                          "milliliter",
+                          "liter",
+                          "other",
+                        ]}
+                      />
+                    </select>
+                  </Text>
+                  {measurement === "other" ? (
+                    <Text css={{ display: "flex" }}>
+                      <label htmlFor="unit">Add Measurement:</label>
+                      <input
+                        className="ml-2 border rounded px-1 bg-grey-70"
+                        size="10"
+                        type="text"
+                        id="unit"
+                        name="unit"
+                      />
+                    </Text>
+                  ) : null}
+                </>
               )}
             </Modal.Body>
             <Modal.Footer css={{ justifyContent: "space-between" }}>
@@ -455,5 +522,15 @@ const AddMealData = () => {
     </>
   );
 };
+
+const MeasurementOptions = ({ names }) => (
+  <>
+    {names?.map((name) => (
+      <option key={name} value={name}>
+        {name}
+      </option>
+    ))}
+  </>
+);
 
 export default AddMealData;
