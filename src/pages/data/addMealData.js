@@ -1,8 +1,8 @@
 import {
   CancelButton,
   FormSubmit,
-  SubmitButton,
   LinkButton,
+  SubmitButton,
 } from "@components/Button";
 import {
   FoodDisplayCard,
@@ -83,10 +83,9 @@ const AddMealData = () => {
     e.preventDefault();
 
     if (!chosenItems.length) {
-      alert(
-        `\nPlease add food that you've eaten using the SEARCH Ingredients on top.`
+      return alert(
+        `\nPlease add food that you've eaten using the SEARCH Ingredients.`
       );
-      return;
     }
 
     const foodsEaten = chosenItems.map((item) => {
