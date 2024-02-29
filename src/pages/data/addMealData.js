@@ -9,7 +9,7 @@ import {
   SearchedFoodCards,
 } from "@components/FoodDisplayCard";
 import Layout from "@components/Layout";
-import { Popup } from "@components/Popup";
+import Popup from "@components/Popup";
 import { Card, Grid, Modal, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -22,7 +22,8 @@ const AddMealData = () => {
   const [foodItemModal, setFoodItemModal] = useState(false);
   const [chosenFood, setChosenFood] = useState({}); // current food choice
   const [itemsQuantity, setItemsQuantity] = useState(1);
-  const [chosenItems, setChosenItems] = useState([]); // Foods to be added to DB
+  const [chosenItems, setChosenItems] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -62,19 +63,25 @@ const AddMealData = () => {
   const handleEditIngredient = (e) => {
     e.preventDefault();
 
-    const food = chosenFood.id;
-    const amount = e.target.amount?.value;
-    const measurement = e.target.measurement?.value;
-    const key = process.env.NEXT_PUBLIC_SPOONACULAR_KEY;
+    //! Edit Mode
+    if (chosenFood.unit) removeItem(chosenFood);
 
+    //! Regular Adding
     axios
       .get(
-        `https://api.spoonacular.com/food/ingredients/${food}/information?apiKey=${key}&amount=${amount}&unit=${measurement}`
+        `https://api.spoonacular.com/food/ingredients/${
+          chosenFood.id
+        }/information?apiKey=${
+          process.env.NEXT_PUBLIC_SPOONACULAR_KEY
+        }&amount=${e.target.amount.value}&unit=${
+          e.target.measurement.value || e.target.unit.value
+        }`
       )
       .then((result) => {
         removeItem(chosenFood);
         setChosenItems((prev) => [...prev, result.data]);
         setFoodItemModal(false);
+        setEditMode(false);
       });
   };
 
@@ -263,7 +270,6 @@ const AddMealData = () => {
                   <div className="flex flex-col items-center h-[50vh] overflow-scroll">
                     {chosenItems.map((item) => (
                       <FoodDisplayCard
-                        key={item.id}
                         item={item}
                         clicked={() => editItem(item)}
                       />
@@ -328,8 +334,7 @@ const AddMealData = () => {
                     >
                       {foodItems.results.map((item) => (
                         <Grid key={item.id}>
-                          {/* Automatically add Each ingredient onClick */}
-                          <SearchedFoodCards
+                          <FoodDisplayCard
                             item={item}
                             clicked={() => handleAddIngredient(item)}
                           />
@@ -343,20 +348,17 @@ const AddMealData = () => {
           </div>
         </div>
 
-        {/* //! Edit Ingredient */}
+        {/* Add/Edit Food eaten to Meals */}
         <Modal
           aria-labelledby="get-ingredient-info-modal"
           open={foodItemModal}
           onClose={() => setFoodItemModal(false)}
           css={{ cursor: "default" }}
         >
-          <form onSubmit={(e) => handleEditIngredient(e)} id="editIngredients">
-            <Modal.Header>
-              <Text
-                id="get-ingredient-info-modal"
-                size={32}
-                css={{ textAlign: "center" }}
-              >
+          <form onSubmit={(e) => handleAddIngredient(e)}>
+            {/* <Modal.Header></Modal.Header> */}
+            <Modal.Body css={{ display: "flex", width: "fit" }}>
+              <Text id="get-ingredient-info-modal" size={32}>
                 {chosenFood.name}
                 {chosenFood.image && (
                   <Card.Image
@@ -365,17 +367,8 @@ const AddMealData = () => {
                   />
                 )}
               </Text>
-            </Modal.Header>
-            <Modal.Body
-              css={{
-                display: "grid",
-                justifyContent: "center",
-                width: "fit",
-                alignItems: "center",
-              }}
-            >
-              <Text css={{ display: "flex" }}>
-                <label htmlFor="amount">Amount :</label>
+              <Text>
+                Amount:
                 <input
                   className="text-center ml-2 border rounded bg-grey-70"
                   type="number"
@@ -392,30 +385,63 @@ const AddMealData = () => {
                   }
                 />
               </Text>
-              <Text css={{ display: "flex" }}>
-                <label htmlFor="measurement" className="flex items-center">
-                  Measurements :
-                </label>
-                <select
-                  id="measurement"
-                  className="mx-2 text-center border rounded cursor-pointer bg-grey-70"
-                >
-                  <option value="" disabled selected>
-                    Select one
-                  </option>
-                  {chosenFood?.possibleUnits?.map((unit) => {
-                    return (
-                      <option
-                        value={unit}
-                        key={unit}
-                        selected={unit === chosenFood.unit ? true : false}
-                      >
-                        {unit}
-                      </option>
-                    );
-                  })}
-                </select>
-              </Text>
+              {chosenFood.possibleUnits?.length ? (
+                <Text>
+                  Possible Measurements:
+                  <select
+                    name="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer"
+                  >
+                    <option value="">Select one</option>
+                    {chosenFood.possibleUnits.map((unit) => {
+                      return (
+                        <option value={unit} key={unit}>
+                          {unit}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </Text>
+              ) : (
+                <Text>
+                  Measurements:
+                  <select
+                    name="measurement"
+                    className="mx-2 text-center border rounded cursor-pointer"
+                  >
+                    <option value="" hidden>
+                      Select one
+                    </option>
+                    <option value="Piece">Piece</option>
+                    <option value="Slice">Slice</option>
+                    <option value="Whole">Whole</option>
+                    <option value="Serving">Serving</option>
+                    <option value="Pinch">Pinch</option>
+                    <option value="Ounce">Ounce</option>
+                    <option value="Pound">Pound</option>
+                    <option value="Gram">Gram</option>
+                    <option value="Kilogram">Kilogram</option>
+                    <option value="Cup">Cup</option>
+                    <option value="Pint">Pint</option>
+                    <option value="Quart">Quart</option>
+                    <option value="Gallon">Gallon</option>
+                    <option value="Teaspoon">Teaspoon</option>
+                    <option value="Tablespoon">Tablespoon</option>
+                    <option value="Fluid ounce">Fluid ounce</option>
+                    <option value="Milliliter">Milliliter</option>
+                    <option value="Liter">Liter</option>
+                    <option value="">Other</option>
+                  </select>
+                  or
+                  <input
+                    className="text-center ml-2 border rounded px-1"
+                    size="10"
+                    type="text"
+                    name="unit"
+                    placeholder="input unit"
+                  />
+                </Text>
+              )}
             </Modal.Body>
             <Modal.Footer css={{ justifyContent: "space-between" }}>
               <CancelButton
@@ -435,5 +461,15 @@ const AddMealData = () => {
     </>
   );
 };
+
+const MeasurementOptions = ({ names }) => (
+  <>
+    {names?.map((name) => (
+      <option key={name} value={name}>
+        {name}
+      </option>
+    ))}
+  </>
+);
 
 export default AddMealData;
