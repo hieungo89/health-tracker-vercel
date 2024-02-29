@@ -1,5 +1,5 @@
 <h1 align="center">
-  Health Tracker <br> Deployed with Vercel and Mongo Atlas
+  Health.me <br> Deployed with Vercel and Mongo Atlas
 </h1>
 By Hieu Ngo
 
@@ -37,8 +37,8 @@ By Hieu Ngo
 ### This project includes the following sections:
 
 1. Initial Login page
-2. Account Settings
-3. Profile Page
+2. Profile Page
+3. Account Settings
 4. Data Collection
 5. Data Analysis
 6. Mobile Integrations
@@ -50,47 +50,10 @@ By Hieu Ngo
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/61a4c179-29d6-45e8-b990-cc907efaefe0" alt="Home Page">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/fc528f65-ead8-4c3f-a43c-5b3153a57aee" alt="Home Page">
     </td>
     <td>
-      This is the main page of the app. The user needs to sign in with a Google account in order to get started.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/823c2095-1768-4420-884f-39c0504babe9" alt="New User">
-    </td>
-    <td>
-      The new user will be prompted to create a profile.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0f6733f0-0aa4-43ed-9fd2-36d31460fc23" alt="Returning User">
-    </td>
-    <td>
-      Returning users will have the option to go to their profile page.
-    </td>
-  </tr>
-</table>
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-### Account Settings:
-
-<table>
-  <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/44052dad-9aba-4796-b7e6-d979994c18b3" alt="Profile Creation">
-    </td>
-    <td>
-      New users will need to complete this form in order to start using the application.
-    </td>
-  </tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/5b5329ff-88b7-47ca-8472-44fef927d971" alt="Profile Update">
-    </td>
-    <td>
-      User updates their profile on the Profile page. All of the user's info can be updated.
+      This is the home page of the app. The user needs to sign in with a Google account in order to get started.
     </td>
   </tr>
 </table>
@@ -101,10 +64,40 @@ By Hieu Ngo
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/6804c8ea-597b-4460-929d-41448d18c5cb" alt="Profile Page">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/a9c6368c-dbab-4664-8572-842dbca20d60" alt="Profile Page">
     </td>
     <td>
       The profile page is where users can record and view their data. The profile includes all the info that the user shared, buttons that take the user to record data, and buttons that open the data records on the same page.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/9632b3df-4076-47d7-9b66-c7222cf4f8fc" alt="Footer">
+    </td>
+    <td>
+      Footer containing the copyright info as well as other links.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+### Account Settings:
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/f1d47782-7a5b-455d-9935-49d7e3631072" alt="Profile Creation">
+    </td>
+    <td>
+      New users will need to complete this form in order to start using the application.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0dd97fee-632e-45c3-822b-a28a6a215907" alt="Profile Update">
+    </td>
+    <td>
+      User updates their profile on the Profile page. All of the user's info can be updated.
     </td>
   </tr>
 </table>
@@ -115,7 +108,7 @@ By Hieu Ngo
 <table>
   <tr>
     <td width="50%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/27c4bec5-82f2-41b9-84df-52286f13c13b" alt="Add Health Data">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/c161754f-8d83-4f1a-9046-c823db2abfe5" alt="Add Health Data">
     </td>
     <td>
       <b>Add Health Data:</b> Users can add exercise, sleep, and weight to their chart.
@@ -123,7 +116,7 @@ By Hieu Ngo
   </tr>
   <tr>
     <td>
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8ce5ce4e-7fe5-4732-9b65-dc4e907eb569" alt="Add Food Data">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8a7d2d03-df3d-4ac1-aea3-16314fe190e9" alt="Add Food Data">
     </td>
     <td>
       <b>Add Food Data:</b> Utilizing Spoonacular API to search for food ingredients and add them to their health data. Users can search a plethora of food ingredients and add each individually to their meal.
@@ -137,7 +130,7 @@ By Hieu Ngo
 <table>
   <tr>
     <td width="50%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/ff23210e-9903-4def-86c6-cf9adb2c043b" alt="View SEW Data">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/44c53bbf-35ed-458b-b810-8f0178273b8b" alt="View SEW Data">
     </td>
     <td>
       <b>View Sleep, Exercise, Weight Data:</b> User can view their records on the user page by clicking on the "Sleep/Exercise/Weight" button.
@@ -145,7 +138,7 @@ By Hieu Ngo
   </tr>
   <tr>
     <td>
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/9e019584-f47b-4a34-a35f-72ec1127b291" alt="View Meals Data">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/6daca188-ae63-40b9-acc3-19913ea6ea93" alt="View Meals Data">
     </td>
     <td>
       <b>View Meals Data:</b> User can view their meal records on the user page by clicking on the "Meals" button. A breakdown of the total Nutrition Facts of all food recorded per date will be shown and the name of the food ingredients.
@@ -158,22 +151,29 @@ By Hieu Ngo
 
 <table>
   <tr>
-    <td width="20%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/bb83272a-56af-4c1c-b95e-933c8f3b4ad7" alt="Mobile Login Page">
+    <td width="33%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/f5ab83d9-6801-46e6-9ad0-bcb82ad2bf19" alt="Mobile Home Page">
     </td>
-    <td width="20%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/bc885f48-1dee-4da6-9abe-5791f1dfe6f2" alt="Mobile Profile Page">
+    <td width="33%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/d3ea1fa5-6535-4b5f-a583-a7583ee8bd34" alt="Mobile Profile Page">
     </td>
-    <td width="20%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/a671a903-acfb-406a-bae2-0dabccb486f3" alt="Mobile Account Settings">
+    <td width="33%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/6b99e91e-656c-4b89-8c6f-3697008ee0dc" alt="Mobile Account Settings">
     </td>
-    <td width="20%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/99cdcc50-c363-4718-972a-a13f3829a46c" alt="Mobile Add Health Data">
+  </tr>
+  <tr>
+    <td width="33%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/dfb5cd9d-c66f-468f-8731-b1a67414e804" alt="Mobile Add Health Data">
     </td>
-    <td width="20%">
-    <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/7904e1da-0170-49a7-9e88-65e230475ecb" alt="Mobile Add Meal Data">
+    <td width="33%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/a5c9a9f8-c917-4f25-ad64-e625970a1f2f" alt="Mobile Add Meal Data">
+    </td>
+    <td width="33%">
+      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/eb339e1f-0521-49c7-935c-899b4f8086ed" alt="Mobile Footer">
+    </td>
   </tr>
 </table>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Thank you for viewing my repo!
+### Please reach out to me if you find any issues using the site.
