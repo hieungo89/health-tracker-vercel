@@ -23,7 +23,10 @@ const SplashPage = () => {
   return (
     <Layout className="flex flex-col justify-center items-center bg-white">
       <div className="flex flex-col items-center pt-4 md:pt-2">
-        <Logo className={cssStyles.title} imgClass="w-[1em]" />
+        <Logo
+          className={`${cssStyles.title} cursor-default`}
+          imgClass="w-[1em]"
+        />
         <p className={cssStyles.appDescription}>
           Welcome to your one-stop health tracking hub! Stay on top of your
           well-being with ease, as we help you record and track your sleep,
