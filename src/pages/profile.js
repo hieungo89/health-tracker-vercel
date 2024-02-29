@@ -69,7 +69,7 @@ const Profile = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout className="flex flex-col items-center">
+      <Layout className="flex flex-col items-center md:pt-3">
         {/* //! Profile Photo, Name, Email, Age, Height, Settings */}
         <div className="flex w-full max-w-3xl bg-light rounded-lg p-2">
           <div className="flex w-full justify-evenly sm:flex-col sm:items-center">

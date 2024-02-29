@@ -15,6 +15,7 @@ module.exports = {
         warning: "#FFBD44",
         destructive: "#FF605C",
         success: "#00CA4E",
+
         dark: "#000000",
         "grey-10": "#021426",
         "grey-20": "#2a333c",
@@ -35,20 +36,31 @@ module.exports = {
         helvetica: "Helvetica Neue",
         //* fonts included - font-sans / font-serif / font-mono
       },
+      fontSize: {
+        sm: "var(--base-size) / 1.25rem",
+        base: "var(--base-size)",
+        xl: "var(--base-size) * 1.25rem",
+        h1: "var(--h1)",
+        h2: "var(--h2)",
+        h3: "var(--h3)",
+        h4: "var(--h4)",
+        h5: "var(--h5)",
+        h6: "var(--h6)",
+      },
     },
     screens: {
-      "2xl": { max: "1535px" },
-      // => @media (max-width: 1535px) { ... }
-      xl: { max: "1279px" },
-      // => @media (max-width: 1279px) { ... }
       lg: { max: "1023px" },
       // => @media (max-width: 1023px) { ... }
+      // Tablet [wide screen]
       md: { max: "767px" },
       // => @media (max-width: 767px) { ... }
+      // Tablet [long screen]
       sm: { max: "639px" },
       // => @media (max-width: 639px) { ... }
+      // Phone [wide screen]
       xs: { max: "479px" },
       // => @media (max-width: 479px) { ... }
+      // phone [long screen]
     },
   },
   plugins: [],

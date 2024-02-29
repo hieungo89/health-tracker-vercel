@@ -66,7 +66,7 @@ const AddHealthData = () => {
         />
       </Head>
 
-      <Layout className="flex flex-col items-center">
+      <Layout className="flex flex-col items-center pt-2 pb-2">
         <h1 className="underline font-trebuchet md:text-4xl">Data Input</h1>
 
         <div className="m-2 p-4 border rounded bg-light">
