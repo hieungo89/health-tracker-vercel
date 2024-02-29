@@ -38,9 +38,9 @@ const AddMealData = () => {
       .catch((err) => console.log("Error searching ingredient in API : ", err));
   };
 
-  // useEffect(() => {
-  //   console.log("foodItems ", foodItems);
-  // }, [foodItems]);
+  useEffect(() => {
+    console.log("foodItems ", foodItems);
+  }, [foodItems]);
 
   //! Add ingredient to the list
   const handleAddIngredient = (e) => {
