@@ -16,7 +16,7 @@ const Footer = () => (
     <div className="underline" />
     <div className="flex justify-center mx-20 my-12 sm:mx-12 sm:flex-col sm:items-center">
       <span className="sm: flex">
-        &copy; <Logo className="px-1" imgClass="w-[1rem]" />
+        &copy; <Logo className="px-1 cursor-text" imgClass="w-[1rem]" />
       </span>
       {new Date().getFullYear()} All rights reserved.
     </div>
