@@ -177,20 +177,20 @@ const AddMealData = () => {
         />
       </Head>
 
-      <Layout>
-        <h1 className="text-center underline font-trebuchet lg:text-4xl sm:text-2xl">
+      <Layout className="pt-2 pb-2">
+        <h1 className="text-center underline font-trebuchet text-h1 md:text-h2">
           Meal Input
         </h1>
         <div className="flex justify-center md:flex-col">
-          <div className="flex flex-col bg-light border rounded p-2">
+          <div className="flex flex-col bg-light border rounded p-2 w-[30vw] lg:w-[40vw] md:h-auto md:w-auto">
             <div className="flex justify-between">
               <h4 className="md:text-lg">Instructions:</h4>
             </div>
             <ol>
-              <li className="sm:text-sm">
+              <li className="md:text-sm">
                 Search and add foods that you&apos;ve eaten
               </li>
-              <li className="sm:text-sm">Select Date</li>
+              <li className="md:text-sm">Select Date</li>
               <li className="sm:text-sm">Choose a meal type</li>
               <li className="sm:text-sm">
                 Click <b className="text-red-600">&quot;ADD MEAL&quot;</b> to
@@ -206,7 +206,7 @@ const AddMealData = () => {
               <div className="pt-8 md:text-sm">
                 <label htmlFor="selectDate">Select Date: </label>
                 <input
-                  className="p-1 mx-2"
+                  className="p-1 mx-2 bg-grey-70"
                   type="date"
                   name="date"
                   max={new Date().toISOString().slice(0, 10)}
@@ -225,7 +225,7 @@ const AddMealData = () => {
                     />
                     :
                   </label>
-                  <select name="mealType" className="ml-2" required>
+                  <select name="mealType" className="ml-2 bg-grey-70" required>
                     <option hidden></option>
                     <option value="Breakfast">Breakfast</option>
                     <option value="Brunch">Brunch</option>
@@ -250,38 +250,33 @@ const AddMealData = () => {
               {/* My chosen food items */}
               {chosenItems.length ? (
                 <>
-                  <h3 className="self-center underline md:text-sm">
+                  <h4 className="text-center underline">
                     CLICK on the card to EDIT.
-                  </h3>
-                  <Grid.Container
-                    gap={2}
-                    justify="flex-start"
-                    name="chosenFoodItems"
-                  >
+                  </h4>
+                  <div className="flex flex-col items-center h-[50vh] overflow-scroll">
                     {chosenItems.map((item) => (
-                      <Grid key={item.id + item.amount + item.unit}>
-                        <FoodDisplayCard
-                          item={item}
-                          clicked={() => editItem(item)}
-                        />
-                      </Grid>
+                      <FoodDisplayCard
+                        item={item}
+                        clicked={() => editItem(item)}
+                        key={item.id + item.amount + item.unit}
+                      />
                     ))}
-                  </Grid.Container>
+                  </div>
                 </>
               ) : null}
             </form>
           </div>
 
           {/* Right Side - Display Food Cards */}
-          <div className="ml-4">
+          <div className="ml-4 border rounded bg-light w-[70vw] lg:w-[60vw] md:w-auto md:ml-0 md:mt-2">
             {/* Search Food */}
             <form
               onSubmit={(e) => handleSearchIngredients(e)}
-              className="flex flex-col max-w-7xl p-2 bg-light"
+              className="flex flex-col max-w-7xl p-2"
             >
               <p className="font-semibold pb-2 font-serif sm:text-sm">
                 This search feature is specifically for searching food
-                ingredients only. Specific foods may be added in the future.
+                ingredients only. Specific foods will be added in the future.
               </p>
               <p className="md:pt-4 md:text-xl sm:text-base">
                 <span className="text-red-600">*DISCLAIMER:</span> Due to usage
@@ -301,7 +296,7 @@ const AddMealData = () => {
                     <span className="self-center">:</span>
                   </label>
                   <input
-                    className="text-center mx-2 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
+                    className="text-center mx-2 bg-grey-70 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
                     type="text"
                     name="ingredients"
                     placeholder="spaghetti"
@@ -312,7 +307,7 @@ const AddMealData = () => {
             </form>
 
             {foodItems.results && (
-              <div>
+              <>
                 {foodItems.results?.length && (
                   <div className="p-4 border rounded-lg">
                     <Grid.Container
@@ -335,7 +330,7 @@ const AddMealData = () => {
                     </Grid.Container>
                   </div>
                 )}
-              </div>
+              </>
             )}
           </div>
         </div>
@@ -351,7 +346,8 @@ const AddMealData = () => {
           css={{ cursor: "default" }}
         >
           <form onSubmit={(e) => handleAddIngredient(e)}>
-            <Modal.Header>
+            {/* <Modal.Header></Modal.Header> */}
+            <Modal.Body css={{ display: "flex", width: "fit" }}>
               <Text id="get-ingredient-info-modal" size={32}>
                 {chosenFood.name}
                 {chosenFood.image && (
@@ -361,8 +357,6 @@ const AddMealData = () => {
                   />
                 )}
               </Text>
-            </Modal.Header>
-            <Modal.Body css={{ display: "flex", width: "fit" }}>
               <Text>
                 Amount:
                 <input

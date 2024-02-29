@@ -1,6 +1,6 @@
 import { Grid, Card, Text } from "@nextui-org/react";
 
-const FoodDisplayCard = ({ item, clicked }) => {
+const FoodDisplayCard = ({ item, clicked, className }) => {
   const nutritionalValues = item.nutrition?.nutrients;
   if (nutritionalValues !== undefined) {
     nutritionalValues.sort((a, b) => {
@@ -30,7 +30,12 @@ const FoodDisplayCard = ({ item, clicked }) => {
           <Card
             isPressable
             isHoverable
-            css={{ maxWidth: "450px", width: "fit", height: "auto" }}
+            css={{
+              width: "fit",
+              height: "auto",
+              marginBottom: "4px",
+            }}
+            className={className}
             name={item.id}
             onClick={clicked}
           >
@@ -48,13 +53,30 @@ const FoodDisplayCard = ({ item, clicked }) => {
               </Text>
             </Card.Header>
             <Card.Body>
-              <Grid.Container gap={1}>
-                {shownNutrients.map((nutrient) => (
-                  <Grid key={nutrient.id} css={{ padding: "0 24px 4px 0" }}>
-                    <b>{nutrient.name}:</b> {nutrient.amount}
-                    {nutrient.unit}
-                  </Grid>
-                ))}
+              <Grid.Container>
+                {shownNutrients.map((nutrient) => {
+                  let displayName = "";
+
+                  switch (nutrient.name) {
+                    case "Calories":
+                      displayName = "kcal";
+                      break;
+                    case "Saturated Fat":
+                      displayName = "Sat. Fat";
+                      break;
+                    case "Carbohydrates":
+                      displayName = "Carb";
+                      break;
+                    default:
+                      displayName = nutrient.name;
+                  }
+                  return (
+                    <Grid key={nutrient.id} css={{ padding: "0 16px 4px 0" }}>
+                      <b>{displayName}:</b> {nutrient.amount}
+                      {nutrient.unit}
+                    </Grid>
+                  );
+                })}
               </Grid.Container>
             </Card.Body>
           </Card>
