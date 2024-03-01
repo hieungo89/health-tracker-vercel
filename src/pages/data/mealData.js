@@ -3,6 +3,7 @@ import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { format, parseISO } from "date-fns";
 
 const MealData = () => {
   const { data: session } = useSession();
@@ -104,6 +105,7 @@ const MealData = () => {
         2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 lg:max-h-[80rem] sm:grid-cols-1"
         >
           {sortedMealData.map((data, index) => {
+            const dateConverted = parseISO(data.date);
             return (
               <div key={index + data.date} className="sm:py-8">
                 <Card
@@ -116,7 +118,9 @@ const MealData = () => {
                   <Card.Header
                     css={{ display: "flex", flexDirection: "column" }}
                   >
-                    <h2 className="">{data.date}</h2>
+                    <h2 className="text-h2 lg:text-h3">
+                      {format(dateConverted, "MM / dd / yyyy")}
+                    </h2>
                   </Card.Header>
                   <Card.Body css={{ border: "solid", borderWidth: 1 }}>
                     <h2 className="md:text-3xl">Nutrition Facts</h2>

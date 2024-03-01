@@ -2,6 +2,7 @@ import { Table } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { format, parseISO } from "date-fns";
 
 const SEW = () => {
   const [wellnessData, setWellnessData] = useState([]);
@@ -25,42 +26,48 @@ const SEW = () => {
       {wellnessData.length ? (
         <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
           <Table.Header>
-            <Table.Column css={{ textAlign: "center" }}>Date</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Exercise</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Sleep</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Weight</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>DATE</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>EXERCISE</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>SLEEP</Table.Column>
+            <Table.Column css={{ textAlign: "center" }}>WEIGHT</Table.Column>
             <Table.Column css={{ textAlign: "center" }}>
-              Weight Time
+              TIME TAKEN
             </Table.Column>
           </Table.Header>
           <Table.Body>
-            {wellnessData.map((data) => (
-              <Table.Row key={data._id}>
-                <Table.Cell>{data.date}</Table.Cell>
-                <Table.Cell>
-                  {!data.exercise.exercise_hr && !data.exercise.exercise_min ? (
-                    <>none</>
-                  ) : (
-                    <>
-                      {data.exercise.exercise_hr > 0
-                        ? data.exercise.exercise_hr + "h"
-                        : ""}
-                      &nbsp;
-                      {data.exercise.exercise_min > 0
-                        ? data.exercise.exercise_min + "m"
-                        : ""}
-                    </>
-                  )}
-                </Table.Cell>
-                <Table.Cell>
-                  {data.sleep.sleep_hr > 0 ? data.sleep.sleep_hr + "h" : ""}
-                  &nbsp;
-                  {data.sleep.sleep_min > 0 ? data.sleep.sleep_min + "m" : ""}
-                </Table.Cell>
-                <Table.Cell>{data.weight.weightData}lb</Table.Cell>
-                <Table.Cell>{data.weight.weightTime}</Table.Cell>
-              </Table.Row>
-            ))}
+            {wellnessData.map((data) => {
+              const dateConverted = parseISO(data.date);
+              return (
+                <Table.Row key={data._id}>
+                  <Table.Cell>
+                    {format(dateConverted, "MM / dd / yyyy")}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {!data.exercise.exercise_hr &&
+                    !data.exercise.exercise_min ? (
+                      <>----</>
+                    ) : (
+                      <>
+                        {data.exercise.exercise_hr > 0
+                          ? data.exercise.exercise_hr + "h"
+                          : ""}
+                        &nbsp;
+                        {data.exercise.exercise_min > 0
+                          ? data.exercise.exercise_min + "m"
+                          : ""}
+                      </>
+                    )}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {data.sleep.sleep_hr > 0 ? data.sleep.sleep_hr + "h" : ""}
+                    &nbsp;
+                    {data.sleep.sleep_min > 0 ? data.sleep.sleep_min + "m" : ""}
+                  </Table.Cell>
+                  <Table.Cell>{data.weight.weightData}lb</Table.Cell>
+                  <Table.Cell>{data.weight.weightTime}</Table.Cell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table>
       ) : (
