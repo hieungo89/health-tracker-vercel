@@ -436,14 +436,4 @@ const AddMealData = () => {
   );
 };
 
-const MeasurementOptions = ({ names }) => (
-  <>
-    {names?.map((name) => (
-      <option key={name} value={name}>
-        {name}
-      </option>
-    ))}
-  </>
-);
-
 export default AddMealData;
