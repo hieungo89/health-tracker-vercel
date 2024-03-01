@@ -1,26 +1,28 @@
 import {
   CancelButton,
   FormSubmit,
-  SubmitButton,
   LinkButton,
+  SubmitButton,
 } from "@components/Button";
-import FoodDisplayCard from "@components/FoodDisplayCard";
+import {
+  FoodDisplayCard,
+  SearchedFoodCards,
+} from "@components/FoodDisplayCard";
 import Layout from "@components/Layout";
-import Popup from "@components/Popup";
+import { Popup } from "@components/Popup";
 import { Card, Grid, Modal, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const AddMealData = () => {
-  const [foodItems, setFoodItems] = useState({});
+  const [foodItems, setFoodItems] = useState({}); // API results
   const [foodItemModal, setFoodItemModal] = useState(false);
-  const [chosenFood, setChosenFood] = useState({});
+  const [chosenFood, setChosenFood] = useState({}); // current food choice
   const [itemsQuantity, setItemsQuantity] = useState(1);
-  const [chosenItems, setChosenItems] = useState([]);
-  const [editMode, setEditMode] = useState(false);
+  const [chosenItems, setChosenItems] = useState([]); // Foods to be added to DB
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -38,32 +40,41 @@ const AddMealData = () => {
       .catch((err) => console.log("Error searching ingredient in API : ", err));
   };
 
-  useEffect(() => {
-    console.log("foodItems ", foodItems);
-  }, [foodItems]);
+  //! Add ingredient to list
+  const handleAddIngredient = (ingredient) => {
+    const foodId = ingredient.id;
+    const key = process.env.NEXT_PUBLIC_SPOONACULAR_KEY;
+    // prevents duplicate
+    for (let item of chosenItems) {
+      if (foodId === item.id) return;
+    }
 
-  //! Add ingredient to the list
-  const handleAddIngredient = (e) => {
-    e.preventDefault();
-
-    //! Edit Mode
-    if (chosenFood.unit) removeItem(chosenFood);
-
-    //! Regular Adding
     axios
       .get(
-        `https://api.spoonacular.com/food/ingredients/${
-          chosenFood.id
-        }/information?apiKey=${
-          process.env.NEXT_PUBLIC_SPOONACULAR_KEY
-        }&amount=${e.target.amount.value}&unit=${
-          e.target.measurement.value || e.target.unit.value
-        }`
+        `https://api.spoonacular.com/food/ingredients/${foodId}/information?apiKey=${key}&amount=${1}`
       )
       .then((result) => {
         setChosenItems((prev) => [...prev, result.data]);
+      });
+  };
+
+  //! Edit ingredient [amount & measurement]
+  const handleEditIngredient = (e) => {
+    e.preventDefault();
+
+    const food = chosenFood.id;
+    const amount = e.target.amount?.value;
+    const measurement = e.target.measurement?.value;
+    const key = process.env.NEXT_PUBLIC_SPOONACULAR_KEY;
+
+    axios
+      .get(
+        `https://api.spoonacular.com/food/ingredients/${food}/information?apiKey=${key}&amount=${amount}&unit=${measurement}`
+      )
+      .then((result) => {
+        removeItem(chosenFood);
+        setChosenItems((prev) => [...prev, result.data]);
         setFoodItemModal(false);
-        setEditMode(false);
       });
   };
 
@@ -72,10 +83,9 @@ const AddMealData = () => {
     e.preventDefault();
 
     if (!chosenItems.length) {
-      alert(
-        `\nPlease add food that you've eaten using the SEARCH Ingredients on top.`
+      return alert(
+        `\nPlease add food that you've eaten using the SEARCH Ingredients.`
       );
-      return;
     }
 
     const foodsEaten = chosenItems.map((item) => {
@@ -124,8 +134,6 @@ const AddMealData = () => {
       Zinc: { quantity: 0, unit: "mg", perOfDailyNeeds: 0 },
     };
 
-    console.log("nutrition Data ~~ ", totalNutrientData);
-
     await chosenItems.forEach((item) => {
       item.nutrition.nutrients.forEach((nutrient) => {
         if (totalNutrientData[nutrient.name]) {
@@ -155,7 +163,6 @@ const AddMealData = () => {
     setFoodItemModal(true);
     setChosenFood(item);
     setItemsQuantity(item.amount);
-    setEditMode(true);
   };
 
   const removeItem = (item) => {
@@ -164,7 +171,6 @@ const AddMealData = () => {
     );
     setChosenItems(pickedFoodItems);
     setFoodItemModal(false);
-    setEditMode(false);
   };
 
   return (
@@ -198,7 +204,7 @@ const AddMealData = () => {
               </li>
             </ol>
 
-            {/* Input Data to DB */}
+            {/* //! Input Data to DB */}
             <form
               onSubmit={(e) => handleMealInput(e)}
               className="flex flex-col"
@@ -209,6 +215,7 @@ const AddMealData = () => {
                   className="p-1 mx-2 bg-grey-70"
                   type="date"
                   name="date"
+                  id="selectDate"
                   max={new Date().toISOString().slice(0, 10)}
                   required
                 />
@@ -216,7 +223,7 @@ const AddMealData = () => {
               {/* Meal Type */}
               <div className="flex flex-col py-4 md:text-sm">
                 <div className="flex">
-                  <label htmlFor="mealType" className="flex">
+                  <label htmlFor="mealType" className="flex items-center">
                     Meal Type
                     <Popup
                       text="Choose OTHER if you have want to add additional meals data."
@@ -225,7 +232,7 @@ const AddMealData = () => {
                     />
                     :
                   </label>
-                  <select name="mealType" className="ml-2 bg-grey-70" required>
+                  <select id="mealType" className="ml-2 bg-grey-70" required>
                     <option hidden></option>
                     <option value="Breakfast">Breakfast</option>
                     <option value="Brunch">Brunch</option>
@@ -247,7 +254,7 @@ const AddMealData = () => {
                 <SubmitButton text="Add Meal" />
               </div>
 
-              {/* My chosen food items */}
+              {/* //! My chosen food items */}
               {chosenItems.length ? (
                 <>
                   <h4 className="text-center underline">
@@ -256,9 +263,9 @@ const AddMealData = () => {
                   <div className="flex flex-col items-center h-[50vh] overflow-scroll">
                     {chosenItems.map((item) => (
                       <FoodDisplayCard
+                        key={item.id}
                         item={item}
                         clicked={() => editItem(item)}
-                        key={item.id + item.amount + item.unit}
                       />
                     ))}
                   </div>
@@ -267,7 +274,7 @@ const AddMealData = () => {
             </form>
           </div>
 
-          {/* Right Side - Display Food Cards */}
+          {/* //! Right Side - Display Food Cards */}
           <div className="ml-4 border rounded bg-light w-[70vw] lg:w-[60vw] md:w-auto md:ml-0 md:mt-2">
             {/* Search Food */}
             <form
@@ -286,7 +293,10 @@ const AddMealData = () => {
               <div className="flex justify-between xs:flex-col">
                 {/* Ingredients */}
                 <div className="flex w-fit items-center rounded xs:w-full">
-                  <label htmlFor="ingredients" className="flex md:text-sm">
+                  <label
+                    htmlFor="ingredients"
+                    className="flex items-center md:text-sm"
+                  >
                     <p>Food Lookup</p>
                     <Popup
                       text="Enter simple ingredient name to begin searching for food. Specific food dish will not show any results."
@@ -299,6 +309,7 @@ const AddMealData = () => {
                     className="text-center mx-2 bg-grey-70 md:mx-1 xs:ml-4 sm:text-sm xs:text-xs"
                     type="text"
                     name="ingredients"
+                    id="ingredients"
                     placeholder="spaghetti"
                   />
                 </div>
@@ -317,13 +328,10 @@ const AddMealData = () => {
                     >
                       {foodItems.results.map((item) => (
                         <Grid key={item.id}>
-                          <FoodDisplayCard
+                          {/* Automatically add Each ingredient onClick */}
+                          <SearchedFoodCards
                             item={item}
-                            clicked={() => {
-                              setFoodItemModal(true);
-                              setChosenFood(item);
-                              setItemsQuantity(1);
-                            }}
+                            clicked={() => handleAddIngredient(item)}
                           />
                         </Grid>
                       ))}
@@ -335,20 +343,20 @@ const AddMealData = () => {
           </div>
         </div>
 
-        {/* Add/Edit Food eaten to Meals */}
+        {/* //! Edit Ingredient */}
         <Modal
           aria-labelledby="get-ingredient-info-modal"
           open={foodItemModal}
-          onClose={() => {
-            setFoodItemModal(false);
-            setEditMode(false);
-          }}
+          onClose={() => setFoodItemModal(false)}
           css={{ cursor: "default" }}
         >
-          <form onSubmit={(e) => handleAddIngredient(e)}>
-            {/* <Modal.Header></Modal.Header> */}
-            <Modal.Body css={{ display: "flex", width: "fit" }}>
-              <Text id="get-ingredient-info-modal" size={32}>
+          <form onSubmit={(e) => handleEditIngredient(e)} id="editIngredients">
+            <Modal.Header>
+              <Text
+                id="get-ingredient-info-modal"
+                size={32}
+                css={{ textAlign: "center" }}
+              >
                 {chosenFood.name}
                 {chosenFood.image && (
                   <Card.Image
@@ -357,11 +365,21 @@ const AddMealData = () => {
                   />
                 )}
               </Text>
-              <Text>
-                Amount:
+            </Modal.Header>
+            <Modal.Body
+              css={{
+                display: "grid",
+                justifyContent: "center",
+                width: "fit",
+                alignItems: "center",
+              }}
+            >
+              <Text css={{ display: "flex" }}>
+                <label htmlFor="amount">Amount :</label>
                 <input
-                  className="text-center ml-2 border rounded"
+                  className="text-center ml-2 border rounded bg-grey-70"
                   type="number"
+                  id="amount"
                   name="amount"
                   value={itemsQuantity}
                   min="1"
@@ -374,79 +392,41 @@ const AddMealData = () => {
                   }
                 />
               </Text>
-              {chosenFood.possibleUnits?.length ? (
-                <Text>
-                  Possible Measurements:
-                  <select
-                    name="measurement"
-                    className="mx-2 text-center border rounded cursor-pointer"
-                  >
-                    <option value="">Select one</option>
-                    {chosenFood.possibleUnits.map((unit) => {
-                      return (
-                        <option value={unit} key={unit}>
-                          {unit}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </Text>
-              ) : (
-                <Text>
-                  Measurements:
-                  <select
-                    name="measurement"
-                    className="mx-2 text-center border rounded cursor-pointer"
-                  >
-                    <option value="" hidden>
-                      Select one
-                    </option>
-                    <option value="Piece">Piece</option>
-                    <option value="Slice">Slice</option>
-                    <option value="Whole">Whole</option>
-                    <option value="Serving">Serving</option>
-                    <option value="Pinch">Pinch</option>
-                    <option value="Ounce">Ounce</option>
-                    <option value="Pound">Pound</option>
-                    <option value="Gram">Gram</option>
-                    <option value="Kilogram">Kilogram</option>
-                    <option value="Cup">Cup</option>
-                    <option value="Pint">Pint</option>
-                    <option value="Quart">Quart</option>
-                    <option value="Gallon">Gallon</option>
-                    <option value="Teaspoon">Teaspoon</option>
-                    <option value="Tablespoon">Tablespoon</option>
-                    <option value="Fluid ounce">Fluid ounce</option>
-                    <option value="Milliliter">Milliliter</option>
-                    <option value="Liter">Liter</option>
-                    <option value="">Other</option>
-                  </select>
-                  or
-                  <input
-                    className="text-center ml-2 border rounded px-1"
-                    size="10"
-                    type="text"
-                    name="unit"
-                    placeholder="input unit"
-                  />
-                </Text>
-              )}
+              <Text css={{ display: "flex" }}>
+                <label htmlFor="measurement" className="flex items-center">
+                  Measurements :
+                </label>
+                <select
+                  id="measurement"
+                  className="mx-2 text-center border rounded cursor-pointer bg-grey-70"
+                >
+                  <option value="" disabled selected>
+                    Select one
+                  </option>
+                  {chosenFood?.possibleUnits?.map((unit) => {
+                    return (
+                      <option
+                        value={unit}
+                        key={unit}
+                        selected={unit === chosenFood.unit ? true : false}
+                      >
+                        {unit}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Text>
             </Modal.Body>
             <Modal.Footer css={{ justifyContent: "space-between" }}>
               <CancelButton
-                handleClick={() => {
-                  setFoodItemModal(false);
-                  setEditMode(false);
-                }}
+                handleClick={() => setFoodItemModal(false)}
                 content="Cancel"
               />
-              {editMode && (
-                <CancelButton
-                  handleClick={() => removeItem(chosenFood)}
-                  className="hover:bg-destructive"
-                  content="Remove"
-                />
-              )}
+              <CancelButton
+                handleClick={() => removeItem(chosenFood)}
+                className="hover:bg-destructive"
+                content="Remove"
+              />
               <SubmitButton text="add" className="cursor-pointer" />
             </Modal.Footer>
           </form>
