@@ -6,6 +6,8 @@ import { format, parseISO } from "date-fns";
 
 const SEW = () => {
   const [wellnessData, setWellnessData] = useState([]);
+  const [sortName, setSortName] = useState("DATE");
+  const [sortDirection, setSortDirection] = useState(0);
 
   const { data: session } = useSession();
 
@@ -15,6 +17,105 @@ const SEW = () => {
     );
     setWellnessData(data);
   };
+
+  const handleSort = (label) => {
+    const labelArr = label.split(" ");
+    const initial = label.slice(0, 1);
+    const word = labelArr[0];
+    const sortedData = [...wellnessData];
+
+    const sort = (direction, name) => {
+      if (name === "exercise") {
+        return sortedData.sort((a, b) => {
+          const aTotal = a.exercise.exercise_hr * 60 + a.exercise.exercise_min;
+          const bTotal = b.exercise.exercise_hr * 60 + b.exercise.exercise_min;
+          return direction === "desc" ? aTotal - bTotal : bTotal - aTotal;
+        });
+      }
+      if (name === "sleep") {
+        return sortedData.sort((a, b) => {
+          const aTotal = a.sleep.sleep_hr * 60 + a.sleep.sleep_min;
+          const bTotal = b.sleep.sleep_hr * 60 + b.sleep.sleep_min;
+          return direction === "desc" ? aTotal - bTotal : bTotal - aTotal;
+        });
+      }
+      if (name === "weight") {
+        sortedData.sort((a, b) => {
+          const aWeight = a.weight.weightData;
+          const bWeight = b.weight.weightData;
+          return direction === "desc" ? aWeight - bWeight : bWeight - aWeight;
+        });
+      }
+      if (direction === "desc") {
+        sortedData.sort((a, b) => {
+          if (a[name] < b[name]) return -1;
+          if (a[name] > b[name]) return 1;
+          return 0;
+        });
+      } else if (direction === "asc") {
+        sortedData.sort((a, b) => {
+          if (a[name] > b[name]) return -1;
+          if (a[name] < b[name]) return 1;
+          return 0;
+        });
+      }
+    };
+
+    switch (initial) {
+      case "D":
+        if (sortName === "DATE" && sortDirection === 0) {
+          sort("asc", "date");
+          setSortDirection(1);
+        } else {
+          sort("desc", "date");
+          setSortDirection(0);
+        }
+        break;
+      case "E":
+        if (sortName === "EXERCISE" && sortDirection === 0) {
+          sort("asc", "exercise");
+          setSortDirection(1);
+        } else {
+          sort("desc", "exercise");
+          setSortDirection(0);
+        }
+        break;
+      case "S":
+        if (sortName === "SLEEP" && sortDirection === 0) {
+          sort("asc", "sleep");
+          setSortDirection(1);
+        } else {
+          sort("desc", "sleep");
+          setSortDirection(0);
+        }
+        break;
+      case "W":
+        if (sortName === "WEIGHT" && sortDirection === 0) {
+          sort("asc", "weight");
+          setSortDirection(1);
+        } else {
+          sort("desc", "weight");
+          setSortDirection(0);
+        }
+        break;
+    }
+
+    sortName !== word ? setSortName(word) : null;
+    setWellnessData(sortedData);
+  };
+
+  const headerInfo = (label) => (
+    <>
+      {label}
+      {sortName === label ? (
+        sortDirection === 0 ? (
+          <> (&darr;)</>
+        ) : (
+          <> (&uarr;)</>
+        )
+      ) : null}
+    </>
+  );
 
   useEffect(() => {
     if (!session) return;
@@ -34,40 +135,44 @@ const SEW = () => {
 
   return (
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
-      <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
+      <Table
+        isStriped
+        aria-label="Sleep, Exercise, Weight Data"
+        className="bg-white"
+      >
         <Table.Header>
+          {/* Cannot Produce DRY code due to NextUI incapabilities */}
           <Table.Column
             css={{ textAlign: "center" }}
-            onClick={() => console.log("clicked")}
+            onClick={(e) => handleSort(e.target.innerHTML)}
           >
-            DATE
+            {headerInfo("DATE")}
           </Table.Column>
           <Table.Column
             css={{ textAlign: "center" }}
-            onClick={() => console.log("clicked")}
+            onClick={(e) => handleSort(e.target.innerHTML)}
           >
-            EXERCISE
+            {headerInfo("EXERCISE")}
           </Table.Column>
           <Table.Column
             css={{ textAlign: "center" }}
-            onClick={() => console.log("clicked")}
+            onClick={(e) => handleSort(e.target.innerHTML)}
           >
-            SLEEP
+            {headerInfo("SLEEP")}
           </Table.Column>
           <Table.Column
             css={{ textAlign: "center" }}
-            onClick={() => console.log("clicked")}
+            onClick={(e) => handleSort(e.target.innerHTML)}
           >
-            WEIGHT
+            {headerInfo("WEIGHT")}
           </Table.Column>
-          <Table.Column
-            css={{ textAlign: "center" }}
-            onClick={() => console.log("clicked")}
-          >
-            TIME TAKEN
-          </Table.Column>
+          <Table.Column css={{ textAlign: "center" }}>TIME TAKEN</Table.Column>
         </Table.Header>
-        <Table.Body>
+        <Table.Body
+          emptyContent={
+            "No data recorded yet. Please add Health data to keep track of your records."
+          }
+        >
           {wellnessData.map((data) => {
             const dateConverted = parseISO(data.date);
             return (
