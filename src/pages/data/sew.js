@@ -135,11 +135,7 @@ const SEW = () => {
 
   return (
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
-      <Table
-        isStriped
-        aria-label="Sleep, Exercise, Weight Data"
-        className="bg-white"
-      >
+      <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
         <Table.Header>
           {/* Cannot Produce DRY code due to NextUI incapabilities */}
           <Table.Column
