@@ -1,9 +1,6 @@
-import { Line } from "@components/Icons";
-import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { format, parseISO } from "date-fns";
 import { NutritionDisplayCard } from "@components/FoodDisplayCard";
 import { Button } from "@components/Button";
 
