@@ -21,6 +21,7 @@
     "next-intl": "^2.17.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "usehooks-ts": "^2.15.1",
     "vercel": "^28.17.0"
   },
   "devDependencies": {
