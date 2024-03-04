@@ -8,6 +8,7 @@ const SEW = () => {
   const [wellnessData, setWellnessData] = useState([]);
   const [sortName, setSortName] = useState("DATE");
   const [sortDirection, setSortDirection] = useState(0);
+  const tableHeaders = ["DATE", "EXERCISE", "SLEEP", "WEIGHT"];
 
   const { data: session } = useSession();
 
@@ -104,19 +105,6 @@ const SEW = () => {
     setWellnessData(sortedData);
   };
 
-  const headerInfo = (label) => (
-    <>
-      {label}
-      {sortName === label ? (
-        sortDirection === 0 ? (
-          <> (&darr;)</>
-        ) : (
-          <> (&uarr;)</>
-        )
-      ) : null}
-    </>
-  );
-
   useEffect(() => {
     if (!session) return;
     getData();
@@ -137,31 +125,22 @@ const SEW = () => {
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
       <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
         <Table.Header>
-          {/* Cannot Produce DRY code due to NextUI incapabilities */}
-          <Table.Column
-            css={{ textAlign: "center" }}
-            onClick={(e) => handleSort(e.target.innerHTML)}
-          >
-            {headerInfo("DATE")}
-          </Table.Column>
-          <Table.Column
-            css={{ textAlign: "center" }}
-            onClick={(e) => handleSort(e.target.innerHTML)}
-          >
-            {headerInfo("EXERCISE")}
-          </Table.Column>
-          <Table.Column
-            css={{ textAlign: "center" }}
-            onClick={(e) => handleSort(e.target.innerHTML)}
-          >
-            {headerInfo("SLEEP")}
-          </Table.Column>
-          <Table.Column
-            css={{ textAlign: "center" }}
-            onClick={(e) => handleSort(e.target.innerHTML)}
-          >
-            {headerInfo("WEIGHT")}
-          </Table.Column>
+          {tableHeaders?.map((header) => (
+            <Table.Column
+              key={header}
+              css={{ textAlign: "center" }}
+              onClick={(e) => handleSort(e.target.innerHTML)}
+            >
+              {header}
+              {sortName === header ? (
+                sortDirection === 0 ? (
+                  <> (&darr;)</>
+                ) : (
+                  <> (&uarr;)</>
+                )
+              ) : null}
+            </Table.Column>
+          ))}
           <Table.Column css={{ textAlign: "center" }}>TIME TAKEN</Table.Column>
         </Table.Header>
         <Table.Body
