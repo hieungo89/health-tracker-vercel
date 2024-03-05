@@ -3,7 +3,9 @@ import { Table } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-const Calendar = () => {
+const Calendar = ({ data, handleClick }) => {
+  const smScreen = useMediaQuery("(max-width: 639px)");
+  const [dataDates, setDataDates] = useState([]);
   const [monthCalendar, setMonthCalendar] = useState([]);
   const date = new Date();
   const [year, setYear] = useState(date.getFullYear());
@@ -17,7 +19,6 @@ const Calendar = () => {
     "Friday",
     "Saturday",
   ]);
-  const smScreen = useMediaQuery("(max-width: 639px)");
 
   const months = [
     "January",
@@ -42,12 +43,12 @@ const Calendar = () => {
     const allMonthDays = [];
 
     for (let i = monthFirstDayIndex; i > 0; i--)
-      allMonthDays.push(prevMonthLastDate - i + 1);
+      allMonthDays.push("<" + (prevMonthLastDate - i + 1).toString());
 
     for (let i = 1; i <= currMonthLastDate; i++) allMonthDays.push(i);
 
     for (let i = monthLastDayIndex; i < 6; i++) {
-      allMonthDays.push(i - monthLastDayIndex + 1);
+      allMonthDays.push(">" + (i - monthLastDayIndex + 1).toString());
     }
 
     const pages = Math.ceil(allMonthDays.length / 7);
@@ -81,8 +82,18 @@ const Calendar = () => {
   };
 
   useEffect(() => {
+    const dates = [];
+    data.map((entry) => dates.push(entry.date));
+    setDataDates(dates);
+  }, []);
+
+  useEffect(() => {
     generateCalendarWeeks();
   }, [month]);
+
+  useEffect(() => {
+    console.log("data dates : ", dataDates);
+  }, [dataDates]);
 
   //* Heading based on screen size
   useEffect(() => {
@@ -100,13 +111,9 @@ const Calendar = () => {
       ]);
   }, [smScreen]);
 
-  const doSomething = () => {
-    console.log("day clicked ");
-  };
-
   return (
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
-      <p className="flex justify-between">
+      <div className="flex justify-between">
         <Button
           content="previous"
           handleClick={(e) => handleChangeMonth(e.target.innerHTML)}
@@ -119,7 +126,7 @@ const Calendar = () => {
           content="next"
           handleClick={(e) => handleChangeMonth(e.target.innerHTML)}
         />
-      </p>
+      </div>
       <Table
         aria-label="calendar"
         className="bg-grey-80"
@@ -143,14 +150,33 @@ const Calendar = () => {
           {monthCalendar?.map((week, index) => (
             <Table.Row key={index}>
               {week.map((day, index) => {
+                // date of current month
+                let dayLayout = `${year}-${
+                  month < 9 ? "0" + (month + 1) : month + 1
+                }-${day < 10 ? "0" + day : day}`;
+                // Show proper date of last month
+                if (dayLayout.includes("<"))
+                  dayLayout = `${year}-${
+                    month < 9 ? "0" + month : month
+                  }-${day.slice(1)}`;
+                // Show proper date of next month
+                if (dayLayout.includes(">"))
+                  dayLayout = `${year}-${
+                    month < 9 ? "0" + (month + 2) : month + 2
+                  }-0${day.slice(1)}`;
+
                 return (
                   <Table.Cell key={index + day}>
-                    <button
-                      onClick={(e) => doSomething(e.target.innerHTML)}
-                      className="w-full"
-                    >
-                      {day}
-                    </button>
+                    {dataDates.includes(dayLayout) ? (
+                      <button
+                        onClick={() => handleClick(dayLayout)}
+                        className="w-full border rounded-lg bg-grey-60 hover:bg-grey-50"
+                      >
+                        {dayLayout.slice(8)}
+                      </button>
+                    ) : (
+                      <>{dayLayout.slice(8)}</>
+                    )}
                   </Table.Cell>
                 );
               })}

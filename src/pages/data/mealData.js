@@ -3,42 +3,36 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { NutritionDisplayCard } from "@components/FoodDisplayCard";
 import { Button } from "@components/Button";
+import Calendar from "@components/Calendar";
 
 const MealData = () => {
   const { data: session } = useSession();
   const [mealData, setMealData] = useState([]);
-  const [sortedMealData, setSortedMealData] = useState([]);
 
   const getMealData = async () => {
     const { data } = await axios.get(
       `/api/mealData?email=${session?.user.email}`
     );
-    await setMealData(data);
-  };
 
-  const sortDataByDate = () => {
-    const dates = mealData.map((meal) => {
-      return meal.date;
-    });
-
+    const dates = data.map((meal) => meal.date);
     const sortedData = [];
 
     for (let i = 0; i < dates.length; i++) {
       if (dates[i] !== dates[i - 1]) {
-        sortedData.push(mealData[i]);
-        sortedData[sortedData.length - 1].mealType = [mealData[i].mealType];
+        sortedData.push(data[i]);
+        sortedData[sortedData.length - 1].mealType = [data[i].mealType];
       } else {
         sortedData[sortedData.length - 1].foodsEaten = [
           ...sortedData[sortedData.length - 1].foodsEaten,
-          ...mealData[i].foodsEaten,
+          ...data[i].foodsEaten,
         ];
         sortedData[sortedData.length - 1].foodsId = [
           ...sortedData[sortedData.length - 1].foodsId,
-          ...mealData[i].foodsId,
+          ...data[i].foodsId,
         ];
         sortedData[sortedData.length - 1].mealType = [
           ...sortedData[sortedData.length - 1].mealType,
-          mealData[i].mealType,
+          data[i].mealType,
         ];
 
         const allNutrients =
@@ -47,16 +41,20 @@ const MealData = () => {
         for (let nutrient in allNutrients) {
           sortedData[sortedData.length - 1].totalNutrientCount[
             nutrient
-          ].quantity += mealData[i].totalNutrientCount[nutrient].quantity;
+          ].quantity += data[i].totalNutrientCount[nutrient].quantity;
           sortedData[sortedData.length - 1].totalNutrientCount[
             nutrient
           ].perOfDailyNeeds +=
-            mealData[i].totalNutrientCount[nutrient].perOfDailyNeeds;
+            data[i].totalNutrientCount[nutrient].perOfDailyNeeds;
         }
       }
     }
 
-    setSortedMealData(sortedData);
+    await setMealData(sortedData);
+  };
+
+  const handleClick = (date) => {
+    console.log("handleClick ", date);
   };
 
   useEffect(() => {
@@ -65,11 +63,15 @@ const MealData = () => {
   }, [session]);
 
   useEffect(() => {
-    if (!mealData) return;
-    sortDataByDate();
+    console.log(mealData);
   }, [mealData]);
 
-  if (sortedMealData.length < 1)
+  // useEffect(() => {
+  //   if (!mealData) return;
+  //   sortDataByDate();
+  // }, [mealData]);
+
+  if (mealData.length < 1)
     return (
       <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
         <div className="justify-center py-4 font-semibold text-lg lg:text-base md:text-sm">
@@ -82,21 +84,11 @@ const MealData = () => {
 
   return (
     <div className="py-8">
+      <Calendar data={mealData} handleClick={(str) => handleClick(str)} />
       <div
         className="grid grid-cols-5 justify-items-center p-4 overflow-auto
-        2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 lg:max-h-[80rem] sm:grid-cols-1"
+            2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 lg:max-h-[80rem] sm:grid-cols-1"
       >
-        <div className="flex flex-col">
-          {sortedMealData.map((data) => {
-            return (
-              <Button
-                key={data.date}
-                content={data.date}
-                handleClick={() => console.log("clicked")}
-              />
-            );
-          })}
-        </div>
         {/* {sortedMealData.map((data, index) => {
           return <NutritionDisplayCard key={index + data.date} data={data} />;
         })} */}
