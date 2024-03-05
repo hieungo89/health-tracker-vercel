@@ -109,7 +109,7 @@ const Profile = () => {
               },
             }}
           >
-            <Setting className="p-0.5 ml-4 md:text-xl sm:p-0 sm:-ml-10" />
+            <Setting className="text-2xl md:text-lg"/>
           </Link>
         </div>
 
