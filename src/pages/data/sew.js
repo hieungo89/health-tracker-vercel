@@ -1,10 +1,14 @@
 import { Table } from "@nextui-org/react";
 import axios from "axios";
+import { format, parseISO } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const SEW = () => {
   const [wellnessData, setWellnessData] = useState([]);
+  const [sortName, setSortName] = useState("DATE");
+  const [sortDirection, setSortDirection] = useState(0);
+  const tableHeaders = ["DATE", "EXERCISE", "SLEEP", "WEIGHT"];
 
   const { data: session } = useSession();
 
@@ -15,31 +19,145 @@ const SEW = () => {
     setWellnessData(data);
   };
 
+  const handleSort = (label) => {
+    const labelArr = label.split(" ");
+    const initial = label.slice(0, 1);
+    const word = labelArr[0];
+    const sortedData = [...wellnessData];
+
+    const sort = (direction, name) => {
+      if (name === "exercise") {
+        return sortedData.sort((a, b) => {
+          const aTotal = a.exercise.exercise_hr * 60 + a.exercise.exercise_min;
+          const bTotal = b.exercise.exercise_hr * 60 + b.exercise.exercise_min;
+          return direction === "desc" ? aTotal - bTotal : bTotal - aTotal;
+        });
+      }
+      if (name === "sleep") {
+        return sortedData.sort((a, b) => {
+          const aTotal = a.sleep.sleep_hr * 60 + a.sleep.sleep_min;
+          const bTotal = b.sleep.sleep_hr * 60 + b.sleep.sleep_min;
+          return direction === "desc" ? aTotal - bTotal : bTotal - aTotal;
+        });
+      }
+      if (name === "weight") {
+        sortedData.sort((a, b) => {
+          const aWeight = a.weight.weightData;
+          const bWeight = b.weight.weightData;
+          return direction === "desc" ? aWeight - bWeight : bWeight - aWeight;
+        });
+      }
+      if (direction === "desc") {
+        sortedData.sort((a, b) => {
+          if (a[name] < b[name]) return -1;
+          if (a[name] > b[name]) return 1;
+          return 0;
+        });
+      } else if (direction === "asc") {
+        sortedData.sort((a, b) => {
+          if (a[name] > b[name]) return -1;
+          if (a[name] < b[name]) return 1;
+          return 0;
+        });
+      }
+    };
+
+    switch (initial) {
+      case "D":
+        if (sortName === "DATE" && sortDirection === 0) {
+          sort("asc", "date");
+          setSortDirection(1);
+        } else {
+          sort("desc", "date");
+          setSortDirection(0);
+        }
+        break;
+      case "E":
+        if (sortName === "EXERCISE" && sortDirection === 0) {
+          sort("asc", "exercise");
+          setSortDirection(1);
+        } else {
+          sort("desc", "exercise");
+          setSortDirection(0);
+        }
+        break;
+      case "S":
+        if (sortName === "SLEEP" && sortDirection === 0) {
+          sort("asc", "sleep");
+          setSortDirection(1);
+        } else {
+          sort("desc", "sleep");
+          setSortDirection(0);
+        }
+        break;
+      case "W":
+        if (sortName === "WEIGHT" && sortDirection === 0) {
+          sort("asc", "weight");
+          setSortDirection(1);
+        } else {
+          sort("desc", "weight");
+          setSortDirection(0);
+        }
+        break;
+    }
+
+    sortName !== word ? setSortName(word) : null;
+    setWellnessData(sortedData);
+  };
+
   useEffect(() => {
     if (!session) return;
     getData();
   }, [session]);
 
+  if (wellnessData.length < 1)
+    return (
+      <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
+        <div className="justify-center py-4 font-semibold text-lg lg:text-base md:text-sm">
+          You Don&apos;t have any data yet. Go to
+          <b className="text-red-700 px-1">Input Wellness Data</b>
+          to add data about yourself!
+        </div>
+      </div>
+    );
+
   return (
     <div className="p-8 text-center md:text-sm sm:text-xs overflow-auto">
-      {wellnessData.length ? (
-        <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
-          <Table.Header>
-            <Table.Column css={{ textAlign: "center" }}>Date</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Exercise</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Sleep</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>Weight</Table.Column>
-            <Table.Column css={{ textAlign: "center" }}>
-              Weight Time
+      <Table aria-label="Sleep, Exercise, Weight Data" className="bg-white">
+        <Table.Header>
+          {tableHeaders?.map((header) => (
+            <Table.Column
+              key={header}
+              css={{ textAlign: "center" }}
+              onClick={(e) => handleSort(e.target.innerHTML)}
+            >
+              {header}
+              {sortName === header ? (
+                sortDirection === 0 ? (
+                  <> (&darr;)</>
+                ) : (
+                  <> (&uarr;)</>
+                )
+              ) : null}
             </Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {wellnessData.map((data) => (
+          ))}
+          <Table.Column css={{ textAlign: "center" }}>TIME TAKEN</Table.Column>
+        </Table.Header>
+        <Table.Body
+          emptyContent={
+            "No data recorded yet. Please add Health data to keep track of your records."
+          }
+        >
+          {wellnessData.map((data) => {
+            const dateConverted = parseISO(data.date);
+            return (
               <Table.Row key={data._id}>
-                <Table.Cell>{data.date}</Table.Cell>
+                <Table.Cell>
+                  {format(dateConverted, "MM / dd / yyyy")}
+                </Table.Cell>
                 <Table.Cell>
                   {!data.exercise.exercise_hr && !data.exercise.exercise_min ? (
-                    <>none</>
+                    <>----</>
                   ) : (
                     <>
                       {data.exercise.exercise_hr > 0
@@ -60,16 +178,10 @@ const SEW = () => {
                 <Table.Cell>{data.weight.weightData}lb</Table.Cell>
                 <Table.Cell>{data.weight.weightTime}</Table.Cell>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-      ) : (
-        <div className="justify-center py-4 font-semibold text-lg lg:text-base md:text-sm">
-          You Don&apos;t have any data yet. Go to
-          <b className="text-red-700 px-1">Input Wellness Data</b>
-          to get add data about yourself!
-        </div>
-      )}
+            );
+          })}
+        </Table.Body>
+      </Table>
     </div>
   );
 };
