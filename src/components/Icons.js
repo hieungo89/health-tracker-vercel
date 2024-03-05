@@ -73,7 +73,7 @@ export const Profile = ({ className }) => (
 
 export const Setting = ({ className }) => (
   <svg
-    className={`text-2xl ${className}`}
+    className={`${className}`}
     fill="none"
     stroke="currentColor"
     strokeLinecap="round"
