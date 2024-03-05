@@ -1,8 +1,8 @@
 import { Table } from "@nextui-org/react";
 import axios from "axios";
+import { format, parseISO } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { format, parseISO } from "date-fns";
 
 const SEW = () => {
   const [wellnessData, setWellnessData] = useState([]);

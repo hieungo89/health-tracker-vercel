@@ -91,10 +91,6 @@ const Calendar = ({ data, handleClick }) => {
     generateCalendarWeeks();
   }, [month]);
 
-  useEffect(() => {
-    console.log("data dates : ", dataDates);
-  }, [dataDates]);
-
   //* Heading based on screen size
   useEffect(() => {
     if (smScreen)
@@ -170,7 +166,7 @@ const Calendar = ({ data, handleClick }) => {
                     {dataDates.includes(dayLayout) ? (
                       <button
                         onClick={() => handleClick(dayLayout)}
-                        className="w-full border rounded-lg bg-grey-60 hover:bg-grey-50"
+                        className="w-full rounded-xl bg-grey-60 hover:bg-grey-40"
                       >
                         {dayLayout.slice(8)}
                       </button>

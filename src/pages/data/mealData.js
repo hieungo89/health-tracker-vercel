@@ -1,13 +1,15 @@
+import Calendar from "@components/Calendar";
+import { NutritionDisplayCard } from "@components/FoodDisplayCard";
+import { Modal } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { NutritionDisplayCard } from "@components/FoodDisplayCard";
-import { Button } from "@components/Button";
-import Calendar from "@components/Calendar";
 
 const MealData = () => {
   const { data: session } = useSession();
   const [mealData, setMealData] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [displayCard, setDisplayCard] = useState({});
 
   const getMealData = async () => {
     const { data } = await axios.get(
@@ -53,23 +55,24 @@ const MealData = () => {
     await setMealData(sortedData);
   };
 
-  const handleClick = (date) => {
-    console.log("handleClick ", date);
+  const handleClick = async (date) => {
+    let obj;
+
+    for (let i = 0; i < mealData.length; i++) {
+      if (mealData[i].date === date) {
+        obj = mealData[i];
+        break;
+      }
+    }
+
+    await setDisplayCard(obj);
+    setModal(true);
   };
 
   useEffect(() => {
     if (!session) return;
     getMealData();
   }, [session]);
-
-  useEffect(() => {
-    console.log(mealData);
-  }, [mealData]);
-
-  // useEffect(() => {
-  //   if (!mealData) return;
-  //   sortDataByDate();
-  // }, [mealData]);
 
   if (mealData.length < 1)
     return (
@@ -85,14 +88,19 @@ const MealData = () => {
   return (
     <div className="py-8">
       <Calendar data={mealData} handleClick={(str) => handleClick(str)} />
-      <div
-        className="grid grid-cols-5 justify-items-center p-4 overflow-auto
-            2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 lg:max-h-[80rem] sm:grid-cols-1"
+
+      <Modal
+        blur
+        aria-labelledby="nutrition-display-card"
+        open={modal}
+        onClose={() => setModal(false)}
+        className="w-[280px] m-auto cursor-auto"
       >
-        {/* {sortedMealData.map((data, index) => {
-          return <NutritionDisplayCard key={index + data.date} data={data} />;
-        })} */}
-      </div>
+        <NutritionDisplayCard
+          data={displayCard}
+          handleClick={() => setModal(false)}
+        />
+      </Modal>
     </div>
   );
 };
