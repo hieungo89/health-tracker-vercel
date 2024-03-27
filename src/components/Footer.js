@@ -12,16 +12,15 @@ const cssStyles = {
 };
 
 const Footer = () => (
-  <div className="m-4">
-    <div className="underline" />
-    <div className="flex justify-center mx-20 my-12 sm:mx-12 sm:flex-col sm:items-center">
+  <div className="pb-8 sm:pb-4">
+    <div className="flex justify-center my-8 sm:my-4 sm:flex-col sm:items-center">
       <span className="sm: flex">
         &copy; <Logo className="px-1 cursor-text" imgClass="w-[1rem]" />
       </span>
       {new Date().getFullYear()} All rights reserved.
     </div>
 
-    <div className="flex justify-evenly mb-12">
+    <div className="flex justify-evenly">
       <div className="flex flex-col">
         <p className={`${cssStyles.header}`}>Support</p>
         <FooterLinks name="Help" />
