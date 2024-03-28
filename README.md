@@ -1,7 +1,5 @@
-<h1 align="center">
-  Health.me <br> Deployed with Vercel and Mongo Atlas
-</h1>
-By Hieu Ngo
+<h1 align="center">Health.me</h1>
+<p align="center">By Hieu Ngo</p>
 
 ## About the Project
 
@@ -10,7 +8,7 @@ By Hieu Ngo
 
 1. Google Authorization for secure access to personal data.
 2. Mobile Integration for phones and tablets.
-3. Navigation Bar for quick access.
+3. Navigation Bar for quick access to different pages.
 
 ## Built with:
 
@@ -36,24 +34,25 @@ By Hieu Ngo
 
 ### This project includes the following sections:
 
-1. Initial Login page
+1. Homepage
 2. Profile Page
 3. Account Settings
 4. Data Collection
 5. Data Analysis
 6. Mobile Integrations
+7. Additional Features
 
 ## App Features
 
-### Login Page:
+### Homepage:
 
 <table>
   <tr>
-    <td width="50%">
+    <td width="40%">
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/fc528f65-ead8-4c3f-a43c-5b3153a57aee" alt="Home Page">
     </td>
     <td>
-      This is the home page of the app. The user needs to sign in with a Google account in order to get started.
+      The homepage offers a comprehensive overview of the program's functionalities and benefits to its users. To personalize their experience, users can conveniently sign in with their Google account via the top-right corner. Upon signing in, new users will need to create their profile. Returning users will automatically be redirected to their profile.
     </td>
   </tr>
 </table>
@@ -63,19 +62,11 @@ By Hieu Ngo
 
 <table>
   <tr>
-    <td width="50%">
+    <td width="40%">
       <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/a9c6368c-dbab-4664-8572-842dbca20d60" alt="Profile Page">
     </td>
     <td>
-      The profile page is where users can record and view their data. The profile includes all the info that the user shared, buttons that take the user to record data, and buttons that open the data records on the same page.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/9632b3df-4076-47d7-9b66-c7222cf4f8fc" alt="Footer">
-    </td>
-    <td>
-      Footer containing the copyright info as well as other links.
+      The profile page contains a centralized hub for users to manage and access their data. The page features intuitive buttons for seamless data entry and navigation, allowing users to record new data and access existing records effortlessly. Additionally, users can edit their profile information conveniently using the settings button located at the top-right corner of their profile.
     </td>
   </tr>
 </table>
@@ -85,19 +76,19 @@ By Hieu Ngo
 
 <table>
   <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/f1d47782-7a5b-455d-9935-49d7e3631072" alt="Profile Creation">
+    <td width="40%">
+      <img src="src/public/images/create-profile.png" alt="Profile Creation">
     </td>
     <td>
-      New users will need to complete this form in order to start using the application.
+      <b>Create Profile:</b> New users must complete a profile creation form to initiate the ability to record and track their progress. This step ensures that users gain a thorough understanding of their health information and set achievable goals tailored to their needs throughout their journey with the application.
     </td>
   </tr>
   <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/0dd97fee-632e-45c3-822b-a28a6a215907" alt="Profile Update">
+    <td width="40%">
+      <img src="src/public/images/update-profile.png" alt="Profile Update">
     </td>
     <td>
-      User updates their profile on the Profile page. All of the user's info can be updated.
+      <b>Update Profile:</b> Users can update their profile contents, allowing for comprehensive modifications to all aspects of their information. Every detail entered during the initial profile creation process is editable, empowering users with greater control over their personal data.
     </td>
   </tr>
 </table>
@@ -107,19 +98,19 @@ By Hieu Ngo
 
 <table>
   <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/c161754f-8d83-4f1a-9046-c823db2abfe5" alt="Add Health Data">
+    <td width="40%">
+      <img src="src/public/images/health-input.png" alt="Add Health Data">
     </td>
     <td>
-      <b>Add Health Data:</b> Users can add exercise, sleep, and weight to their chart.
+      <b>Health Data:</b> Users can record exercise, sleep, and weight data into their charts. The collected data is organized by date, enabling users to track their progress. Any changes to the data on a particular date will automatically update previous values, ensuring accurate and up-to-date records.
     </td>
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/8a7d2d03-df3d-4ac1-aea3-16314fe190e9" alt="Add Food Data">
+      <img src="src/public/images/meal-input.png" alt="Add Meal Data">
     </td>
     <td>
-      <b>Add Food Data:</b> Utilizing Spoonacular API to search for food ingredients and add them to their health data. Users can search a plethora of food ingredients and add each individually to their meal.
+      <b>Food Data:</b> Users can search for food ingredients and integrate them into their health data. Users have the flexibility to add each food item to their meals using the extensive database of ingredients. Upon updating each food entry, users can conveniently view the nine fundamental nutritional values, empowering them to have an informed dietary understanding.
     </td>
   </tr>
 </table>
@@ -129,19 +120,19 @@ By Hieu Ngo
 
 <table>
   <tr>
-    <td width="50%">
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/44c53bbf-35ed-458b-b810-8f0178273b8b" alt="View SEW Data">
+    <td width="40%">
+      <img src="src/public/images/view-health-data.png" alt="View Health Data">
     </td>
     <td>
-      <b>View Sleep, Exercise, Weight Data:</b> User can view their records on the user page by clicking on the "Sleep/Exercise/Weight" button.
+      <b>Health Data:</b> Users can access their health records on the user page by clicking the "Wellness Data" button under the "VIEW MY PROGRESS" tab. This action prompts a table display showcasing sortable data that can be categorized by date, exercise, sleep, and weight, enhancing the accessibility and organization of their information.
     </td>
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/hieungo89/health-tracker-vercel/assets/104481165/6daca188-ae63-40b9-acc3-19913ea6ea93" alt="View Meals Data">
+      <img src="src/public/images/view-meal-data.png" alt="View Meal Data">
     </td>
     <td>
-      <b>View Meals Data:</b> User can view their meal records on the user page by clicking on the "Meals" button. A breakdown of the total Nutrition Facts of all food recorded per date will be shown and the name of the food ingredients.
+      <b>Meals Data:</b> Users can access their meal records on the user page by clicking the "Meals" button under the "VIEW MY PROGRESS" tab. This action triggers a calendar view showcasing all dates that have meal data. Users can review comprehensive nutritional information by clicking on the specific date, including details on over 30 vitamins and nutrients, empowering them to track their dietary intake effectively.
     </td>
   </tr>
 </table>
@@ -175,5 +166,28 @@ By Hieu Ngo
 </table>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Additional Features:
+
+<table>
+  <tr>
+    <td width="40%">
+      <img src="src/public/images/nutrition-facts.png" alt="Profile Page">
+    </td>
+    <td>
+      <b>Nutrition Facts:</b> The nutrition facts modal displays a comprehensive summary of all foods recorded on a specific day, encompassing detailed nutritional information on over 30 key components. Additionally, it provides a list of the foods consumed, offering users a thorough overview of their dietary intake for that day.
+    </td>
+  </tr>
+  <tr>
+    <td width="40%">
+      <img src="src/public/images/footer.png" alt="Footer">
+    </td>
+    <td>
+      <b>Footer:</b> The footer section includes essential copyright information and different links typically found on a webpage. Under the 'Social' tab, the LinkedIn and GitHub links will redirect users to my profile, while Facebook and Twitter will redirect to the media websites.
+    </td>
+  </tr>
+</table>
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 # Thank you for viewing my repo!
+
 ### Please reach out to me if you find any issues using the site.
