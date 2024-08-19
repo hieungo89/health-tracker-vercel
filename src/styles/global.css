@@ -29,7 +29,88 @@ body,
   font-size: var(--base-size);
 }
 
-/* Wide Tablet to Desktop above this comment */
+.appear .logo {
+  animation: appear 2s linear;
+}
+
+.appear p {
+  animation: appear 2s linear forwards;
+  opacity: 0;
+  animation-delay: 1s;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(5%);
+  } to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animated-text {
+  opacity: 0;
+  transform: translateY(50px) scale(.3);
+  animation: fadeInUp both;
+  animation-timeline: view(90% 5%);
+}
+
+@keyframes fadeInUp {
+  to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+  }
+}
+
+.animated-textColor {
+  animation: change-color 2s linear infinite;
+  animation-delay: calc(var(--position) * .01s);
+}
+
+@keyframes change-color {
+  0% {
+    color: #FFFFFF;
+    text-decoration: underline;
+  } 25% {
+    color: #D1FFFF;
+  } 50% {
+    color: #B3FFFF;
+    text-decoration: underline;
+  } 75% {
+    color:#D1FFFF;
+  } 100% {
+    color: #FFFFFF;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: appear 2s linear forwards;
+  animation-timeline: view(70% 15%);
+}
+
+.animate-refuel {
+  animation: refuel 3s linear infinite;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+@keyframes refuel {
+  0% {
+    background: linear-gradient(to top, white, white, white, white);
+  } 20% {
+    background: linear-gradient(to top, #75E6DA, white, white, white);
+  } 35% {
+    background: linear-gradient(to top, #75E6DA, #75E6DA, white, white);
+  } 50% {
+    background: linear-gradient(to top, #75E6DA, #75E6DA, #75E6DA, white);
+  } 60% {
+    background: linear-gradient(to top, #75E6DA, #75E6DA, #75E6DA, #75E6DA);
+  } 100% {
+    background: linear-gradient(to top, white, white, white, white);
+  }
+}
 
 /* Tablet */
 @media only screen and (max-width: 767px) {
