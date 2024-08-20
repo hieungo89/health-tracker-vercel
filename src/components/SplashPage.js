@@ -180,7 +180,7 @@ const TrackHealthContent = ({ title, description, image }) => {
       <Image
         src={image}
         alt={image}
-        className="reveal w-28 h-28 lg:w-20 lg:h-20 sm:w-24 sm:h-24"
+        className="reveal w-28 h-28 rounded-full lg:w-20 lg:h-20 sm:w-24 sm:h-24"
       />
     </div>
   );
