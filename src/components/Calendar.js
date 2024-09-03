@@ -153,13 +153,18 @@ const Calendar = ({ data, handleClick }) => {
                 // Show proper date of last month
                 if (dayLayout.includes("<"))
                   dayLayout = `${year}-${
-                    month < 9 ? "0" + month : month
+                    month <= 9 ? "0" + month : month
                   }-${day.slice(1)}`;
                 // Show proper date of next month
                 if (dayLayout.includes(">"))
                   dayLayout = `${year}-${
-                    month < 9 ? "0" + (month + 2) : month + 2
+                    month < 8 ? "0" + (month + 2) : month + 2
                   }-0${day.slice(1)}`;
+
+                console.log(
+                  dayLayout,
+                  month + 1 != Number(dayLayout.slice(5, 7))
+                );
 
                 return (
                   <Table.Cell key={index + day}>
@@ -171,7 +176,14 @@ const Calendar = ({ data, handleClick }) => {
                         {dayLayout.slice(8)}
                       </button>
                     ) : (
-                      <>{dayLayout.slice(8)}</>
+                      <div
+                        className={
+                          month + 1 != Number(dayLayout.slice(5, 7)) &&
+                          `bg-grey-90`
+                        }
+                      >
+                        {dayLayout.slice(8)}
+                      </div>
                     )}
                   </Table.Cell>
                 );
