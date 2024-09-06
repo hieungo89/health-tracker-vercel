@@ -161,11 +161,6 @@ const Calendar = ({ data, handleClick }) => {
                     month < 8 ? "0" + (month + 2) : month + 2
                   }-0${day.slice(1)}`;
 
-                console.log(
-                  dayLayout,
-                  month + 1 != Number(dayLayout.slice(5, 7))
-                );
-
                 return (
                   <Table.Cell key={index + day}>
                     {dataDates.includes(dayLayout) ? (
