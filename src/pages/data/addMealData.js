@@ -187,7 +187,7 @@ const AddMealData = () => {
         <h1 className="text-center underline font-trebuchet text-h1 md:text-h2">
           Meal Input
         </h1>
-        <div className="flex justify-center h-[90vh] overflow-hidden md:flex-col md:justify-normal">
+        <div className="flex justify-center overflow-hidden md:flex-col md:justify-normal">
           <div className="flex flex-col bg-light border rounded p-2 w-[30vw] lg:w-[40vw] md:h-auto md:w-auto">
             <div className="flex justify-between">
               <h4 className="md:text-lg">Instructions:</h4>
@@ -275,7 +275,7 @@ const AddMealData = () => {
           </div>
 
           {/* //! Right Side - Display Food Cards */}
-          <div className="ml-4 border rounded bg-light max-h-screen w-[70vw] lg:w-[60vw] md:w-auto md:ml-0 md:mt-2">
+          <div className="ml-4 border rounded bg-light max-h-fit w-[70vw] lg:w-[60vw] md:w-auto md:ml-0 md:mt-2">
             {/* Search Food */}
             <form
               onSubmit={(e) => handleSearchIngredients(e)}
@@ -320,7 +320,7 @@ const AddMealData = () => {
             {foodItems.results && (
               <>
                 {foodItems.results?.length && (
-                  <div className="p-4 border rounded-lg sm:h-screen">
+                  <div className="p-4 border rounded-lg">
                     <Grid.Container
                       gap={1}
                       justify="center"
