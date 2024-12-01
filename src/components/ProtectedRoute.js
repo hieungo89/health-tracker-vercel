@@ -8,8 +8,11 @@ const ProtectedRoute = ({ children }) => {
 
   if (status === "loading")
     return (
-      <Layout className="text-center text-2xl pt-40 md:pt-20">
-        ...Loading
+      <Layout className="text-center text-2xl bg-white pt-40 md:pt-20">
+        Loading
+        <span className="appear-delay">.</span>
+        <span className="appear-delay delay333">.</span>
+        <span className="appear-delay delay666">.</span>
       </Layout>
     );
 

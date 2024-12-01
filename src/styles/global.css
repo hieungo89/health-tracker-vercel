@@ -43,7 +43,8 @@ body,
   from {
     opacity: 0;
     transform: translateX(5%);
-  } to {
+  }
+  to {
     opacity: 1;
     transform: translateX(0);
   }
@@ -51,36 +52,40 @@ body,
 
 .animated-text {
   opacity: 0;
-  transform: translateY(50px) scale(.3);
+  transform: translateY(50px) scale(0.3);
   animation: fadeInUp both;
   animation-timeline: view(90% 5%);
 }
 
 @keyframes fadeInUp {
   to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
 .animated-textColor {
   animation: change-color 2s linear infinite;
-  animation-delay: calc(var(--position) * .01s);
+  animation-delay: calc(var(--position) * 0.01s);
 }
 
 @keyframes change-color {
   0% {
-    color: #FFFFFF;
+    color: #ffffff;
     text-decoration: underline;
-  } 25% {
-    color: #D1FFFF;
-  } 50% {
-    color: #B3FFFF;
+  }
+  25% {
+    color: #d1ffff;
+  }
+  50% {
+    color: #b3ffff;
     text-decoration: underline;
-  } 75% {
-    color:#D1FFFF;
-  } 100% {
-    color: #FFFFFF;
+  }
+  75% {
+    color: #d1ffff;
+  }
+  100% {
+    color: #ffffff;
   }
 }
 
@@ -99,16 +104,39 @@ body,
 @keyframes refuel {
   0% {
     background: linear-gradient(to top, white, white, white, white);
-  } 20% {
-    background: linear-gradient(to top, #75E6DA, white, white, white);
-  } 35% {
-    background: linear-gradient(to top, #75E6DA, #75E6DA, white, white);
-  } 50% {
-    background: linear-gradient(to top, #75E6DA, #75E6DA, #75E6DA, white);
-  } 60% {
-    background: linear-gradient(to top, #75E6DA, #75E6DA, #75E6DA, #75E6DA);
-  } 100% {
+  }
+  20% {
+    background: linear-gradient(to top, #75e6da, white, white, white);
+  }
+  35% {
+    background: linear-gradient(to top, #75e6da, #75e6da, white, white);
+  }
+  50% {
+    background: linear-gradient(to top, #75e6da, #75e6da, #75e6da, white);
+  }
+  60% {
+    background: linear-gradient(to top, #75e6da, #75e6da, #75e6da, #75e6da);
+  }
+  100% {
     background: linear-gradient(to top, white, white, white, white);
+  }
+}
+
+.appear-delay {
+  opacity: 0;
+  animation: appear-delay 1s linear infinite;
+}
+
+.delay333 {
+  animation-delay: 333ms;
+}
+.delay666 {
+  animation-delay: 666ms;
+}
+
+@keyframes appear-delay {
+  to {
+    opacity: 1;
   }
 }
 
@@ -125,4 +153,3 @@ body,
     --base-size: 14px;
   }
 }
-
